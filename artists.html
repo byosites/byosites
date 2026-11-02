@@ -5,21 +5,22 @@
 body{margin:0;background:#050505;color:#fff;font-family:Arial;padding:16px;max-width:700px;margin:auto}
 input{width:100%;padding:14px;background:#111;border:1px solid #333;color:#fff;border-radius:12px;margin:8px 0}
 .btn{padding:14px;border:none;border-radius:12px;font-weight:900;width:100%;cursor:pointer}
-.btn-y{background:#ffcc00;color:#000}.btn-g{background:#25D366;color:#fff}
-.card{background:#111;border:1px solid #222;padding:14px;border-radius:14px;margin:10px 0}
+.btn-y{background:#ffcc00;color:#000}.btn-g{background:#25D366;color:#fff}.btn-w{background:#fff;color:#000}
+.card{background:#111;border:1px solid #222;padding:14px;border-radius:14px;margin:10px 0;display:flex;gap:10px;align-items:center}
 .lock{border:1px solid #222;padding:30px;border-radius:18px;background:#0a0a0a;text-align:center;margin-top:40px}
 .stat{padding:10px;background:#0f0f0f;border-radius:10px;text-align:center;border:1px solid #1a1a1a}
+.player{position:fixed;bottom:0;left:0;right:0;background:#111;border-top:1px solid #333;padding:10px;display:none;align-items:center;gap:10px;z-index:99}
 </style>
 </head><body>
 
 <div id="loginBox" class="lock">
 <h2 style="color:#ffcc00">BYOMUSIC ARTIST LOGIN</h2>
-<p style="color:#888;font-size:13px">Only accounts created by Admin 78 970 6161 can login. Enter your artist name + password given on WhatsApp.</p>
+<p style="color:#888;font-size:13px">Only accounts created by Admin 78 970 6161 can login.</p>
 <input id="loginName" placeholder="Artist Name e.g. DJ FLEXO">
-<input id="loginPass" type="password" placeholder="Password given by admin">
+<input id="loginPass" type="password" placeholder="Password">
 <button class="btn btn-y" onclick="login()">Login to My Dashboard</button>
 <p id="loginMsg" style="color:#ff4444;font-size:12px;margin-top:10px"></p>
-<p style="color:#555;font-size:11px;margin-top:14px">Don't have account? WhatsApp Admin: <a href="https://wa.me/263789706161?text=Hi%20I%20need%20artist%20account%20for%20BYOMUSIC" style="color:#25D366">+263 78 970 6161</a></p>
+<p style="color:#555;font-size:11px;margin-top:14px">No account? WhatsApp Admin: <a href="https://wa.me/263789706161?text=Hi%20I%20need%20artist%20account" style="color:#25D366">78 970 6161</a></p>
 </div>
 
 <div id="dashboard" style="display:none">
@@ -28,21 +29,23 @@ input{width:100%;padding:14px;background:#111;border:1px solid #333;color:#fff;b
 <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin:12px 0">
 <div class="stat"><b id="totalSongs">0</b><br><span style="font-size:11px;color:#888">Songs</span></div>
 <div class="stat"><b id="totalPlays">0</b><br><span style="font-size:11px;color:#888">Fame (Plays)</span></div>
-<div class="stat"><b id="totalLikes">0</b><br><span style="font-size:11px;color:#888">Rating (Likes)</span></div>
+<div class="stat"><b id="totalLikes">0</b><br><span style="font-size:11px;color:#888">Rating</span></div>
 </div>
 
-<div style="background:#111;padding:12px;border-radius:12px;border-left:4px solid #ffcc00">
-<h3 style="color:#ffcc00;font-size:14px">My Fame & Rating</h3>
-<p style="font-size:12px;color:#aaa">Fame = total plays. More plays = trending on BYOMUSIC homepage. Rating = likes from fans. You can't edit other artists - only yours.</p>
-</div>
-
-<h3 style="margin-top:16px">My Music - Manage My Own Only</h3>
+<h3 style="margin-top:16px">My Music - Play & Manage Own Only</h3>
 <div id="mySongs"></div>
 
-<div style="margin-top:20px;background:#111;padding:12px;border-radius:12px;border:1px solid #1e1e1e">
+<div class="player" id="player">
+<img id="pImg" width="40" height="40" style="border-radius:6px">
+<div style="flex:1"><b id="pTitle" style="font-size:12px"></b><div id="pArtist" style="font-size:11px;color:#888"></div></div>
+<audio id="audio" controls style="width:160px"></audio>
+<button onclick="document.getElementById('player').style.display='none'" style="background:#222;color:#888;border:none;padding:6px 10px;border-radius:6px">X</button>
+</div>
+
+<div style="margin-top:60px;background:#111;padding:12px;border-radius:12px;border:1px solid #1e1e1e">
 <h4>Request New Upload</h4>
-<p style="font-size:11px;color:#888">You can't upload directly - send MP3 to Admin via WhatsApp for security.</p>
-<a href="https://wa.me/263789706161?text=Hi%20Admin%20I%20want%20to%20upload%20new%20song%0AArtist:%20" class="btn btn-g" style="display:block;text-align:center;text-decoration:none">Send Song via WhatsApp to Admin</a>
+<p style="font-size:11px;color:#888">Send MP3 to Admin via WhatsApp</p>
+<a href="https://wa.me/263789706161?text=Hi%20Admin%20upload%20my%20song" class="btn btn-g" style="display:block;text-align:center;text-decoration:none">WhatsApp Admin</a>
 </div>
 </div>
 
@@ -56,13 +59,13 @@ function login(){
  const pass=document.getElementById('loginPass').value.trim();
  let artists=JSON.parse(localStorage.getItem(KEY_ARTISTS)||"[]");
  let found=artists.find(a=>a.name.toLowerCase()===name.toLowerCase() && a.pass===pass);
- if(!found){ document.getElementById('loginMsg').innerText="Wrong name or password - account must be created by admin 78 970 6161"; return; }
+ if(!found){ document.getElementById('loginMsg').innerText="Wrong name/password - account must be created by admin 78 970 6161"; return; }
  currentArtist=found;
  localStorage.setItem("byomusic_current_artist", JSON.stringify(found));
  showDashboard();
 }
 function showDashboard(){
- if(!currentArtist) { let saved=localStorage.getItem("byomusic_current_artist"); if(saved){ currentArtist=JSON.parse(saved); } else return; }
+ if(!currentArtist){ let saved=localStorage.getItem("byomusic_current_artist"); if(saved){ currentArtist=JSON.parse(saved);} else return; }
  document.getElementById('loginBox').style.display='none';
  document.getElementById('dashboard').style.display='block';
  document.getElementById('artistName').innerText=currentArtist.name;
@@ -76,13 +79,31 @@ function renderMySongs(){
  document.getElementById('totalLikes').innerText=mine.reduce((a,b)=>a+(b.likes||0),0);
  document.getElementById('mySongs').innerHTML=mine.map(s=>`
   <div class="card">
-    <div style="flex:1"><b>${s.title}</b><br><span style="font-size:11px;color:#888">${s.genre} • ${s.audio}<br>Plays: ${s.plays} • Likes: ${s.likes} • ${s.sell?'$'+s.price:'FREE'}</span></div>
+    <img src="${s.img}" width="50" height="50" style="border-radius:8px;object-fit:cover" onerror="this.src='https://via.placeholder.com/50'">
+    <div style="flex:1"><b>${s.title}</b><br><span style="font-size:11px;color:#888">${s.genre} • Plays: ${s.plays||0} • ${s.sell?'$'+s.price:'FREE'}</span></div>
     <div style="display:flex;flex-direction:column;gap:6px">
-      <button onclick="toggleMySell('${s.id}')" style="font-size:11px;padding:6px 10px;border-radius:8px;border:1px solid #333;background:#1a1a1a;color:#ffcc00">${s.sell?'Make FREE':'Sell $'+(s.price||1)}</button>
-      <button onclick="requestDelete('${s.id}')" style="font-size:11px;padding:6px 10px;border-radius:8px;border:1px solid #333;background:#1a1a1a;color:#666">Delete Request</button>
+      <button onclick="playMySong('${s.id}')" style="font-size:11px;padding:6px 10px;border-radius:8px;border:none;background:#fff;color:#000;font-weight:800">▶ Play</button>
+      <button onclick="toggleMySell('${s.id}')" style="font-size:11px;padding:6px 10px;border-radius:8px;border:1px solid #333;background:#1a1a1a;color:#ffcc00">${s.sell?'Make FREE':'Sell'}</button>
     </div>
   </div>
  `).join('')||"<p style='color:#666;font-size:13px'>No songs yet - admin will add after you send via WhatsApp</p>";
+}
+function playMySong(id){
+ let all=JSON.parse(localStorage.getItem(KEY_SONGS)||"[]");
+ let s=all.find(x=>x.id===id);
+ if(!s) return;
+ if(s.artist.toLowerCase()!==currentArtist.name.toLowerCase()){ alert("You can't play others!"); return; }
+ document.getElementById('player').style.display='flex';
+ document.getElementById('pImg').src=s.img;
+ document.getElementById('pTitle').innerText=s.title;
+ document.getElementById('pArtist').innerText=s.artist;
+ const audio=document.getElementById('audio');
+ if(s.audioData && s.audioData.startsWith('data:audio')){ audio.src=s.audioData; } else { audio.src=s.audio; }
+ audio.play().then(()=>{
+   s.plays=(s.plays||0)+1;
+   localStorage.setItem(KEY_SONGS, JSON.stringify(all));
+   renderMySongs();
+ }).catch(e=>alert("File not found on GitHub yet - upload "+s.audio+" to /music/ folder. Error: "+e.message));
 }
 function toggleMySell(id){
  let all=JSON.parse(localStorage.getItem(KEY_SONGS)||"[]");
@@ -92,13 +113,6 @@ function toggleMySell(id){
  if(s.sell&&!s.price){ let p=prompt("Price USD?","1"); if(p) s.price=p; else s.sell=false; }
  localStorage.setItem(KEY_SONGS, JSON.stringify(all));
  renderMySongs();
-}
-function requestDelete(id){
- if(confirm("Request admin to delete? This will send WhatsApp to admin")){
-  let all=JSON.parse(localStorage.getItem(KEY_SONGS)||"[]");
-  let s=all.find(x=>x.id===id);
-  window.open(`https://wa.me/263789706161?text=Hi%20Admin%20Please%20delete%20my%20song:%20${encodeURIComponent(s.title)}%20ID:${s.id}`,'_blank');
- }
 }
 function logout(){ localStorage.removeItem("byomusic_current_artist"); currentArtist=null; document.getElementById('dashboard').style.display='none'; document.getElementById('loginBox').style.display='block'; }
 
