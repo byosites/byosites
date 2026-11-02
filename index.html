@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>BYOMUSIC - Bulawayo's Marketplace</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:Inter,Arial}
+body{background:#050505;color:#fff}
+header{position:sticky;top:0;z-index:20;background:#080808;padding:14px 20px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #1a1a1a}
+.logo{font-weight:900;font-size:24px;display:flex;gap:10px;align-items:center}.logo i{background:#ffcc00;color:#000;width:34px;height:34px;display:grid;place-items:center;border-radius:9px}
+.hero{padding:70px 20px;text-align:center}
+.hero h1{font-size:48px;font-weight:900}.hero h1 span{color:#ffcc00}
+.grid{max-width:1100px;margin:30px auto;padding:0 16px;display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:16px}
+.card{background:#111;border:1px solid #1e1e1e;border-radius:18px;overflow:hidden}
+.card img{width:100%;height:220px;object-fit:cover;background:#0a0a0a}
+.body{padding:14px}
+.btn{padding:10px 16px;border-radius:12px;text-decoration:none;font-weight:800;font-size:12px;display:inline-flex;gap:6px;align-items:center}
+.btn-y{background:#ffcc00;color:#000}.btn-g{background:#25D366;color:#fff}.btn-d{background:#1a1a1a;color:#ccc;border:1px solid #222}
+.player{position:fixed;bottom:0;left:0;right:0;background:#111;border-top:1px solid #222;padding:10px 14px;display:none;align-items:center;gap:12px;z-index:30}
+.empty{max-width:700px;margin:60px auto;text-align:center;border:1px dashed #222;padding:40px;border-radius:18px}
+</style>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+<header>
+<div class="logo"><i class="fas fa-music"></i> BYOMUSIC</div>
+<div style="display:flex;gap:8px">
+<a href="artist.html" class="btn btn-d">For Artists</a>
+<a href="https://wa.me/263789706161?text=Hi%20BYOMUSIC%20I%20want%20to%20upload%20my%20music" class="btn btn-g"><i class="fab fa-whatsapp"></i> 78 970 6161</a>
+</div>
+</header>
+<div class="hero">
+<h1>BYO<span>MUSIC</span></h1>
+<p style="color:#888;max-width:600px;margin:12px auto">Send your song via WhatsApp to <b style="color:#fff">+263 78 970 6161</b>. We host it on Our app. You choose FREE or SELL. Billing via WhatsApp Business.</p>
+<div style="margin-top:18px">
+<a href="https://wa.me/263789706161?text=Hi%20BYOMUSIC%20I%20have%20a%20song%20to%20upload%0AArtist%20Name:%0ASong%20Title:%0APrice%20or%20FREE:" class="btn btn-y"><i class="fab fa-whatsapp"></i> Send Music on WhatsApp</a>
+<span style="color:#444;margin-left:10px;font-size:13px" id="stat"></span>
+</div>
+</div>
+<div class="grid" id="grid"></div>
+<div id="empty" class="empty" style="display:none">
+<h3 style="color:#ffcc00">No music yet</h3><p style="color:#666;font-size:13px">Be first artist in Bulawayo. Send MP3 to +263 78 970 6161 on WhatsApp</p>
+</div>
+<div class="player" id="player">
+<img id="pImg" width="48" height="48" style="border-radius:10px">
+<div style="flex:1"><b id="pTitle" style="font-size:13px"></b><p id="pArtist" style="font-size:11px;color:#888"></p></div>
+<audio id="audio" controls style="width:200px"></audio>
+</div>
+<script>
+const KEY="byomusic_songs_v2_final"; let songs=JSON.parse(localStorage.getItem(KEY)||"[]");
+function render(){
+ const grid=document.getElementById('grid'); const empty=document.getElementById('empty');
+ document.getElementById('stat').innerText=`${songs.length} songs`;
+ if(songs.length===0){grid.innerHTML=""; empty.style.display="block"; return;}
+ empty.style.display="none";
+ grid.innerHTML=songs.map(s=>`
+  <div class="card">
+    <img src="${s.img}" onerror="this.src='https://via.placeholder.com/400x220?text=BYOMUSIC'">
+    <div class="body">
+      <div style="display:flex;justify-content:space-between"><div><b>${s.title}</b><div style="color:#ffcc00;font-size:13px">${s.artist} • ${s.loc}</div></div><div style="font-weight:900;color:${s.sell?'#ffcc00':'#25D366'}">${s.sell?'$'+s.price:'FREE'}</div></div>
+      <div style="color:#666;font-size:11px;margin:6px 0">${s.genre} • ${s.plays||0} plays • via WhatsApp upload</div>
+      <div style="display:flex;gap:6px;margin-top:10px">
+        <a class="btn" style="background:#fff;color:#000" href="#" onclick="playSong('${s.id}');return false"><i class="fas fa-play"></i> Play</a>
+        ${s.sell?`<a class="btn btn-y" href="#" onclick="buySong('${s.id}');return false"><i class="fab fa-whatsapp"></i> Buy $${s.price}</a>`:`<a class="btn btn-g" href="${s.audio}" download>Free</a>`}
+      </div>
+    </div>
+  </div>`).join('');
+}
+function playSong(id){ const s=songs.find(x=>x.id===id); document.getElementById('player').style.display='flex'; document.getElementById('pImg').src=s.img; document.getElementById('pTitle').innerText=s.title; document.getElementById('pArtist').innerText=s.artist; const a=document.getElementById('audio'); a.src=s.audio; a.play(); s.plays=(s.plays||0)+1; localStorage.setItem(KEY, JSON.stringify(songs)); render(); }
+function buySong(id){ const s=songs.find(x=>x.id===id); window.open(`https://wa.me/263789706161?text=Hi%20BYOMUSIC%20I%20want%20to%20BUY%20${encodeURIComponent(s.title)}%20by%20${s.artist}%20for%20$${s.price}%20ID:${s.id}`,'_blank'); }
+render();
+</script>
+</body>
+</html>
