@@ -1,106 +1,117 @@
 <!DOCTYPE html>
 <html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Admin 789706161 - BYOMUSIC</title>
+<title>Admin - BYOMUSIC</title>
 <style>
 body{margin:0;background:#000;color:#fff;font-family:Arial;padding:12px}
 input{width:100%;padding:12px;background:#111;border:1px solid #333;color:#fff;border-radius:10px;margin:6px 0}
-.btn{padding:12px;border:none;border-radius:10px;font-weight:900;cursor:pointer;width:100%;margin-top:8px}
+.btn{padding:12px;border:none;border-radius:10px;font-weight:900;width:100%;cursor:pointer;margin-top:8px}
 .btn-y{background:#ffcc00;color:#000}.btn-g{background:#25D366;color:#fff}
 .card{background:#111;border:1px solid #222;padding:10px;border-radius:12px;margin:8px 0;display:flex;gap:10px;align-items:center}
-.tab{padding:10px 16px;background:#111;border:1px solid #222;border-radius:20px;font-size:13px;margin-right:6px;cursor:pointer;display:inline-block}
-.tab.active{background:#ffcc00;color:#000;font-weight:800}
-.lock{max-width:400px;margin:60px auto;text-align:center;border:1px solid #222;padding:30px;border-radius:18px;background:#0a0a0a}
+.lock{max-width:420px;margin:40px auto;text-align:center;border:1px solid #222;padding:24px;border-radius:18px;background:#0a0a0a}
+.progress{height:8px;background:#222;border-radius:10px;overflow:hidden;margin:8px 0}
+.progress div{height:100%;background:#ffcc00;width:0%;transition:width .3s}
 </style>
 </head><body>
 
 <div id="lock" class="lock">
-<h2 style="color:#ffcc00">BYOMUSIC ADMIN</h2>
-<p style="color:#888">+263 78 970 6161 ONLY</p>
-<input id="pin" type="password" placeholder="PIN - 6161">
-<button class="btn btn-y" onclick="unlock()">Unlock Admin</button>
+<h2 style="color:#ffcc00">BYOMUSIC ADMIN AUTO</h2>
+<p style="color:#888;font-size:12px">PIN 6161 + GitHub Token (once) = auto upload to site</p>
+<input id="pin" type="password" placeholder="PIN 6161">
+<input id="ghToken" type="password" placeholder="GitHub Token ghp_xxx (saved after first time)">
+<details style="text-align:left;color:#666;font-size:11px;margin:8px 0"><summary>How to get Token (30 sec)</summary>1. github.com -> Profile pic -> Settings -> Developer settings -> Personal access tokens (classic) -> Generate new token -> Name: byomusic -> Tick: repo -> Generate -> Copy ghp_... paste here</details>
+<button class="btn btn-y" onclick="unlock()">Unlock & Save Token</button>
+<p style="color:#555;font-size:10px">Token saved in your phone only, not shared</p>
 </div>
 
 <div id="panel" style="display:none">
-<h2>Admin - 789706161</h2>
-<div style="margin:12px 0">
-<span class="tab active" onclick="showTab('artists')" id="t-artists">Artists Accounts (with Password)</span>
-<span class="tab" onclick="showTab('songs')" id="t-songs">All Music</span>
-</div>
+<h3>Auto Upload to BYOMUSIC <span id="count" style="color:#666;font-size:11px"></span></h3>
 
-<div id="tab-artists">
 <div style="background:#111;padding:14px;border-radius:12px;border:1px solid #1e1e1e">
-<h3 style="color:#ffcc00">Create Artist Account - Artist will login with this</h3>
-<input id="aName" placeholder="Artist Name * (e.g. DJ FLEXO) - this is login name">
-<input id="aPass" placeholder="Password * (e.g. flexo123) - give to artist on WhatsApp">
-<input id="aWA" placeholder="WhatsApp e.g. 263789706161" value="263789706161">
-<input id="aLoc" placeholder="Location e.g. Sizinda">
-<button class="btn btn-y" onclick="createArtist()">Create Artist Account</button>
-<p style="color:#888;font-size:11px;margin-top:8px">Artist will login at artist.html using Name + Password. He can only see his own songs.</p>
-<p id="aMsg" style="color:#25D366;font-size:12px"></p>
-</div>
-<div style="margin-top:16px" id="artistList"></div>
+<h4 style="color:#ffcc00">Create Artist Account</h4>
+<input id="aName" placeholder="Artist Name * login name"><input id="aPass" placeholder="Password *"><input id="aWA" placeholder="WhatsApp" value="+263789706161"><button class="btn btn-y" onclick="createArtist()">Create Artist</button><p id="aMsg" style="font-size:12px;color:#25D366"></p>
+<div id="artistList" style="margin-top:10px"></div>
 </div>
 
-<div id="tab-songs" style="display:none">
-<div style="background:#111;padding:14px;border-radius:12px">
-<h3 style="color:#ffcc00">Add Song to Any Artist (Admin One-Way Upload)</h3>
+<div style="background:#111;padding:14px;border-radius:12px;border:1px solid #1e1e1e;margin-top:12px">
+<h4 style="color:#ffcc00">Auto Send Music Direct to Site</h4>
+<p style="color:#888;font-size:11px">Select MP3 + Cover -> Add -> Automatically uploads to GitHub /music/ -> Live in 2 mins for all users</p>
 <input type="file" id="mp3File" accept="audio/*"><input type="file" id="coverFile" accept="image/*">
-<input id="sArtist" placeholder="Artist Name * must match account created above">
+<input id="sArtist" placeholder="Artist Name * must match account above">
 <input id="sTitle" placeholder="Song Title *">
-<input id="sGenre" placeholder="Genre" value="Amapiano">
-<input id="sPrice" type="number" placeholder="Price USD">
-<label style="font-size:13px"><input type="checkbox" id="sSell"> Sell?</label>
-<button class="btn btn-y" onclick="addSong()">Add Song to BYOMUSIC</button>
-<p id="sMsg" style="color:#25D366;font-size:12px"></p>
-</div>
-<div id="songList" style="margin-top:16px"></div>
+<input id="sGenre" placeholder="Genre" value="Amapiano"><input id="sPrice" type="number" placeholder="Price USD"><label style="font-size:13px"><input type="checkbox" id="sSell"> Sell?</label>
+<div class="progress"><div id="prog"></div></div>
+<p id="sMsg" style="font-size:12px;color:#ffcc00"></p>
+<button class="btn btn-y" onclick="autoUpload()">Auto Upload to Site Directly</button>
 </div>
 
+<div id="songList" style="margin-top:12px"></div>
 </div>
 
 <script>
 const KEY_SONGS="byomusic_songs_v2_final";
 const KEY_ARTISTS="byomusic_artists_secure";
+const KEY_TOKEN="byomusic_gh_token";
 const PIN="6161";
+let GH_TOKEN="";
 
-function unlock(){ if(pin.value!==PIN){ alert("Wrong PIN"); return; } lock.style.display='none'; panel.style.display='block'; render(); }
-function showTab(n){ document.getElementById('tab-artists').style.display=n==='artists'?'block':'none'; document.getElementById('tab-songs').style.display=n==='songs'?'block':'none'; document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active')); document.getElementById('t-'+n).classList.add('active'); }
-
-function createArtist(){
- const name=aName.value.trim(); const pass=aPass.value.trim(); const wa=aWA.value; const loc=aLoc.value;
- if(!name||!pass){ aMsg.innerText="Name + Password required"; return; }
- let artists=JSON.parse(localStorage.getItem(KEY_ARTISTS)||"[]");
- if(artists.find(a=>a.name.toLowerCase()===name.toLowerCase())){ aMsg.innerText="Artist already exists"; return; }
- artists.push({name, pass, wa, loc, createdAt:new Date().toLocaleDateString(), fame:0, rating:0});
- localStorage.setItem(KEY_ARTISTS, JSON.stringify(artists));
- aMsg.innerHTML=`✅ Created! Tell artist: Login at artist.html<br>Name: <b>${name}</b><br>Password: <b>${pass}</b><br><a href="https://wa.me/${wa}?text=Your%20BYOMUSIC%20account%20created%0AName:%20${encodeURIComponent(name)}%0APassword:%20${encodeURIComponent(pass)}%0ALogin:%20https://byosites.github.io/byosites/artist.html" style="color:#25D366">Send via WhatsApp</a>`;
- render();
+function unlock(){
+ if(pin.value!==PIN){ alert("Wrong PIN"); return; }
+ GH_TOKEN = ghToken.value.trim() || localStorage.getItem(KEY_TOKEN) || "";
+ if(!GH_TOKEN){ alert("Enter GitHub Token first time - after that it's saved"); return; }
+ localStorage.setItem(KEY_TOKEN, GH_TOKEN);
+ lock.style.display='none'; panel.style.display='block'; render();
 }
-function addSong(){
- const name=sArtist.value.trim(); const title=sTitle.value.trim();
- if(!name||!title){ sMsg.innerText="Artist + Title required"; return; }
- let artists=JSON.parse(localStorage.getItem(KEY_ARTISTS)||"[]");
- if(!artists.find(a=>a.name.toLowerCase()===name.toLowerCase())){ sMsg.innerText="Artist account not found - create account first"; return; }
+if(localStorage.getItem(KEY_TOKEN)){ document.getElementById('ghToken').value=localStorage.getItem(KEY_TOKEN); }
+
+async function toBase64(file){ return new Promise((res,rej)=>{ const r=new FileReader(); r.onload=()=>res(r.result.split(',')[1]); r.onerror=rej; r.readAsDataURL(file); }); }
+
+async function uploadToGitHub(file, path){
+ const content = await toBase64(file);
+ const url = `https://api.github.com/repos/byosites/byosites/contents/${path}`;
+ const res = await fetch(url, {method:"PUT", headers:{Authorization:`token ${GH_TOKEN}`, "Content-Type":"application/json"}, body: JSON.stringify({message:`Add ${path} via admin`, content})});
+ if(!res.ok){ const t=await res.text(); throw new Error(t); }
+ return path;
+}
+
+async function autoUpload(){
  const mp3 = document.getElementById('mp3File').files[0];
  const cover = document.getElementById('coverFile').files[0];
- const audioPath = mp3 ? "music/"+mp3.name : "music/"+title.replace(/\s+/g,'-')+".mp3";
- const imgPath = cover ? "music/"+cover.name : "music/"+name.replace(/\s+/g,'-')+".jpg";
- const s={id:Date.now().toString(), artist:name, title, loc:artists.find(a=>a.name===name)?.loc||"Bulawayo", genre:sGenre.value, img:imgPath, audio:audioPath, wa:artists.find(a=>a.name===name)?.wa||"263789706161", sell:sSell.checked, price:sPrice.value||0, plays:0, likes:0, uploadedAt:new Date().toLocaleDateString()};
- let all=JSON.parse(localStorage.getItem(KEY_SONGS)||"[]"); all.unshift(s); localStorage.setItem(KEY_SONGS, JSON.stringify(all));
- sMsg.innerHTML=`✅ Song added for ${name}! Upload same MP3+cover to /music/ folder in Spck with same names -> Push`;
+ const artist = sArtist.value.trim(); const title = sTitle.value.trim();
+ if(!artist||!title){ sMsg.innerText="Artist + Title required"; return; }
+ if(!mp3){ sMsg.innerText="Select MP3!"; return; }
+ let arts=JSON.parse(localStorage.getItem(KEY_ARTISTS)||"[]");
+ if(!arts.find(a=>a.name.toLowerCase()===artist.toLowerCase())){ sMsg.innerText="Create artist account first!"; return; }
+ try{
+  prog.style.width="10%"; sMsg.innerText="Uploading MP3 to GitHub /music/ ... may take 30s for big file";
+  const mp3Path = `music/${Date.now()}-${mp3.name.replace(/\s+/g,'-')}`;
+  await uploadToGitHub(mp3, mp3Path);
+  prog.style.width="60%"; sMsg.innerText="MP3 uploaded! Uploading cover...";
+  let coverPath = `music/${Date.now()}-${cover?cover.name:artist+'.jpg'}`;
+  if(cover){ await uploadToGitHub(cover, coverPath); } else { coverPath=`https://via.placeholder.com/300?text=${encodeURIComponent(artist)}`; }
+  prog.style.width="90%"; sMsg.innerText="Files uploaded! Adding to site...";
+  const s={id:Date.now().toString(), artist, title, genre:sGenre.value, img:coverPath.startsWith('http')?coverPath:coverPath, audio:mp3Path, wa:"263789706161", sell:sSell.checked, price:sPrice.value||0, plays:0, likes:0};
+  let all=JSON.parse(localStorage.getItem(KEY_SONGS)||"[]"); all.unshift(s); localStorage.setItem(KEY_SONGS, JSON.stringify(all));
+  prog.style.width="100%"; sMsg.innerHTML=`✅ AUTO DONE! Song live on GitHub. Link: <a href="https://byosites.github.io/byosites/${mp3Path}" style="color:#25D366" target="_blank">${mp3Path}</a><br>Public site will show in 1-2 mins after GitHub Pages rebuild. No need Spck!`;
+  render();
+ } catch(e){ prog.style.width="0%"; sMsg.innerText="Upload failed: "+e.message+" - Check token has repo permission"; console.log(e); }
+}
+
+function createArtist(){
+ const name=aName.value.trim(); const pass=aPass.value.trim(); const wa=aWA.value;
+ if(!name||!pass){ aMsg.innerText="Name + Password required"; return; }
+ let all=JSON.parse(localStorage.getItem(KEY_ARTISTS)||"[]");
+ if(all.find(a=>a.name.toLowerCase()===name.toLowerCase())){ aMsg.innerText="Exists"; return; }
+ all.push({name, pass, wa, loc:"Bulawayo", createdAt:new Date().toLocaleDateString()});
+ localStorage.setItem(KEY_ARTISTS, JSON.stringify(all));
+ aMsg.innerHTML=`✅ Created ${name} / ${pass} - <a href="https://wa.me/${wa}?text=BYOMUSIC%20account:%20${name}%20/${pass}" style="color:#25D366">Send WA</a>`;
  render();
 }
 function render(){
  let songs=JSON.parse(localStorage.getItem(KEY_SONGS)||"[]");
  let artists=JSON.parse(localStorage.getItem(KEY_ARTISTS)||"[]");
- document.getElementById('artistList').innerHTML=artists.map(a=>`
-  <div class="card"><div style="flex:1"><b>${a.name}</b><br><span style="font-size:11px;color:#888">Pass: ${a.pass} • WA: ${a.wa} • ${a.loc} • Created: ${a.createdAt}<br>Songs: ${songs.filter(s=>s.artist===a.name).length} • Fame: ${songs.filter(s=>s.artist===a.name).reduce((x,y)=>x+(y.plays||0),0)} plays</span></div><button onclick="delArtist('${a.name}')" style="padding:6px;border-radius:6px;border:1px solid #333;background:#1a1a1a;color:#666">Delete</button></div>
- `).join('')||"No artists yet";
- document.getElementById('songList').innerHTML=songs.map(s=>`
-  <div class="card"><div style="flex:1"><b>${s.title}</b> - ${s.artist}<br><span style="font-size:11px;color:#888">${s.audio} • ${s.sell?'$'+s.price:'FREE'} • ${s.plays} plays • ${s.likes} likes</span></div><button onclick="delSong('${s.id}')" style="padding:6px;border-radius:6px;border:1px solid #333;background:#1a1a1a;color:#666">Del</button></div>
- `).join('')||"No songs";
+ count.innerText=`${songs.length} songs • ${artists.length} artists`;
+ artistList.innerHTML=artists.map(a=>`<div class="card"><div style="flex:1"><b>${a.name}</b><br><span style="font-size:11px;color:#888">Pass: ${a.pass} • ${a.wa}</span></div><button onclick="if(confirm('Del?')){let all=JSON.parse(localStorage.getItem(KEY_ARTISTS)||'[]').filter(x=>x.name!==a.name); localStorage.setItem(KEY_ARTISTS, JSON.stringify(all)); render();}" style="padding:4px 8px">Del</button></div>`).join('')||"No artists";
+ songList.innerHTML=songs.map(s=>`<div class="card"><div style="flex:1"><b>${s.title}</b> - ${s.artist}<br><span style="font-size:11px;color:#888">${s.audio} • ${s.sell?'$'+s.price:'FREE'}</span></div><a href="https://byosites.github.io/byosites/${s.audio}" target="_blank" style="font-size:11px;color:#25D366">Link</a></div>`).join('')||"No songs";
 }
-function delArtist(name){ if(confirm("Delete artist "+name+"? His songs stay unless you delete them")){ let all=JSON.parse(localStorage.getItem(KEY_ARTISTS)||"[]").filter(x=>x.name!==name); localStorage.setItem(KEY_ARTISTS, JSON.stringify(all)); render(); } }
-function delSong(id){ if(confirm("Delete song?")){ let all=JSON.parse(localStorage.getItem(KEY_SONGS)||"[]").filter(x=>x.id!==id); localStorage.setItem(KEY_SONGS, JSON.stringify(all)); render(); } }
 </script>
 </body></html>
