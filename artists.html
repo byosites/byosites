@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Artist Login - BYOMUSIC</title>
+<style>
+body{margin:0;background:#050505;color:#fff;font-family:Arial;padding:16px;max-width:700px;margin:auto}
+input{width:100%;padding:14px;background:#111;border:1px solid #333;color:#fff;border-radius:12px;margin:8px 0}
+.btn{padding:14px;border:none;border-radius:12px;font-weight:900;width:100%;cursor:pointer}
+.btn-y{background:#ffcc00;color:#000}.btn-g{background:#25D366;color:#fff}
+.card{background:#111;border:1px solid #222;padding:14px;border-radius:14px;margin:10px 0}
+.lock{border:1px solid #222;padding:30px;border-radius:18px;background:#0a0a0a;text-align:center;margin-top:40px}
+.stat{padding:10px;background:#0f0f0f;border-radius:10px;text-align:center;border:1px solid #1a1a1a}
+</style>
+</head><body>
+
+<div id="loginBox" class="lock">
+<h2 style="color:#ffcc00">BYOMUSIC ARTIST LOGIN</h2>
+<p style="color:#888;font-size:13px">Only accounts created by Admin 78 970 6161 can login. Enter your artist name + password given on WhatsApp.</p>
+<input id="loginName" placeholder="Artist Name e.g. DJ FLEXO">
+<input id="loginPass" type="password" placeholder="Password given by admin">
+<button class="btn btn-y" onclick="login()">Login to My Dashboard</button>
+<p id="loginMsg" style="color:#ff4444;font-size:12px;margin-top:10px"></p>
+<p style="color:#555;font-size:11px;margin-top:14px">Don't have account? WhatsApp Admin: <a href="https://wa.me/263789706161?text=Hi%20I%20need%20artist%20account%20for%20BYOMUSIC" style="color:#25D366">+263 78 970 6161</a></p>
+</div>
+
+<div id="dashboard" style="display:none">
+<h2>Welcome <span id="artistName" style="color:#ffcc00"></span> <button onclick="logout()" style="float:right;background:#1a1a1a;color:#888;border:1px solid #333;padding:6px 10px;border-radius:8px;font-size:11px">Logout</button></h2>
+
+<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin:12px 0">
+<div class="stat"><b id="totalSongs">0</b><br><span style="font-size:11px;color:#888">Songs</span></div>
+<div class="stat"><b id="totalPlays">0</b><br><span style="font-size:11px;color:#888">Fame (Plays)</span></div>
+<div class="stat"><b id="totalLikes">0</b><br><span style="font-size:11px;color:#888">Rating (Likes)</span></div>
+</div>
+
+<div style="background:#111;padding:12px;border-radius:12px;border-left:4px solid #ffcc00">
+<h3 style="color:#ffcc00;font-size:14px">My Fame & Rating</h3>
+<p style="font-size:12px;color:#aaa">Fame = total plays. More plays = trending on BYOMUSIC homepage. Rating = likes from fans. You can't edit other artists - only yours.</p>
+</div>
+
+<h3 style="margin-top:16px">My Music - Manage My Own Only</h3>
+<div id="mySongs"></div>
+
+<div style="margin-top:20px;background:#111;padding:12px;border-radius:12px;border:1px solid #1e1e1e">
+<h4>Request New Upload</h4>
+<p style="font-size:11px;color:#888">You can't upload directly - send MP3 to Admin via WhatsApp for security.</p>
+<a href="https://wa.me/263789706161?text=Hi%20Admin%20I%20want%20to%20upload%20new%20song%0AArtist:%20" class="btn btn-g" style="display:block;text-align:center;text-decoration:none">Send Song via WhatsApp to Admin</a>
+</div>
+</div>
+
+<script>
+const KEY_SONGS="byomusic_songs_v2_final";
+const KEY_ARTISTS="byomusic_artists_secure";
+let currentArtist=null;
+
+function login(){
+ const name=document.getElementById('loginName').value.trim();
+ const pass=document.getElementById('loginPass').value.trim();
+ let artists=JSON.parse(localStorage.getItem(KEY_ARTISTS)||"[]");
+ let found=artists.find(a=>a.name.toLowerCase()===name.toLowerCase() && a.pass===pass);
+ if(!found){ document.getElementById('loginMsg').innerText="Wrong name or password - account must be created by admin 78 970 6161"; return; }
+ currentArtist=found;
+ localStorage.setItem("byomusic_current_artist", JSON.stringify(found));
+ showDashboard();
+}
+function showDashboard(){
+ if(!currentArtist) { let saved=localStorage.getItem("byomusic_current_artist"); if(saved){ currentArtist=JSON.parse(saved); } else return; }
+ document.getElementById('loginBox').style.display='none';
+ document.getElementById('dashboard').style.display='block';
+ document.getElementById('artistName').innerText=currentArtist.name;
+ renderMySongs();
+}
+function renderMySongs(){
+ let all=JSON.parse(localStorage.getItem(KEY_SONGS)||"[]");
+ let mine=all.filter(s=>s.artist.toLowerCase()===currentArtist.name.toLowerCase());
+ document.getElementById('totalSongs').innerText=mine.length;
+ document.getElementById('totalPlays').innerText=mine.reduce((a,b)=>a+(b.plays||0),0);
+ document.getElementById('totalLikes').innerText=mine.reduce((a,b)=>a+(b.likes||0),0);
+ document.getElementById('mySongs').innerHTML=mine.map(s=>`
+  <div class="card">
+    <div style="flex:1"><b>${s.title}</b><br><span style="font-size:11px;color:#888">${s.genre} • ${s.audio}<br>Plays: ${s.plays} • Likes: ${s.likes} • ${s.sell?'$'+s.price:'FREE'}</span></div>
+    <div style="display:flex;flex-direction:column;gap:6px">
+      <button onclick="toggleMySell('${s.id}')" style="font-size:11px;padding:6px 10px;border-radius:8px;border:1px solid #333;background:#1a1a1a;color:#ffcc00">${s.sell?'Make FREE':'Sell $'+(s.price||1)}</button>
+      <button onclick="requestDelete('${s.id}')" style="font-size:11px;padding:6px 10px;border-radius:8px;border:1px solid #333;background:#1a1a1a;color:#666">Delete Request</button>
+    </div>
+  </div>
+ `).join('')||"<p style='color:#666;font-size:13px'>No songs yet - admin will add after you send via WhatsApp</p>";
+}
+function toggleMySell(id){
+ let all=JSON.parse(localStorage.getItem(KEY_SONGS)||"[]");
+ let s=all.find(x=>x.id===id);
+ if(s.artist.toLowerCase()!==currentArtist.name.toLowerCase()){ alert("You can't edit others!"); return; }
+ s.sell=!s.sell;
+ if(s.sell&&!s.price){ let p=prompt("Price USD?","1"); if(p) s.price=p; else s.sell=false; }
+ localStorage.setItem(KEY_SONGS, JSON.stringify(all));
+ renderMySongs();
+}
+function requestDelete(id){
+ if(confirm("Request admin to delete? This will send WhatsApp to admin")){
+  let all=JSON.parse(localStorage.getItem(KEY_SONGS)||"[]");
+  let s=all.find(x=>x.id===id);
+  window.open(`https://wa.me/263789706161?text=Hi%20Admin%20Please%20delete%20my%20song:%20${encodeURIComponent(s.title)}%20ID:${s.id}`,'_blank');
+ }
+}
+function logout(){ localStorage.removeItem("byomusic_current_artist"); currentArtist=null; document.getElementById('dashboard').style.display='none'; document.getElementById('loginBox').style.display='block'; }
+
+let saved=localStorage.getItem("byomusic_current_artist"); if(saved){ currentArtist=JSON.parse(saved); showDashboard(); }
+</script>
+</body></html>
