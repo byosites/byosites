@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Admin 789706161 - BYOMUSIC</title>
+<style>
+body{margin:0;background:#000;color:#fff;font-family:Arial;padding:12px}
+input{width:100%;padding:12px;background:#111;border:1px solid #333;color:#fff;border-radius:10px;margin:6px 0}
+.btn{padding:12px;border:none;border-radius:10px;font-weight:900;cursor:pointer;width:100%;margin-top:8px}
+.btn-y{background:#ffcc00;color:#000}.btn-g{background:#25D366;color:#fff}
+.card{background:#111;border:1px solid #222;padding:10px;border-radius:12px;margin:8px 0;display:flex;gap:10px;align-items:center}
+.tab{padding:10px 16px;background:#111;border:1px solid #222;border-radius:20px;font-size:13px;margin-right:6px;cursor:pointer;display:inline-block}
+.tab.active{background:#ffcc00;color:#000;font-weight:800}
+.lock{max-width:400px;margin:60px auto;text-align:center;border:1px solid #222;padding:30px;border-radius:18px;background:#0a0a0a}
+</style>
+</head><body>
+
+<div id="lock" class="lock">
+<h2 style="color:#ffcc00">BYOMUSIC ADMIN</h2>
+<p style="color:#888">+263 78 970 6161 ONLY</p>
+<input id="pin" type="password" placeholder="PIN - 6161">
+<button class="btn btn-y" onclick="unlock()">Unlock Admin</button>
+</div>
+
+<div id="panel" style="display:none">
+<h2>Admin - 789706161</h2>
+<div style="margin:12px 0">
+<span class="tab active" onclick="showTab('artists')" id="t-artists">Artists Accounts (with Password)</span>
+<span class="tab" onclick="showTab('songs')" id="t-songs">All Music</span>
+</div>
+
+<div id="tab-artists">
+<div style="background:#111;padding:14px;border-radius:12px;border:1px solid #1e1e1e">
+<h3 style="color:#ffcc00">Create Artist Account - Artist will login with this</h3>
+<input id="aName" placeholder="Artist Name * (e.g. DJ FLEXO) - this is login name">
+<input id="aPass" placeholder="Password * (e.g. flexo123) - give to artist on WhatsApp">
+<input id="aWA" placeholder="WhatsApp e.g. 263789706161" value="263789706161">
+<input id="aLoc" placeholder="Location e.g. Sizinda">
+<button class="btn btn-y" onclick="createArtist()">Create Artist Account</button>
+<p style="color:#888;font-size:11px;margin-top:8px">Artist will login at artist.html using Name + Password. He can only see his own songs.</p>
+<p id="aMsg" style="color:#25D366;font-size:12px"></p>
+</div>
+<div style="margin-top:16px" id="artistList"></div>
+</div>
+
+<div id="tab-songs" style="display:none">
+<div style="background:#111;padding:14px;border-radius:12px">
+<h3 style="color:#ffcc00">Add Song to Any Artist (Admin One-Way Upload)</h3>
+<input type="file" id="mp3File" accept="audio/*"><input type="file" id="coverFile" accept="image/*">
+<input id="sArtist" placeholder="Artist Name * must match account created above">
+<input id="sTitle" placeholder="Song Title *">
+<input id="sGenre" placeholder="Genre" value="Amapiano">
+<input id="sPrice" type="number" placeholder="Price USD">
+<label style="font-size:13px"><input type="checkbox" id="sSell"> Sell?</label>
+<button class="btn btn-y" onclick="addSong()">Add Song to BYOMUSIC</button>
+<p id="sMsg" style="color:#25D366;font-size:12px"></p>
+</div>
+<div id="songList" style="margin-top:16px"></div>
+</div>
+
+</div>
+
+<script>
+const KEY_SONGS="byomusic_songs_v2_final";
+const KEY_ARTISTS="byomusic_artists_secure";
+const PIN="6161";
+
+function unlock(){ if(pin.value!==PIN){ alert("Wrong PIN"); return; } lock.style.display='none'; panel.style.display='block'; render(); }
+function showTab(n){ document.getElementById('tab-artists').style.display=n==='artists'?'block':'none'; document.getElementById('tab-songs').style.display=n==='songs'?'block':'none'; document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active')); document.getElementById('t-'+n).classList.add('active'); }
+
+function createArtist(){
+ const name=aName.value.trim(); const pass=aPass.value.trim(); const wa=aWA.value; const loc=aLoc.value;
+ if(!name||!pass){ aMsg.innerText="Name + Password required"; return; }
+ let artists=JSON.parse(localStorage.getItem(KEY_ARTISTS)||"[]");
+ if(artists.find(a=>a.name.toLowerCase()===name.toLowerCase())){ aMsg.innerText="Artist already exists"; return; }
+ artists.push({name, pass, wa, loc, createdAt:new Date().toLocaleDateString(), fame:0, rating:0});
+ localStorage.setItem(KEY_ARTISTS, JSON.stringify(artists));
+ aMsg.innerHTML=`✅ Created! Tell artist: Login at artist.html<br>Name: <b>${name}</b><br>Password: <b>${pass}</b><br><a href="https://wa.me/${wa}?text=Your%20BYOMUSIC%20account%20created%0AName:%20${encodeURIComponent(name)}%0APassword:%20${encodeURIComponent(pass)}%0ALogin:%20https://byosites.github.io/byosites/artist.html" style="color:#25D366">Send via WhatsApp</a>`;
+ render();
+}
+function addSong(){
+ const name=sArtist.value.trim(); const title=sTitle.value.trim();
+ if(!name||!title){ sMsg.innerText="Artist + Title required"; return; }
+ let artists=JSON.parse(localStorage.getItem(KEY_ARTISTS)||"[]");
+ if(!artists.find(a=>a.name.toLowerCase()===name.toLowerCase())){ sMsg.innerText="Artist account not found - create account first"; return; }
+ const mp3 = document.getElementById('mp3File').files[0];
+ const cover = document.getElementById('coverFile').files[0];
+ const audioPath = mp3 ? "music/"+mp3.name : "music/"+title.replace(/\s+/g,'-')+".mp3";
+ const imgPath = cover ? "music/"+cover.name : "music/"+name.replace(/\s+/g,'-')+".jpg";
+ const s={id:Date.now().toString(), artist:name, title, loc:artists.find(a=>a.name===name)?.loc||"Bulawayo", genre:sGenre.value, img:imgPath, audio:audioPath, wa:artists.find(a=>a.name===name)?.wa||"263789706161", sell:sSell.checked, price:sPrice.value||0, plays:0, likes:0, uploadedAt:new Date().toLocaleDateString()};
+ let all=JSON.parse(localStorage.getItem(KEY_SONGS)||"[]"); all.unshift(s); localStorage.setItem(KEY_SONGS, JSON.stringify(all));
+ sMsg.innerHTML=`✅ Song added for ${name}! Upload same MP3+cover to /music/ folder in Spck with same names -> Push`;
+ render();
+}
+function render(){
+ let songs=JSON.parse(localStorage.getItem(KEY_SONGS)||"[]");
+ let artists=JSON.parse(localStorage.getItem(KEY_ARTISTS)||"[]");
+ document.getElementById('artistList').innerHTML=artists.map(a=>`
+  <div class="card"><div style="flex:1"><b>${a.name}</b><br><span style="font-size:11px;color:#888">Pass: ${a.pass} • WA: ${a.wa} • ${a.loc} • Created: ${a.createdAt}<br>Songs: ${songs.filter(s=>s.artist===a.name).length} • Fame: ${songs.filter(s=>s.artist===a.name).reduce((x,y)=>x+(y.plays||0),0)} plays</span></div><button onclick="delArtist('${a.name}')" style="padding:6px;border-radius:6px;border:1px solid #333;background:#1a1a1a;color:#666">Delete</button></div>
+ `).join('')||"No artists yet";
+ document.getElementById('songList').innerHTML=songs.map(s=>`
+  <div class="card"><div style="flex:1"><b>${s.title}</b> - ${s.artist}<br><span style="font-size:11px;color:#888">${s.audio} • ${s.sell?'$'+s.price:'FREE'} • ${s.plays} plays • ${s.likes} likes</span></div><button onclick="delSong('${s.id}')" style="padding:6px;border-radius:6px;border:1px solid #333;background:#1a1a1a;color:#666">Del</button></div>
+ `).join('')||"No songs";
+}
+function delArtist(name){ if(confirm("Delete artist "+name+"? His songs stay unless you delete them")){ let all=JSON.parse(localStorage.getItem(KEY_ARTISTS)||"[]").filter(x=>x.name!==name); localStorage.setItem(KEY_ARTISTS, JSON.stringify(all)); render(); } }
+function delSong(id){ if(confirm("Delete song?")){ let all=JSON.parse(localStorage.getItem(KEY_SONGS)||"[]").filter(x=>x.id!==id); localStorage.setItem(KEY_SONGS, JSON.stringify(all)); render(); } }
+</script>
+</body></html>
