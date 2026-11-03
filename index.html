@@ -69,7 +69,7 @@ textarea{height:60px}
 
 <div class="hero" id="hero">
 <h1 style="font-size:32px;font-weight:900">BYO<span style="color:#ffcc00">MUSIC</span></h1>
-<p style="color:#888;font-size:11px;max-width:600px;margin:8px auto">Music For All</p>
+<p style="color:#888;font-size:11px;max-width:600px;margin:8px auto">Music For All - Direct Download Fixed</p>
 <span id="stat" style="color:#555;font-size:11px"></span>
 </div>
 
@@ -97,25 +97,12 @@ textarea{height:60px}
 <h3 style="color:#ffcc00">ℹ️ About BYOMUSIC</h3>
 <p style="font-size:13px;color:#ccc;line-height:1.6;margin-top:10px">
 BYOMUSIC is a proudly Zimbabwean music platform created by a young man <b style="color:#ffcc00">Philip Mbewe</b> from Bulawayo, with a vision to empower local artists and give fans direct access to authentic Zim sounds.<br><br>
-Built from scratch with passion, late nights, and deep love for Amapiano, Zimdancehall, Afro House, Hip Hop and Gospel.<br><br>
-<b style="color:#fff">Features:</b> Direct free downloads, secure 10-min paid codes, comments, likes, 5-star ratings, top rated sorting.<br><br>
-<b style="color:#fff">Mission:</b> Make Zim music accessible worldwide while ensuring artists get paid securely.
+<b>Features:</b> Direct free downloads, secure 10-min paid codes, comments, likes, 5-star ratings, top rated sorting.<br><br>
+<b>Mission:</b> Make Zim music accessible worldwide while ensuring artists get paid securely.
 </p>
-</div>
-<div class="aboutCard">
-<h3 style="color:#ffcc00">👨‍💻 About The Creator</h3>
-<p style="font-size:13px;color:#ccc;line-height:1.6;margin-top:10px">
-Hi, I'm <b style="color:#fff">Philip Mbewe</b>, a young developer from Bulawayo. I created BYOMUSIC because talented artists in Byo struggled to get heard and monetized.<br><br>
-I taught myself coding. BYOMUSIC is my contribution - a platform by a young Zimbabwean, for Zimbabweans. Age is just a number - vision is big: Build Zim's biggest music platform.<br><br>
-<b style="color:#ffcc00">Support:</b> Share BYOMUSIC, buy a paid track, every download supports local talent.
-</p>
-<div style="display:flex;gap:8px;margin-top:16px;flex-wrap:wrap;justify-content:center">
-<a href="https://wa.me/263789706161" class="btn btn-g"><i class="fab fa-whatsapp"></i> WhatsApp Philip</a>
-</div>
 </div>
 <div class="aboutCard" style="text-align:center;border-color:#ffcc00">
-<p style="font-size:11px;color:#888">© 2026 BYOMUSIC • Created with ❤️ by Philip Mbewe • Bulawayo, Zimbabwe • All Rights Reserved</p>
-<p style="font-size:10px;color:#666">Made by a young man with big dreams 🇿🇼</p>
+<p style="font-size:11px;color:#888">© 2026 BYOMUSIC • Created with ❤️ by Philip Mbewe • Bulawayo, Zimbabwe</p>
 </div>
 </div>
 
@@ -147,22 +134,19 @@ function clearSearch(){ clearSearchUI(); filter='all'; document.querySelectorAll
 function openAbout(){ hero.style.display='none'; searchWrap.style.display='none'; tabs.style.display='none'; grid.style.display='none'; artistPage.style.display='none'; aboutPage.style.display='block'; window.scrollTo(0,0); }
 function closeAbout(){ aboutPage.style.display='none'; hero.style.display='block'; searchWrap.style.display='block'; tabs.style.display='flex'; grid.style.display='grid'; filter='all'; document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active')); document.querySelector('.tab').classList.add('active'); render(); }
 function renderSearch(q){ let list=[...songs].filter(s=>!s.suspended); let filtered=list.filter(s=>`${s.title} ${s.artist} ${s.genre}`.toLowerCase().includes(q)); document.getElementById('searchInfo').innerText=`Search "${q}" → ${filtered.length} songs`; if(filtered.length===0){ grid.innerHTML=`<div style="grid-column:1/-1;text-align:center;padding:40px;color:#666">No results</div>`; return; } grid.innerHTML=filtered.map(s=>{ let isPaid=s.sell; let avg=s.avgRating? s.avgRating.toFixed(1):"0.0"; return `<div class="card"><img src="https://byosites.github.io/byosites/${s.img}" style="height:160px"><div class="body"><b>${s.title}</b><div style="color:#ffcc00;font-size:11px">${s.artist} • ★ ${avg}</div><button class="btn ${isPaid?'btn-y':'btn-g'}" onclick="${isPaid?`buyWithCode('${s.id}')`:`downloadSong('${s.id}')`}">${isPaid?`Buy $${s.price}`:'Direct DL'}</button></div></div>`; }).join(''); }
-
 function getAvgRating(s){ if(!s.ratings || Object.keys(s.ratings).length===0) return 0; let vals=Object.values(s.ratings); return vals.reduce((a,b)=>a+b,0)/vals.length; }
 
 function render(){
  if(filter==='search' && lastSearch){ renderSearch(lastSearch); return; }
  let list=[...songs].filter(s=>!s.suspended);
  list.forEach(s=>{ s.avgRating=getAvgRating(s); });
- // Stats
  let totalComments=list.reduce((a,s)=>a+(s.comments? s.comments.length:0),0);
- stat.innerText=`${list.length} songs • ${artists.length} artists • ${totalComments} comments • Created by Philip Mbewe`;
+ stat.innerText=`${list.length} songs • ${artists.length} artists • ${totalComments} comments`;
  if(filter==='artists'){ renderArtists(); return; }
  if(filter==='free') list=list.filter(s=>!s.sell);
  if(filter==='paid') list=list.filter(s=>s.sell);
  if(filter==='top') list=list.sort((a,b)=>(b.avgRating||0)-(a.avgRating||0) || (b.likes||0)-(a.likes||0));
- else list=list.sort((a,b)=>(b.avgRating||0)-(a.avgRating||0)); // default sort high rating on top for All too? Keep top filter as explicit, but we also show badge
-
+ else list=list.sort((a,b)=>(b.avgRating||0)-(a.avgRating||0));
  grid.innerHTML=list.map((s,i)=>{
    let isPaid=s.sell; let hasSecureAccess=secureCodes.find(c=>c.songId===s.id && c.forUser===currentUser?.name && c.used);
    let avg=s.avgRating? s.avgRating.toFixed(1):"0.0"; let likes=s.likes||0; let comments=s.comments? s.comments.length:0;
@@ -186,20 +170,17 @@ function openArtist(name){ let ad=getArtistData(name); if(!ad) return; let artis
 function closeArtistPage(){ artistPage.style.display='none'; aboutPage.style.display='none'; hero.style.display='block'; searchWrap.style.display='block'; tabs.style.display='flex'; grid.style.display='grid'; render(); }
 function playSong(id){ const s=songs.find(x=>x.id===id); player.style.display='flex'; pImg.src=`https://byosites.github.io/byosites/${s.img}`; pTitle.innerText=s.title; pArtist.innerText=s.artist; pRating.innerText=`★ ${s.avgRating? s.avgRating.toFixed(1):'0.0'} • ❤ ${s.likes||0} • 💬 ${s.comments? s.comments.length:0}`; audio.src=`https://byosites.github.io/byosites/${s.audio}`; audio.play().then(()=>{ s.plays=(s.plays||0)+1; saveAll(); }); }
 
-// LIKES + RATINGS + COMMENTS
 function likeSong(id){
  if(!currentUser){ openModal('authModal'); showToast("Login to like"); return; }
  let s=songs.find(x=>x.id===id); if(!s.likedBy) s.likedBy=[]; if(!s.likes) s.likes=0;
  if(s.likedBy.includes(currentUser.name)){ s.likedBy=s.likedBy.filter(n=>n!==currentUser.name); s.likes=Math.max(0,s.likes-1); showToast("Unliked"); } else { s.likedBy.push(currentUser.name); s.likes++; showToast("❤ Liked "+s.title); }
  saveAll(); render(); if(document.getElementById('songDetail')) openSong(id);
 }
-
 function rateSong(id, rating){
  if(!currentUser){ openModal('authModal'); showToast("Login to rate"); return; }
  let s=songs.find(x=>x.id===id); if(!s.ratings) s.ratings={}; s.ratings[currentUser.name]=rating;
  saveAll(); showToast(`Rated ${rating}★ for ${s.title}`); render(); openSong(id);
 }
-
 function addComment(id){
  if(!currentUser){ openModal('authModal'); showToast("Login to comment"); return; }
  let input=document.getElementById('commentInput'); let text=input.value.trim(); if(!text){ showToast("Enter comment"); return; }
@@ -208,7 +189,8 @@ function addComment(id){
  input.value=""; saveAll(); showToast("Comment added"); render(); openSong(id);
 }
 
-async function downloadSong(id){
+// FIXED DIRECT DOWNLOAD - NO BLOB, WORKS ON MOBILE / WHATSAPP BROWSER
+function downloadSong(id){
  let s=songs.find(x=>x.id===id);
  if(s.sell){
    if(!currentUser){ openModal('authModal'); showToast("Login required"); return; }
@@ -216,16 +198,17 @@ async function downloadSong(id){
    if(!codeEntry){ buyWithCode(id); return; }
  }
  let fileUrl=`https://byosites.github.io/byosites/${s.audio}`;
- showToast(`⬇️ Direct downloading ${s.title}...`);
- try{
-   let res=await fetch(fileUrl); if(!res.ok) throw new Error();
-   let blob=await res.blob(); let url=URL.createObjectURL(blob);
-   let a=document.createElement('a'); a.href=url; a.download=`${s.artist} - ${s.title}.mp3`; document.body.appendChild(a); a.click(); document.body.removeChild(a);
-   setTimeout(()=>URL.revokeObjectURL(url),2000);
-   showToast(`✅ Downloaded ${s.title}`);
- }catch(e){
-   let a=document.createElement('a'); a.href=fileUrl; a.download=`${s.artist} - ${s.title}.mp3`; document.body.appendChild(a); a.click(); document.body.removeChild(a);
- }
+ let filename=`${s.artist} - ${s.title}.mp3`;
+ showToast(`⬇️ Downloading ${s.title}...`);
+ // Direct HTTPS download - no blob creation
+ let a=document.createElement('a');
+ a.href=fileUrl;
+ a.download=filename;
+ a.target="_blank";
+ document.body.appendChild(a);
+ a.click();
+ document.body.removeChild(a);
+ showToast(`✅ Download started - check notification bar`);
 }
 
 function buyWithCode(id){
@@ -236,14 +219,12 @@ function buyWithCode(id){
  payCodeInput.value=""; payMsg.innerText=""; openModal('payModal');
  startCountdown(600);
 }
-
 function startCountdown(sec){
  let el=document.getElementById('countdown'); let remaining=sec;
  if(countdownInterval) clearInterval(countdownInterval);
  el.innerText=Math.floor(remaining/60)+'m '+(remaining%60)+'s';
  countdownInterval=setInterval(()=>{ remaining--; let m=Math.floor(remaining/60); let s=remaining%60; el.innerText=m+'m '+s+'s'; if(remaining<=0){ clearInterval(countdownInterval); el.innerText='EXPIRED'; payMsg.innerText='Code expired! Request new - 10 mins elapsed'; } },1000);
 }
-
 function checkPayCode(){
  let code=payCodeInput.value.trim(); if(!code){ payMsg.innerText="Enter secure code"; return; }
  if(!currentUser){ payMsg.innerText="Login required"; return; }
@@ -257,7 +238,6 @@ function checkPayCode(){
  closeModal('payModal'); showToast(`✅ Code verified! Downloading ${s.title}`);
  downloadSong(s.id); render();
 }
-
 function openSong(id){
  let s=songs.find(x=>x.id===id); 
  let avg=getAvgRating(s); let likes=s.likes||0; let comments=s.comments||[];
@@ -266,24 +246,20 @@ function openSong(id){
  let starsHtml = [1,2,3,4,5].map(st=>`<span class="stars ${st<=userRating?'':'star-off'}" onclick="rateSong('${s.id}',${st})">★</span>`).join('');
  let commentsHtml = comments.map(c=>`<div class="comment"><b>${c.user}</b> <span style="color:#666;font-size:10px">${c.time}</span><br>${c.text}</div>`).join('') || "<p style='color:#666;font-size:11px'>No comments yet - be first!</p>";
  let liked = currentUser && s.likedBy && s.likedBy.includes(currentUser.name);
-
  songDetail.innerHTML=`
   <img src="https://byosites.github.io/byosites/${s.img}" style="width:100%;height:220px;object-fit:cover;border-radius:12px" onerror="this.src='https://via.placeholder.com/400'">
   <h3 style="margin-top:10px">${s.title} ${isPaid?`<span style="background:#ff4444;padding:2px 6px;border-radius:6px;font-size:10px">10m SECURE $${s.price}</span>`:`<span style="background:#25D366;padding:2px 6px;border-radius:6px;font-size:10px">FREE DIRECT</span>`}</h3>
   <p style="color:#ffcc00;cursor:pointer" onclick="openArtist('${s.artist}'); closeModal('songModal')">${s.artist}</p>
   <div style="color:#888;font-size:11px;margin:6px 0">★ ${avg.toFixed(1)} (${s.ratings?Object.keys(s.ratings).length:0} ratings) • ❤ ${likes} likes • 💬 ${comments.length} comments • ▶ ${s.plays||0} plays</div>
-  
   <div style="background:#111;padding:10px;border-radius:10px;margin:10px 0;border:1px solid #222">
     <b style="font-size:12px;color:#ffcc00">Rate this song:</b><br>
     <div style="margin:6px 0">${starsHtml} <span style="font-size:11px;color:#888">${userRating?`You rated ${userRating}★`:''}</span></div>
   </div>
-
   <div style="display:flex;gap:6px;margin:12px 0;flex-wrap:wrap">
     <button class="btn btn-w" onclick="playSong('${s.id}')"><i class="fas fa-play"></i> Play</button>
     ${isPaid ? (hasAccess?`<button class="btn btn-blue" onclick="downloadSong('${s.id}'); closeModal('songModal')"><i class="fas fa-download"></i> Direct DL</button>`:`<button class="btn btn-y" onclick="closeModal('songModal'); buyWithCode('${s.id}')"><i class="fas fa-lock"></i> Buy 10m Code $${s.price}</button>`) : `<button class="btn btn-g" onclick="downloadSong('${s.id}'); closeModal('songModal')"><i class="fas fa-download"></i> Direct DL</button>`}
     <button class="btn btn-d ${liked?'like-active':''}" onclick="likeSong('${s.id}')"><i class="fas fa-heart"></i> ${liked?'Liked':'Like'} ${likes}</button>
   </div>
-
   <div style="background:#0a0a0a;border:1px solid #1a1a1a;padding:12px;border-radius:12px;margin-top:14px">
     <b style="color:#ffcc00;font-size:13px">💬 Comments (${comments.length})</b>
     <div style="display:flex;gap:6px;margin-top:8px">
@@ -292,18 +268,14 @@ function openSong(id){
     </div>
     <div style="margin-top:10px;max-height:200px;overflow:auto">${commentsHtml}</div>
   </div>
-
-  <p style="font-size:11px;color:#666;margin-top:12px;text-align:center">Created by Philip Mbewe • Bulawayo, Zimbabwe 🇿🇼 • ${isPaid?'🔒 10 mins one-time code locked to account + song':'🆓 Free direct download'}</p>
+  <p style="font-size:11px;color:#666;margin-top:12px;text-align:center">Created by Philip Mbewe • ${isPaid?'🔒 10 mins one-time code':'🆓 Free direct download'}</p>
  `;
  openModal('songModal');
 }
-
 render();
 </script>
-
 <footer style="text-align:center;padding:20px;margin-top:20px;border-top:1px solid #222;color:#666;font-size:11px">
-© 2026 BYOMUSIC • Created by <b style="color:#ffcc00">Philip Mbewe</b> • Young man from Bulawayo, Zimbabwe 🇿🇼<br>
-<span style="font-size:10px">Comments • Likes • Ratings • Top Rated on Top</span><br><br>
-<button class="btn btn-d" onclick="openAbout()" style="font-size:10px">About Philip Mbewe</button>
+© 2026 BYOMUSIC • Created by <b style="color:#ffcc00">Philip Mbewe</b><br>
+Direct Download Fixed • No Blob Error
 </footer>
 </body></html>
