@@ -1,1 +1,19 @@
-[]
+[
+  {
+    "name": "Yami",
+    "pass": "1111",
+    "wa": "+263780212606",
+    "loc": "Sizinda",
+    "bio": "King of hiphop",
+    "genre": "Hiphop ",
+    "year": "2026",
+    "fb": "",
+    "ig": "",
+    "yt": "",
+    "tik": "",
+    "photo": "music/artist-1793709005415-IMG-20260626-WA0000.jpg",
+    "approvalCode": "337205",
+    "createdAt": "11/3/2026",
+    "suspended": false
+  }
+]
