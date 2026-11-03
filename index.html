@@ -69,8 +69,8 @@ textarea{height:60px}
 
 <div class="hero" id="hero">
 <h1 style="font-size:32px;font-weight:900">BYO<span style="color:#ffcc00">MUSIC</span></h1>
-<p style="color:#888;font-size:11px;max-width:600px;margin:8px auto">Music For All - Direct</p>
-<span id="stat" style="color:#555;font-size:11px">Loading</span>
+<p style="color:#888;font-size:11px;max-width:600px;margin:8px auto">Music For All - Direct Download Fixed</p>
+<span id="stat" style="color:#555;font-size:11px">Loading SYNCED data...</span>
 </div>
 
 <div class="tabs" id="tabs">
@@ -88,7 +88,7 @@ textarea{height:60px}
 <div id="aboutPage" class="aboutPage">
 <button class="btn btn-d" onclick="closeAbout()">← Back to Music</button>
 <div class="aboutCard" style="text-align:center">
-<img src="https://via.placeholder.com/200?text=Philip+Mbewe" class="creatorImg">
+<img src="music/profile.png" class="creatorImg" onerror="this.src='https://via.placeholder.com/200?text=Philip+Mbewe'">
 <h2 style="margin-top:16px">Philip Mbewe</h2>
 <p style="color:#ffcc00;font-size:12px;font-weight:900">Young Creator & Developer • Bulawayo, Zimbabwe</p>
 <p style="color:#888;font-size:11px">Founder of BYOMUSIC</p>
@@ -96,85 +96,181 @@ textarea{height:60px}
 <div class="aboutCard">
 <h3 style="color:#ffcc00">ℹ️ About BYOMUSIC</h3>
 <p style="font-size:13px;color:#ccc;line-height:1.6;margin-top:10px">
-BYOMUSIC is a proudly Zimbabwean music platform created by a young man <b style="color:#ffcc00">Philip Mbewe</b> from Bulawayo, with a vision to empower local artists and give fans direct access to authentic Zim sounds.<br><br>
-<b>Features:</b> Direct free downloads, secure paid codes, comments, likes, 5-star ratings, top rated sorting.<br><br>
-<b>Mission:</b> Make Zim music accessible worldwide while ensuring artists get paid securely.a
+BYOMUSIC is a proudly Zimbabwean music platform created by <b style="color:#ffcc00">Philip Mbewe</b> from Bulawayo.<br><br>
+<b>Features:</b> Direct free downloads, secure 10-min paid codes, comments, likes, 5-star ratings, top rated sorting, SYNCED across all devices including user accounts.<br><br>
+<b>Mission:</b> Make Zim music accessible worldwide while ensuring artists get paid securely.
 </p>
 </div>
 <div class="aboutCard" style="text-align:center;border-color:#ffcc00">
-<p style="font-size:11px;color:#888">© 2026 BYOMUSIC • Created with ❤️ by Philip Mbewe • Bulawayo, Zimbabwe </p>
+<p style="font-size:11px;color:#888">© 2026 BYOMUSIC • Created with ❤️ by Philip Mbewe • Bulawayo, Zimbabwe • SYNCED v6.2</p>
 </div>
 </div>
 
-<div id="authModal" class="modal" onclick="if(event.target==this)closeModal('authModal')"><div class="modalBox"><h3 style="color:#ffcc00">Account Required</h3><p style="font-size:11px;color:#888">For comments, likes, ratings, secure codes</p><div style="display:flex;gap:6px;margin:10px 0"><button class="btn btn-y" style="flex:1" onclick="showAuth('signup')">Sign Up</button><button class="btn btn-d" style="flex:1" onclick="showAuth('signin')">Sign In</button></div><div id="signupBox"><input id="suName" placeholder="Username *"><input id="suPass" type="password" placeholder="Password *"><input id="suPass2" type="password" placeholder="Confirm *"><button class="btn btn-y" style="width:100%" onclick="signUp()">Create</button></div><div id="signinBox" style="display:none"><input id="siName" placeholder="Username"><input id="siPass" type="password" placeholder="Password"><button class="btn btn-w" style="width:100%" onclick="signIn()">Sign In</button></div><p id="authMsg" style="font-size:11px;color:#ff4444"></p></div></div>
+<div id="authModal" class="modal" onclick="if(event.target==this)closeModal('authModal')"><div class="modalBox"><h3 style="color:#ffcc00">Account</h3><p style="font-size:11px;color:#888">SYNCED - Works on all devices</p><div style="display:flex;gap:6px;margin:10px 0"><button class="btn btn-y" style="flex:1" onclick="showAuth('signup')">Sign Up</button><button class="btn btn-d" style="flex:1" onclick="showAuth('signin')">Sign In</button></div><div id="signupBox"><input id="suName" placeholder="Username *"><input id="suPass" type="password" placeholder="Password *"><input id="suPass2" type="password" placeholder="Confirm *"><button class="btn btn-y" style="width:100%" onclick="signUp()">Create SYNCED Account</button></div><div id="signinBox" style="display:none"><input id="siName" placeholder="Username"><input id="siPass" type="password" placeholder="Password"><button class="btn btn-w" style="width:100%" onclick="signIn()">Sign In</button></div><p id="authMsg" style="font-size:11px;color:#ff4444"></p></div></div>
 <div id="songModal" class="modal" onclick="if(event.target==this)closeModal('songModal')"><div class="modalBox" id="songDetailBox"><div id="songDetail"></div></div></div>
-<div id="payModal" class="modal" onclick="if(event.target==this)closeModal('payModal')"><div class="modalBox"><h3 style="color:#ffcc00">🔒 Secure One-Time Code - 10 MINS SYNCED</h3><div class="codeBox"><b id="paySongTitle"></b><br><span style="font-size:11px;color:#888">Price: <span id="payPrice" style="color:#ffcc00"></span></span><br><span style="font-size:10px;color:#00aaff">Account: <b id="payAccount" style="color:#ffcc00"></b></span><br><span style="font-size:10px;color:#888">Expires in: <b id="countdown" class="countdown">10m 00s</b></span></div><p style="font-size:11px;color:#888">Code works ONLY for your account + this song + 10 minutes. One-time use. SYNCED.</p><input id="payCodeInput" placeholder="Enter Secure Code e.g. BYO-..."><button class="btn btn-y" style="width:100%" onclick="checkPayCode()">Unlock & Direct Download</button><a id="payWaLink" href="#" class="btn btn-g" style="width:100%;margin-top:8px;text-align:center;text-decoration:none"><i class="fab fa-whatsapp"></i> Request Secure Code (10 mins)</a><p id="payMsg" style="font-size:11px;color:#ff4444;margin-top:8px"></p></div></div>
+<div id="payModal" class="modal" onclick="if(event.target==this)closeModal('payModal')"><div class="modalBox"><h3 style="color:#ffcc00">🔒 Secure One-Time Code - 10 MINS</h3><div class="codeBox"><b id="paySongTitle"></b><br><span style="font-size:11px;color:#888">Price: <span id="payPrice" style="color:#ffcc00"></span></span><br><span style="font-size:10px;color:#00aaff">Account: <b id="payAccount" style="color:#ffcc00"></b></span><br><span style="font-size:10px;color:#888">Expires in: <b id="countdown" class="countdown">10m 00s</b></span></div><p style="font-size:11px;color:#888">Code works ONLY for your account + this song + 10 minutes. One-time use.</p><input id="payCodeInput" placeholder="Enter Secure Code e.g. BYO-..."><button class="btn btn-y" style="width:100%" onclick="checkPayCode()">Unlock & Direct Download</button><a id="payWaLink" href="#" class="btn btn-g" style="width:100%;margin-top:8px;text-align:center;text-decoration:none"><i class="fab fa-whatsapp"></i> Request Secure Code</a><p id="payMsg" style="font-size:11px;color:#ff4444;margin-top:8px"></p></div></div>
 <div class="player" id="player"><img id="pImg" width="44" height="44" style="border-radius:8px"><div style="flex:1"><b id="pTitle" style="font-size:12px"></b><p id="pArtist" style="font-size:11px;color:#888"></p><span id="pRating" style="font-size:10px;color:#ffcc00"></span></div><audio id="audio" controls style="width:160px"></audio><button onclick="document.getElementById('player').style.display='none'" style="background:#222;color:#888;border:none;padding:6px 10px;border-radius:8px">X</button></div>
 <div id="toast" class="toast"></div>
 
 <script>
-const KEY_SONGS="byomusic_songs_v2_final"; const KEY_ARTISTS="byomusic_artists_secure"; const KEY_USERS="byomusic_users_v5"; const KEY_CURRENT="byomusic_current_user_v5"; const KEY_SECURE_CODES="byomusic_secure_codes_v54";
-let songs=[]; let artists=[]; let users=JSON.parse(localStorage.getItem(KEY_USERS)||"[]"); let currentUser=JSON.parse(localStorage.getItem(KEY_CURRENT)||"null"); let secureCodes=[];
+const KEY_SONGS="byomusic_songs_v2_final"; const KEY_ARTISTS="byomusic_artists_secure"; const KEY_USERS="byomusic_users_v5"; const KEY_CURRENT="byomusic_current_user_v5"; const KEY_SECURE_CODES="byomusic_secure_codes_v54"; const KEY_TOKEN="byomusic_gh_token";
+let songs=[]; let artists=[]; let users=[]; let currentUser=null; let secureCodes=[];
 let filter='all'; let currentPaySong=null; let lastSearch=""; let countdownInterval=null;
 
 function showToast(msg){ let t=document.getElementById('toast'); t.innerText=msg; t.style.display='block'; setTimeout(()=>t.style.display='none',3500); }
-function saveAll(){ localStorage.setItem(KEY_SONGS, JSON.stringify(songs)); localStorage.setItem(KEY_ARTISTS, JSON.stringify(artists)); localStorage.setItem(KEY_USERS, JSON.stringify(users)); localStorage.setItem(KEY_CURRENT, JSON.stringify(currentUser)); localStorage.setItem(KEY_SECURE_CODES, JSON.stringify(secureCodes)); }
-function openModal(id){ document.getElementById(id).style.display='grid'; } function closeModal(id){ document.getElementById(id).style.display='none'; if(id==='payModal' && countdownInterval) clearInterval(countdownInterval); }
-function showAuth(t){ signupBox.style.display=t=='signup'?'block':'none'; signinBox.style.display=t=='signin'?'block':'none'; }
-function updateHeader(){ if(currentUser){ userHello.style.display='inline'; userHello.innerText='Hi, '+currentUser.name; loginBtn.style.display='none'; logoutBtn.style.display='inline-flex'; } else { userHello.style.display='none'; loginBtn.style.display='inline-flex'; logoutBtn.style.display='none'; } }
-updateHeader();
-function signUp(){ const name=suName.value.trim(); const p=suPass.value; const p2=suPass2.value; if(!name||!p){ authMsg.innerText="Need username+pass"; return; } if(p!==p2){ authMsg.innerText="No match"; return; } if(users.find(u=>u.name.toLowerCase()===name.toLowerCase())){ authMsg.innerText="Exists"; return; } let u={name, pass:p, created:new Date().toISOString(), likes:[], ratings:{}}; users.push(u); currentUser=u; saveAll(); updateHeader(); closeModal('authModal'); render(); }
-function signIn(){ const name=siName.value.trim(); const p=siPass.value; let u=users.find(u=>u.name.toLowerCase()===name.toLowerCase() && u.pass===p); if(!u){ authMsg.innerText="Wrong"; return; } currentUser=u; saveAll(); updateHeader(); closeModal('authModal'); render(); }
-function logout(){ currentUser=null; localStorage.removeItem(KEY_CURRENT); updateHeader(); render(); }
-function setFilter(f,el){ filter=f; document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active')); if(el) el.classList.add('active'); clearSearchUI(); artistPage.style.display='none'; aboutPage.style.display='none'; hero.style.display='block'; searchWrap.style.display='block'; tabs.style.display='flex'; grid.style.display='grid'; render(); }
-function getArtistData(name){ return artists.find(a=>a.name.toLowerCase()===name.toLowerCase())||null; }
-function doSearch(){ let q=searchInput.value.trim().toLowerCase(); lastSearch=q; if(q.length===0){ clearSearchUI(); filter='all'; render(); return; } document.getElementById('clearSearch').style.display='inline-flex'; document.getElementById('searchInfo').style.display='block'; filter='search'; renderSearch(q); }
-function clearSearchUI(){ searchInput.value=""; document.getElementById('clearSearch').style.display='none'; document.getElementById('searchInfo').style.display='none'; lastSearch=""; }
-function clearSearch(){ clearSearchUI(); filter='all'; document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active')); document.querySelector('.tab').classList.add('active'); artistPage.style.display='none'; aboutPage.style.display='none'; hero.style.display='block'; searchWrap.style.display='block'; tabs.style.display='flex'; grid.style.display='grid'; render(); }
-function openAbout(){ hero.style.display='none'; searchWrap.style.display='none'; tabs.style.display='none'; grid.style.display='none'; artistPage.style.display='none'; aboutPage.style.display='block'; window.scrollTo(0,0); }
-function closeAbout(){ aboutPage.style.display='none'; hero.style.display='block'; searchWrap.style.display='block'; tabs.style.display='flex'; grid.style.display='grid'; filter='all'; document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active')); document.querySelector('.tab').classList.add('active'); render(); }
+
+async function fetchJSONFile(path){
+ try{ const url=`https://byosites.github.io/byosites/${path}?t=${Date.now()}`; const res=await fetch(url); if(!res.ok) return null; return await res.json(); }
+ catch(e){ return null; }
+}
+
+async function getGH_SHA(path, token){
+ try{
+   const url=`https://api.github.com/repos/byosites/byosites/contents/${path}`;
+   const res=await fetch(url,{headers:{Authorization:`token ${token}`}});
+   if(res.status===404) return null;
+   if(!res.ok) return null;
+   const j=await res.json(); return j.sha;
+ }catch(e){ return null; }
+}
+
+async function uploadJSON_GH(path, obj, token){
+ if(!token) return false;
+ const content=btoa(unescape(encodeURIComponent(JSON.stringify(obj,null,2))));
+ const url=`https://api.github.com/repos/byosites/byosites/contents/${path}`;
+ const sha=await getGH_SHA(path, token);
+ const body={message:`sync ${path}`,content}; if(sha) body.sha=sha;
+ const res=await fetch(url,{method:"PUT",headers:{Authorization:`token ${token}`,"Content-Type":"application/json"},body:JSON.stringify(body)});
+ if(!res.ok){ let t=await res.text(); console.log("upload fail",path,t); return false; }
+ return true;
+}
+
+function saveAllLocal(){
+ localStorage.setItem(KEY_SONGS, JSON.stringify(songs));
+ localStorage.setItem(KEY_ARTISTS, JSON.stringify(artists));
+ localStorage.setItem(KEY_USERS, JSON.stringify(users));
+ localStorage.setItem(KEY_CURRENT, JSON.stringify(currentUser));
+ localStorage.setItem(KEY_SECURE_CODES, JSON.stringify(secureCodes));
+}
+
+async function saveAllAndSync(){
+ saveAllLocal();
+ let token=localStorage.getItem(KEY_TOKEN);
+ if(token){
+   try{
+     await uploadJSON_GH('music/songs.json', songs, token);
+     await uploadJSON_GH('music/users.json', users, token);
+     await uploadJSON_GH('music/secure_codes.json', secureCodes, token);
+   }catch(e){ console.log("sync error",e); }
+ }
+}
 
 async function loadSyncedData(){
  try{
-  const t=Date.now();
-  let sRes=await fetch(`https://byosites.github.io/byosites/music/songs.json?t=${t}`).then(r=>{ if(!r.ok) throw ""; return r.json(); }).catch(()=>null);
-  let aRes=await fetch(`https://byosites.github.io/byosites/music/artists.json?t=${t}`).then(r=>{ if(!r.ok) throw ""; return r.json(); }).catch(()=>null);
-  let cRes=await fetch(`https://byosites.github.io/byosites/music/secure_codes.json?t=${t}`).then(r=>{ if(!r.ok) throw ""; return r.json(); }).catch(()=>null);
-  
-  if(sRes && Array.isArray(sRes) && sRes.length>0){ songs=sRes; localStorage.setItem(KEY_SONGS, JSON.stringify(songs)); }
-  else { songs=JSON.parse(localStorage.getItem(KEY_SONGS)||"[]"); }
+  let sRes=await fetchJSONFile('music/songs.json');
+  let aRes=await fetchJSONFile('music/artists.json');
+  let cRes=await fetchJSONFile('music/secure_codes.json');
+  let uRes=await fetchJSONFile('music/users.json');
+  let localSongs=JSON.parse(localStorage.getItem(KEY_SONGS)||"[]");
+  let localArtists=JSON.parse(localStorage.getItem(KEY_ARTISTS)||"[]");
+  let localCodes=JSON.parse(localStorage.getItem(KEY_SECURE_CODES)||"[]");
+  let localUsers=JSON.parse(localStorage.getItem(KEY_USERS)||"[]");
+  let localCurrent=JSON.parse(localStorage.getItem(KEY_CURRENT)||"null");
 
-  if(aRes && Array.isArray(aRes) && aRes.length>0){ artists=aRes; localStorage.setItem(KEY_ARTISTS, JSON.stringify(artists)); }
-  else { artists=JSON.parse(localStorage.getItem(KEY_ARTISTS)||"[]"); }
+  if(sRes && Array.isArray(sRes) && sRes.length>0) songs=sRes; else songs=localSongs;
+  if(aRes && Array.isArray(aRes) && aRes.length>0) artists=aRes; else artists=localArtists;
+  if(cRes && Array.isArray(cRes)) secureCodes=cRes; else secureCodes=localCodes;
 
-  if(cRes && Array.isArray(cRes)){ secureCodes=cRes; localStorage.setItem(KEY_SECURE_CODES, JSON.stringify(secureCodes)); }
-  else { secureCodes=JSON.parse(localStorage.getItem(KEY_SECURE_CODES)||"[]"); }
+  if(uRes && Array.isArray(uRes)){
+    let merged={};
+    [...localUsers, ...uRes].forEach(u=>{ if(u && u.name) merged[u.name.toLowerCase()]=u; });
+    users=Object.values(merged);
+  } else {
+    users=localUsers;
+  }
 
-  stat.innerText=`${songs.length} songs • ${artists.length} artists • SYNCED • ${songs.reduce((a,s)=>a+(s.comments? s.comments.length:0),0)} comments`;
+  if(localCurrent) currentUser=localCurrent;
+  else if(users.length>0 && localCurrent) currentUser=localCurrent;
+
+  if(users.length>0) localStorage.setItem(KEY_USERS, JSON.stringify(users));
+  if(songs.length>0) localStorage.setItem(KEY_SONGS, JSON.stringify(songs));
+  if(artists.length>0) localStorage.setItem(KEY_ARTISTS, JSON.stringify(artists));
+  if(secureCodes.length>0) localStorage.setItem(KEY_SECURE_CODES, JSON.stringify(secureCodes));
+
+  stat.innerText=`${songs.length} songs • ${artists.length} artists • ${users.length} users • ${songs.reduce((a,s)=>a+(s.comments? s.comments.length:0),0)} comments • SYNCED v6.2`;
  }catch(e){
   songs=JSON.parse(localStorage.getItem(KEY_SONGS)||"[]");
   artists=JSON.parse(localStorage.getItem(KEY_ARTISTS)||"[]");
+  users=JSON.parse(localStorage.getItem(KEY_USERS)||"[]");
   secureCodes=JSON.parse(localStorage.getItem(KEY_SECURE_CODES)||"[]");
-  stat.innerText=`${songs.length} songs • ${artists.length} artists • Local • ${songs.reduce((a,s)=>a+(s.comments? s.comments.length:0),0)} comments`;
+  currentUser=JSON.parse(localStorage.getItem(KEY_CURRENT)||"null");
+  stat.innerText=`${songs.length} songs • ${artists.length} artists • Local`;
  }
+ updateHeader();
  render();
 }
 
-function renderSearch(q){ let list=[...songs].filter(s=>!s.suspended); let filtered=list.filter(s=>`${s.title} ${s.artist} ${s.genre}`.toLowerCase().includes(q)); document.getElementById('searchInfo').innerText=`Search "${q}" → ${filtered.length} songs`; if(filtered.length===0){ grid.innerHTML=`<div style="grid-column:1/-1;text-align:center;padding:40px;color:#666">No results</div>`; return; } grid.innerHTML=filtered.map(s=>{ let isPaid=s.sell; let avg=s.avgRating? s.avgRating.toFixed(1):"0.0"; return `<div class="card"><img src="https://byosites.github.io/byosites/${s.img}" style="height:160px"><div class="body"><b>${s.title}</b><div style="color:#ffcc00;font-size:11px">${s.artist} • ★ ${avg}</div><button class="btn ${isPaid?'btn-y':'btn-g'}" onclick="${isPaid?`buyWithCode('${s.id}')`:`downloadSong('${s.id}')`}">${isPaid?`Buy $${s.price}`:'Direct DL'}</button></div></div>`; }).join(''); }
+function openModal(id){ document.getElementById(id).style.display='grid'; } 
+function closeModal(id){ document.getElementById(id).style.display='none'; if(id==='payModal' && countdownInterval) clearInterval(countdownInterval); }
+function showAuth(t){ document.getElementById('signupBox').style.display=t=='signup'?'block':'none'; document.getElementById('signinBox').style.display=t=='signin'?'block':'none'; }
+function updateHeader(){ 
+  let uh=document.getElementById('userHello'); let lb=document.getElementById('loginBtn'); let lob=document.getElementById('logoutBtn');
+  if(currentUser){ uh.style.display='inline'; uh.innerText='Hi, '+currentUser.name; lb.style.display='none'; lob.style.display='inline-flex'; } 
+  else { uh.style.display='none'; lb.style.display='inline-flex'; lob.style.display='none'; } 
+}
+
+async function signUp(){ 
+  const name=document.getElementById('suName').value.trim(); 
+  const p=document.getElementById('suPass').value; 
+  const p2=document.getElementById('suPass2').value; 
+  let msg=document.getElementById('authMsg');
+  if(!name||!p){ msg.innerText="Need username+pass"; return; } 
+  if(p!==p2){ msg.innerText="Passwords no match"; return; } 
+  if(users.find(u=>u.name.toLowerCase()===name.toLowerCase())){ msg.innerText="Username exists - sign in"; return; } 
+  let u={name, pass:p, created:new Date().toISOString(), likes:[], ratings:{}}; 
+  users.push(u); 
+  currentUser=u; 
+  await saveAllAndSync();
+  updateHeader(); closeModal('authModal'); render(); 
+  showToast("✅ Account created & SYNCED");
+}
+
+async function signIn(){ 
+  const name=document.getElementById('siName').value.trim(); 
+  const p=document.getElementById('siPass').value; 
+  let msg=document.getElementById('authMsg');
+  let u=users.find(u=>u.name.toLowerCase()===name.toLowerCase() && u.pass===p); 
+  if(!u){ msg.innerText="Wrong username or password"; return; } 
+  currentUser=u; 
+  saveAllLocal(); 
+  updateHeader(); closeModal('authModal'); render(); 
+  showToast("Welcome "+u.name);
+}
+
+async function logout(){ currentUser=null; localStorage.removeItem(KEY_CURRENT); updateHeader(); render(); showToast("Logged out"); }
+
+function setFilter(f,el){ filter=f; document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active')); if(el) el.classList.add('active'); clearSearchUI(); document.getElementById('artistPage').style.display='none'; document.getElementById('aboutPage').style.display='none'; document.getElementById('hero').style.display='block'; document.getElementById('searchWrap').style.display='block'; document.getElementById('tabs').style.display='flex'; document.getElementById('grid').style.display='grid'; render(); }
+function getArtistData(name){ return artists.find(a=>a.name.toLowerCase()===name.toLowerCase())||null; }
+function doSearch(){ let q=document.getElementById('searchInput').value.trim().toLowerCase(); lastSearch=q; if(q.length===0){ clearSearchUI(); filter='all'; render(); return; } document.getElementById('clearSearch').style.display='inline-flex'; document.getElementById('searchInfo').style.display='block'; filter='search'; renderSearch(q); }
+function clearSearchUI(){ document.getElementById('searchInput').value=""; document.getElementById('clearSearch').style.display='none'; document.getElementById('searchInfo').style.display='none'; lastSearch=""; }
+function clearSearch(){ clearSearchUI(); filter='all'; document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active')); document.querySelector('.tab').classList.add('active'); document.getElementById('artistPage').style.display='none'; document.getElementById('aboutPage').style.display='none'; document.getElementById('hero').style.display='block'; document.getElementById('searchWrap').style.display='block'; document.getElementById('tabs').style.display='flex'; document.getElementById('grid').style.display='grid'; render(); }
+function openAbout(){ document.getElementById('hero').style.display='none'; document.getElementById('searchWrap').style.display='none'; document.getElementById('tabs').style.display='none'; document.getElementById('grid').style.display='none'; document.getElementById('artistPage').style.display='none'; document.getElementById('aboutPage').style.display='block'; window.scrollTo(0,0); }
+function closeAbout(){ document.getElementById('aboutPage').style.display='none'; document.getElementById('hero').style.display='block'; document.getElementById('searchWrap').style.display='block'; document.getElementById('tabs').style.display='flex'; document.getElementById('grid').style.display='grid'; filter='all'; document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active')); document.querySelector('.tab').classList.add('active'); render(); }
+
 function getAvgRating(s){ if(!s.ratings || Object.keys(s.ratings).length===0) return 0; let vals=Object.values(s.ratings); return vals.reduce((a,b)=>a+b,0)/vals.length; }
+
+function renderSearch(q){ let list=[...songs].filter(s=>!s.suspended); let filtered=list.filter(s=>`${s.title} ${s.artist} ${s.genre}`.toLowerCase().includes(q)); document.getElementById('searchInfo').innerText=`Search "${q}" → ${filtered.length} songs`; if(filtered.length===0){ document.getElementById('grid').innerHTML=`<div style="grid-column:1/-1;text-align:center;padding:40px;color:#666">No results for "${q}"</div>`; return; } document.getElementById('grid').innerHTML=filtered.map(s=>{ let isPaid=s.sell; let avg=s.avgRating? s.avgRating.toFixed(1):"0.0"; return `<div class="card"><img src="https://byosites.github.io/byosites/${s.img}" style="height:160px"><div class="body"><b>${s.title}</b><div style="color:#ffcc00;font-size:11px">${s.artist} • ★ ${avg}</div><button class="btn ${isPaid?'btn-y':'btn-g'}" onclick="${isPaid?`buyWithCode('${s.id}')`:`downloadSong('${s.id}')`}">${isPaid?`Buy $${s.price}`:'Direct DL'}</button></div></div>`; }).join(''); }
 
 function render(){
  if(filter==='search' && lastSearch){ renderSearch(lastSearch); return; }
  let list=[...songs].filter(s=>!s.suspended);
  list.forEach(s=>{ s.avgRating=getAvgRating(s); });
- let totalComments=list.reduce((a,s)=>a+(s.comments? s.comments.length:0),0);
- stat.innerText=`${list.length} songs • ${artists.length} artists • ${totalComments} comments • SYNCED`;
  if(filter==='artists'){ renderArtists(); return; }
  if(filter==='free') list=list.filter(s=>!s.sell);
  if(filter==='paid') list=list.filter(s=>s.sell);
  if(filter==='top') list=list.sort((a,b)=>(b.avgRating||0)-(a.avgRating||0) || (b.likes||0)-(a.likes||0));
  else list=list.sort((a,b)=>(b.avgRating||0)-(a.avgRating||0));
- grid.innerHTML=list.map((s,i)=>{
+ document.getElementById('grid').innerHTML=list.map((s,i)=>{
    let isPaid=s.sell; let hasSecureAccess=secureCodes.find(c=>c.songId===s.id && c.forUser===currentUser?.name && c.used);
    let avg=s.avgRating? s.avgRating.toFixed(1):"0.0"; let likes=s.likes||0; let comments=s.comments? s.comments.length:0;
    let topBadge = filter==='top' || i<3 && s.avgRating>=4 ? `<span class="badge badge-top">🔥 #${i+1} TOP ${avg}★</span>` : '';
@@ -192,28 +288,33 @@ function render(){
     </div></div></div>`;
  }).join('');
 }
-function renderArtists(){ grid.innerHTML=artists.filter(a=>!a.suspended).map(a=>`<div class="card" onclick="openArtist('${a.name}')"><img src="${a.photo?`https://byosites.github.io/byosites/${a.photo}`:'https://via.placeholder.com/400'}" style="height:180px"><div class="body"><b>${a.name}</b></div></div>`).join(''); }
-function openArtist(name){ let ad=getArtistData(name); if(!ad) return; let artistSongs=songs.filter(s=>s.artist.toLowerCase()===name.toLowerCase()); hero.style.display='none'; searchWrap.style.display='none'; tabs.style.display='none'; grid.style.display='none'; aboutPage.style.display='none'; artistPage.style.display='block'; artistDetail.innerHTML=`<div style="background:#111;padding:16px;border-radius:16px"><h2>${ad.name}</h2><p style="color:#888">${ad.bio}</p></div>`; document.getElementById('artistSongs').innerHTML=artistSongs.map(s=>`<div class="card"><img src="https://byosites.github.io/byosites/${s.img}" style="height:140px"><div class="body"><b>${s.title}</b><button class="btn ${s.sell?'btn-y':'btn-g'}" onclick="${s.sell?`buyWithCode('${s.id}')`:`downloadSong('${s.id}')`}">${s.sell?'Buy':'Direct DL'}</button></div></div>`).join(''); }
-function closeArtistPage(){ artistPage.style.display='none'; aboutPage.style.display='none'; hero.style.display='block'; searchWrap.style.display='block'; tabs.style.display='flex'; grid.style.display='grid'; render(); }
-function playSong(id){ const s=songs.find(x=>x.id===id); player.style.display='flex'; pImg.src=`https://byosites.github.io/byosites/${s.img}`; pTitle.innerText=s.title; pArtist.innerText=s.artist; pRating.innerText=`★ ${s.avgRating? s.avgRating.toFixed(1):'0.0'} • ❤ ${s.likes||0} • 💬 ${s.comments? s.comments.length:0}`; audio.src=`https://byosites.github.io/byosites/${s.audio}`; audio.play().then(()=>{ s.plays=(s.plays||0)+1; saveAll(); }); }
-function likeSong(id){
+
+function renderArtists(){ document.getElementById('grid').innerHTML=artists.filter(a=>!a.suspended).map(a=>`<div class="card" onclick="openArtist('${a.name}')"><img src="${a.photo?`https://byosites.github.io/byosites/${a.photo}`:'https://via.placeholder.com/400'}" style="height:180px"><div class="body"><b>${a.name}</b></div></div>`).join(''); }
+function openArtist(name){ let ad=getArtistData(name); if(!ad) return; let artistSongs=songs.filter(s=>s.artist.toLowerCase()===name.toLowerCase()); document.getElementById('hero').style.display='none'; document.getElementById('searchWrap').style.display='none'; document.getElementById('tabs').style.display='none'; document.getElementById('grid').style.display='none'; document.getElementById('aboutPage').style.display='none'; document.getElementById('artistPage').style.display='block'; document.getElementById('artistDetail').innerHTML=`<div style="background:#111;padding:16px;border-radius:16px"><h2>${ad.name}</h2><p style="color:#888">${ad.bio}</p></div>`; document.getElementById('artistSongs').innerHTML=artistSongs.map(s=>`<div class="card"><img src="https://byosites.github.io/byosites/${s.img}" style="height:140px"><div class="body"><b>${s.title}</b><button class="btn ${s.sell?'btn-y':'btn-g'}" onclick="${s.sell?`buyWithCode('${s.id}')`:`downloadSong('${s.id}')`}">${s.sell?'Buy':'Direct DL'}</button></div></div>`).join(''); }
+function closeArtistPage(){ document.getElementById('artistPage').style.display='none'; document.getElementById('aboutPage').style.display='none'; document.getElementById('hero').style.display='block'; document.getElementById('searchWrap').style.display='block'; document.getElementById('tabs').style.display='flex'; document.getElementById('grid').style.display='grid'; render(); }
+function playSong(id){ const s=songs.find(x=>x.id===id); document.getElementById('player').style.display='flex'; document.getElementById('pImg').src=`https://byosites.github.io/byosites/${s.img}`; document.getElementById('pTitle').innerText=s.title; document.getElementById('pArtist').innerText=s.artist; document.getElementById('pRating').innerText=`★ ${s.avgRating? s.avgRating.toFixed(1):'0.0'} • ❤ ${s.likes||0} • 💬 ${s.comments? s.comments.length:0}`; document.getElementById('audio').src=`https://byosites.github.io/byosites/${s.audio}`; document.getElementById('audio').play().then(async ()=>{ s.plays=(s.plays||0)+1; await saveAllAndSync(); }); }
+
+async function likeSong(id){
  if(!currentUser){ openModal('authModal'); showToast("Login to like"); return; }
  let s=songs.find(x=>x.id===id); if(!s.likedBy) s.likedBy=[]; if(!s.likes) s.likes=0;
  if(s.likedBy.includes(currentUser.name)){ s.likedBy=s.likedBy.filter(n=>n!==currentUser.name); s.likes=Math.max(0,s.likes-1); showToast("Unliked"); } else { s.likedBy.push(currentUser.name); s.likes++; showToast("❤ Liked "+s.title); }
- saveAll(); render(); if(document.getElementById('songDetail')) openSong(id);
+ await saveAllAndSync(); render(); if(document.getElementById('songDetail')) openSong(id);
 }
-function rateSong(id, rating){
+
+async function rateSong(id, rating){
  if(!currentUser){ openModal('authModal'); showToast("Login to rate"); return; }
  let s=songs.find(x=>x.id===id); if(!s.ratings) s.ratings={}; s.ratings[currentUser.name]=rating;
- saveAll(); showToast(`Rated ${rating}★ for ${s.title}`); render(); openSong(id);
+ await saveAllAndSync(); showToast(`Rated ${rating}★ for ${s.title}`); render(); openSong(id);
 }
-function addComment(id){
+
+async function addComment(id){
  if(!currentUser){ openModal('authModal'); showToast("Login to comment"); return; }
  let input=document.getElementById('commentInput'); let text=input.value.trim(); if(!text){ showToast("Enter comment"); return; }
  let s=songs.find(x=>x.id===id); if(!s.comments) s.comments=[];
  s.comments.unshift({user:currentUser.name, text:text, time:new Date().toLocaleString()});
- input.value=""; saveAll(); showToast("Comment added"); render(); openSong(id);
+ input.value=""; await saveAllAndSync(); showToast("Comment added"); render(); openSong(id);
 }
+
 function downloadSong(id){
  let s=songs.find(x=>x.id===id);
  if(s.sell){
@@ -225,35 +326,39 @@ function downloadSong(id){
  let filename=`${s.artist} - ${s.title}.mp3`;
  showToast(`⬇️ Downloading ${s.title}...`);
  let a=document.createElement('a'); a.href=fileUrl; a.download=filename; a.target="_blank"; document.body.appendChild(a); a.click(); document.body.removeChild(a);
- showToast(`✅ Download started - check notification bar`);
+ showToast(`✅ Download started`);
 }
+
 function buyWithCode(id){
  if(!currentUser){ openModal('authModal'); showToast("Create account first"); return; }
  let s=songs.find(x=>x.id===id); currentPaySong=s;
- paySongTitle.innerText=s.title; payPrice.innerText='$'+s.price; payAccount.innerText=currentUser.name;
- payWaLink.href=`https://wa.me/263789706161?text=Hi%20Admin%20I%20want%20SECURE%20CODE%2010MINS%20for%20${encodeURIComponent(s.title)}%20by%20${s.artist}%20ID:${s.id}%20MyAccount:${encodeURIComponent(currentUser.name)}`;
- payCodeInput.value=""; payMsg.innerText=""; openModal('payModal');
+ document.getElementById('paySongTitle').innerText=s.title; document.getElementById('payPrice').innerText='$'+s.price; document.getElementById('payAccount').innerText=currentUser.name;
+ document.getElementById('payWaLink').href=`https://wa.me/263789706161?text=Hi%20Admin%20I%20want%20SECURE%20CODE%2010MINS%20for%20${encodeURIComponent(s.title)}%20by%20${s.artist}%20ID:${s.id}%20MyAccount:${encodeURIComponent(currentUser.name)}`;
+ document.getElementById('payCodeInput').value=""; document.getElementById('payMsg').innerText=""; openModal('payModal');
  startCountdown(600);
 }
+
 function startCountdown(sec){
  let el=document.getElementById('countdown'); let remaining=sec;
  if(countdownInterval) clearInterval(countdownInterval);
  el.innerText=Math.floor(remaining/60)+'m '+(remaining%60)+'s';
- countdownInterval=setInterval(()=>{ remaining--; let m=Math.floor(remaining/60); let s=remaining%60; el.innerText=m+'m '+s+'s'; if(remaining<=0){ clearInterval(countdownInterval); el.innerText='EXPIRED'; payMsg.innerText='Code expired! Request new - 10 mins elapsed'; } },1000);
+ countdownInterval=setInterval(()=>{ remaining--; let m=Math.floor(remaining/60); let s=remaining%60; el.innerText=m+'m '+s+'s'; if(remaining<=0){ clearInterval(countdownInterval); el.innerText='EXPIRED'; document.getElementById('payMsg').innerText='Code expired! Request new'; } },1000);
 }
-function checkPayCode(){
- let code=payCodeInput.value.trim(); if(!code){ payMsg.innerText="Enter secure code"; return; }
- if(!currentUser){ payMsg.innerText="Login required"; return; }
+
+async function checkPayCode(){
+ let code=document.getElementById('payCodeInput').value.trim(); if(!code){ document.getElementById('payMsg').innerText="Enter secure code"; return; }
+ if(!currentUser){ document.getElementById('payMsg').innerText="Login required"; return; }
  let s=currentPaySong;
  let entry=secureCodes.find(c=>c.code===code && c.songId===s.id);
- if(!entry){ payMsg.innerText="Invalid code!"; return; }
- if(entry.forUser!==currentUser.name){ payMsg.innerText=`Code locked to ${entry.forUser}, you are ${currentUser.name}`; return; }
- if(entry.used){ payMsg.innerText="Code already used! One-time only"; return; }
- let now=Date.now(); if(now>entry.expires){ payMsg.innerText=`Code expired! Valid only 10 mins`; secureCodes=secureCodes.filter(c=>c.code!==code); saveAll(); return; }
- entry.used=true; entry.usedAt=now; saveAll();
+ if(!entry){ document.getElementById('payMsg').innerText="Invalid code!"; return; }
+ if(entry.forUser!==currentUser.name){ document.getElementById('payMsg').innerText=`Code locked to ${entry.forUser}, you are ${currentUser.name}`; return; }
+ if(entry.used){ document.getElementById('payMsg').innerText="Code already used! One-time only"; return; }
+ let now=Date.now(); if(now>entry.expires){ document.getElementById('payMsg').innerText=`Code expired! Valid only 10 mins`; secureCodes=secureCodes.filter(c=>c.code!==code); await saveAllAndSync(); return; }
+ entry.used=true; entry.usedAt=now; await saveAllAndSync();
  closeModal('payModal'); showToast(`✅ Code verified! Downloading ${s.title}`);
  downloadSong(s.id); render();
 }
+
 function openSong(id){
  let s=songs.find(x=>x.id===id); 
  let avg=getAvgRating(s); let likes=s.likes||0; let comments=s.comments||[];
@@ -262,7 +367,7 @@ function openSong(id){
  let starsHtml = [1,2,3,4,5].map(st=>`<span class="stars ${st<=userRating?'':'star-off'}" onclick="rateSong('${s.id}',${st})">★</span>`).join('');
  let commentsHtml = comments.map(c=>`<div class="comment"><b>${c.user}</b> <span style="color:#666;font-size:10px">${c.time}</span><br>${c.text}</div>`).join('') || "<p style='color:#666;font-size:11px'>No comments yet - be first!</p>";
  let liked = currentUser && s.likedBy && s.likedBy.includes(currentUser.name);
- songDetail.innerHTML=`
+ document.getElementById('songDetail').innerHTML=`
   <img src="https://byosites.github.io/byosites/${s.img}" style="width:100%;height:220px;object-fit:cover;border-radius:12px" onerror="this.src='https://via.placeholder.com/400'">
   <h3 style="margin-top:10px">${s.title} ${isPaid?`<span style="background:#ff4444;padding:2px 6px;border-radius:6px;font-size:10px">10m SECURE $${s.price}</span>`:`<span style="background:#25D366;padding:2px 6px;border-radius:6px;font-size:10px">FREE DIRECT</span>`}</h3>
   <p style="color:#ffcc00;cursor:pointer" onclick="openArtist('${s.artist}'); closeModal('songModal')">${s.artist}</p>
@@ -287,10 +392,13 @@ function openSong(id){
  `;
  openModal('songModal');
 }
+
+// INIT
 loadSyncedData();
 setInterval(loadSyncedData, 30000);
 </script>
 <footer style="text-align:center;padding:20px;margin-top:20px;border-top:1px solid #222;color:#666;font-size:11px">
 © 2026 BYOMUSIC • Created by <b style="color:#ffcc00">Philip Mbewe</b> • Bulawayo, Zimbabwe 🇿🇼<br>
+SYNCED v6.2 - Users + Songs + Codes
 </footer>
 </body></html>
