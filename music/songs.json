@@ -1,1 +1,30 @@
-[]
+[
+  {
+    "id": "1793709078261",
+    "artist": "Yami",
+    "title": "Sos",
+    "genre": "Amapiano",
+    "releaseDate": "2026-11-03",
+    "bio": "Soon",
+    "artistBio": "King of hiphop",
+    "lyrics": "",
+    "credits": "",
+    "isrc": "",
+    "composer": "Yami",
+    "explicit": "yes",
+    "img": "music/1793709074370-IMG-20261102-WA1672.jpg",
+    "audio": "music/1793709068611-Ice_Spice_-_Name_of_Love_(Official_Music_Video)_(48k).mp3",
+    "wa": "+263780212606",
+    "approvalCode": "337205",
+    "sell": true,
+    "featured": true,
+    "price": "1",
+    "plays": 0,
+    "likes": 0,
+    "likedBy": [],
+    "ratings": {},
+    "comments": [],
+    "suspended": false,
+    "created": "2026-11-03T12:31:18.267Z"
+  }
+]
