@@ -1,30 +1,41 @@
 <!DOCTYPE html>
 <html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Artist Login - BYOMUSIC</title>
+<title>Artist Login v5 - BYOMUSIC</title>
 <style>
-body{margin:0;background:#050505;color:#fff;font-family:Arial;padding:16px;max-width:700px;margin:auto}
-input{width:100%;padding:14px;background:#111;border:1px solid #333;color:#fff;border-radius:12px;margin:8px 0}
+body{margin:0;background:#050505;color:#fff;font-family:Arial;padding:16px;max-width:750px;margin:auto}
+input,textarea{width:100%;padding:14px;background:#111;border:1px solid #333;color:#fff;border-radius:12px;margin:8px 0;box-sizing:border-box}
 .btn{padding:14px;border:none;border-radius:12px;font-weight:900;width:100%;cursor:pointer}
-.btn-y{background:#ffcc00;color:#000}.btn-g{background:#25D366;color:#fff}.btn-w{background:#fff;color:#000}
-.card{background:#111;border:1px solid #222;padding:14px;border-radius:14px;margin:10px 0;display:flex;gap:10px;align-items:center}
+.btn-y{background:#ffcc00;color:#000}.btn-g{background:#25D366;color:#fff}.btn-w{background:#fff;color:#000}.btn-o{background:#ff8800;color:#000}.btn-r{background:#ff4444;color:#fff}.btn-b{background:#222;color:#fff;border:1px solid #333}
+.card{background:#111;border:1px solid #222;padding:14px;border-radius:14px;margin:10px 0}
 .lock{border:1px solid #222;padding:30px;border-radius:18px;background:#0a0a0a;text-align:center;margin-top:40px}
-.stat{padding:10px;background:#0f0f0f;border-radius:10px;text-align:center;border:1px solid #1a1a1a}
+.stat{padding:12px;background:#0f0f0f;border-radius:10px;text-align:center;border:1px solid #1a1a1a}
 .player{position:fixed;bottom:0;left:0;right:0;background:#111;border-top:1px solid #333;padding:10px;display:none;align-items:center;gap:10px;z-index:99}
+.badge{font-size:10px;padding:3px 7px;border-radius:6px}
+.badge-code{background:#00aaff;color:#fff;letter-spacing:1px}
+.badge-live{background:#25D366}
+.codeBox{background:#001a33;border:1px dashed #00aaff;padding:10px;border-radius:10px;text-align:center;margin:8px 0}
 </style>
 </head><body>
 
 <div id="loginBox" class="lock">
-<h2 style="color:#ffcc00">BYOMUSIC ARTIST LOGIN</h2>
-<p style="color:#888;font-size:13px">Only accounts created by Admin 78 970 6161 can login.</p>
-<input id="loginName" placeholder="Artist Name e.g. DJ FLEXO">
+<h2 style="color:#ffcc00">BYOMUSIC ARTIST LOGIN v5</h2>
+<p style="color:#888;font-size:13px">Login with name + password created by Admin. Your approval code protects your music.</p>
+<input id="loginName" placeholder="Artist Name e.g. Dob Ba Teen">
 <input id="loginPass" type="password" placeholder="Password">
 <button class="btn btn-y" onclick="login()">Login to My Dashboard</button>
 <p id="loginMsg" style="color:#ff4444;font-size:12px;margin-top:10px"></p>
-<p style="color:#555;font-size:11px;margin-top:14px">No account? WhatsApp Admin: <a href="https://wa.me/263789706161?text=Hi%20I%20need%20artist%20account" style="color:#25D366">78 970 6161</a></p>
+<p style="color:#555;font-size:11px;margin-top:14px">No account? WhatsApp Admin: <a href="https://wa.me/263789706161?text=Hi%20I%20need%20artist%20account%20with%20bio" style="color:#25D366">78 970 6161</a></p>
 </div>
 
 <div id="dashboard" style="display:none">
 <h2>Welcome <span id="artistName" style="color:#ffcc00"></span> <button onclick="logout()" style="float:right;background:#1a1a1a;color:#888;border:1px solid #333;padding:6px 10px;border-radius:8px;font-size:11px">Logout</button></h2>
+
+<div class="codeBox">
+<div style="font-size:11px;color:#00aaff">YOUR APPROVAL CODE - Keep safe, admin needs it to edit/delete your music</div>
+<b id="myCode" style="font-size:24px;letter-spacing:4px;color:#ffcc00">------</b><br>
+<button class="btn-b" style="width:auto;padding:6px 12px;font-size:11px;margin-top:6px" onclick="copyCode()">Copy Code</button>
+<a id="waShareCode" href="#" class="btn-g" style="width:auto;padding:6px 12px;font-size:11px;text-decoration:none;display:inline-block;margin-left:6px">Share via WhatsApp</a>
+</div>
 
 <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin:12px 0">
 <div class="stat"><b id="totalSongs">0</b><br><span style="font-size:11px;color:#888">Songs</span></div>
@@ -32,7 +43,23 @@ input{width:100%;padding:14px;background:#111;border:1px solid #333;color:#fff;b
 <div class="stat"><b id="totalLikes">0</b><br><span style="font-size:11px;color:#888">Rating</span></div>
 </div>
 
+<div class="card" style="border-color:#ffcc00;background:#0f0f0a">
+<h4 style="color:#ffcc00;margin:0 0 8px">My Biography (shows on artists.html & all 3 sites)</h4>
+<img id="myPhoto" src="" style="width:80px;height:80px;border-radius:12px;object-fit:cover;display:none;margin-bottom:8px">
+<p id="myBioText" style="font-size:13px;color:#aaa;line-height:1.4"></p>
+<p style="font-size:11px;color:#666"><span id="myLoc"></span> • <span id="myGenre"></span> • Since <span id="myYear"></span></p>
+<div id="mySocial" style="font-size:11px;color:#00aaff"></div>
+<button class="btn btn-b" style="padding:8px;font-size:11px;margin-top:8px" onclick="editMyBio()">Edit My Bio</button>
+<div id="bioEditBox" style="display:none;margin-top:10px">
+<textarea id="editBio" placeholder="Edit biography..."></textarea>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:6px"><input id="editLoc" placeholder="Location"><input id="editGenre" placeholder="Genre"></div>
+<button class="btn btn-y" style="padding:10px" onclick="saveMyBio()">Save Bio (needs approval code)</button>
+<input id="bioApproval" placeholder="Enter your Approval Code to save">
+</div>
+</div>
+
 <h3 style="margin-top:16px">My Music - Play & Manage Own Only</h3>
+<p style="font-size:11px;color:#888">To edit/suspend/delete music, you need your approval code. Admin also needs your code.</p>
 <div id="mySongs"></div>
 
 <div class="player" id="player">
@@ -42,10 +69,10 @@ input{width:100%;padding:14px;background:#111;border:1px solid #333;color:#fff;b
 <button onclick="document.getElementById('player').style.display='none'" style="background:#222;color:#888;border:none;padding:6px 10px;border-radius:6px">X</button>
 </div>
 
-<div style="margin-top:60px;background:#111;padding:12px;border-radius:12px;border:1px solid #1e1e1e">
+<div style="margin-top:80px;background:#111;padding:12px;border-radius:12px;border:1px solid #1e1e1e">
 <h4>Request New Upload</h4>
-<p style="font-size:11px;color:#888">Send MP3 to Admin via WhatsApp</p>
-<a href="https://wa.me/263789706161?text=Hi%20Admin%20upload%20my%20song" class="btn btn-g" style="display:block;text-align:center;text-decoration:none">WhatsApp Admin</a>
+<p style="font-size:11px;color:#888">Send MP3 + cover to Admin. Your code will lock it.</p>
+<a href="https://wa.me/263789706161?text=Hi%20Admin%20upload%20my%20song" class="btn btn-g" style="display:block;text-align:center;text-decoration:none">WhatsApp Admin 78 970 6161</a>
 </div>
 </div>
 
@@ -55,67 +82,67 @@ const KEY_ARTISTS="byomusic_artists_secure";
 let currentArtist=null;
 
 function login(){
- const name=document.getElementById('loginName').value.trim();
- const pass=document.getElementById('loginPass').value.trim();
+ const name=loginName.value.trim(); const pass=loginPass.value.trim();
  let artists=JSON.parse(localStorage.getItem(KEY_ARTISTS)||"[]");
  let found=artists.find(a=>a.name.toLowerCase()===name.toLowerCase() && a.pass===pass);
- if(!found){ document.getElementById('loginMsg').innerText="Wrong name/password - account must be created by admin 78 970 6161"; return; }
+ if(!found){ loginMsg.innerText="Wrong name/password or account suspended - contact admin 78 970 6161"; return; }
+ if(found.suspended){ loginMsg.innerText="Account SUSPENDED by admin - contact 78 970 6161"; return; }
  currentArtist=found;
  localStorage.setItem("byomusic_current_artist", JSON.stringify(found));
  showDashboard();
 }
 function showDashboard(){
  if(!currentArtist){ let saved=localStorage.getItem("byomusic_current_artist"); if(saved){ currentArtist=JSON.parse(saved);} else return; }
- document.getElementById('loginBox').style.display='none';
- document.getElementById('dashboard').style.display='block';
- document.getElementById('artistName').innerText=currentArtist.name;
+ loginBox.style.display='none'; dashboard.style.display='block'; artistName.innerText=currentArtist.name;
+ myCode.innerText=currentArtist.approvalCode||"NO CODE - Ask Admin";
+ myBioText.innerText=currentArtist.bio||"No bio yet";
+ myLoc.innerText=currentArtist.loc||""; myGenre.innerText=currentArtist.genre||""; myYear.innerText=currentArtist.year||"";
+ if(currentArtist.photo){ myPhoto.style.display='block'; myPhoto.src=`https://byosites.github.io/byosites/${currentArtist.photo}`; }
+ let social=[]; if(currentArtist.fb) social.push(`<a href="${currentArtist.fb}" style="color:#00aaff">FB</a>`); if(currentArtist.ig) social.push(`<a href="${currentArtist.ig}" style="color:#00aaff">IG</a>`); if(currentArtist.yt) social.push(`<a href="${currentArtist.yt}" style="color:#00aaff">YT</a>`); if(currentArtist.tik) social.push(`<a href="${currentArtist.tik}" style="color:#00aaff">TikTok</a>`); mySocial.innerHTML=social.join(' • ');
+ waShareCode.href=`https://wa.me/?text=My%20BYOMUSIC%20Approval%20Code%20is%20${currentArtist.approvalCode}%20for%20artist%20${currentArtist.name}`;
  renderMySongs();
+}
+function copyCode(){ navigator.clipboard.writeText(currentArtist.approvalCode); alert("Code copied: "+currentArtist.approvalCode); }
+function editMyBio(){ bioEditBox.style.display='block'; editBio.value=currentArtist.bio||""; editLoc.value=currentArtist.loc||""; editGenre.value=currentArtist.genre||""; }
+function saveMyBio(){
+ let code=bioApproval.value.trim(); if(code!==currentArtist.approvalCode){ alert("Wrong approval code! Cannot edit bio without code"); return; }
+ let artists=JSON.parse(localStorage.getItem(KEY_ARTISTS)||"[]"); let idx=artists.findIndex(a=>a.name.toLowerCase()===currentArtist.name.toLowerCase());
+ if(idx>=0){ artists[idx].bio=editBio.value; artists[idx].loc=editLoc.value; artists[idx].genre=editGenre.value; localStorage.setItem(KEY_ARTISTS, JSON.stringify(artists)); currentArtist=artists[idx]; localStorage.setItem("byomusic_current_artist", JSON.stringify(currentArtist)); showDashboard(); bioEditBox.style.display='none'; alert("✅ Bio updated on all 3 sites"); }
 }
 function renderMySongs(){
  let all=JSON.parse(localStorage.getItem(KEY_SONGS)||"[]");
- let mine=all.filter(s=>s.artist.toLowerCase()===currentArtist.name.toLowerCase());
- document.getElementById('totalSongs').innerText=mine.length;
+ let mine=all.filter(s=>s.artist.toLowerCase()===currentArtist.name.toLowerCase() && !s.suspended);
+ let allMineCount=all.filter(s=>s.artist.toLowerCase()===currentArtist.name.toLowerCase()).length;
+ let suspendedCount=allMineCount-mine.length;
+ document.getElementById('totalSongs').innerText=allMineCount;
  document.getElementById('totalPlays').innerText=mine.reduce((a,b)=>a+(b.plays||0),0);
  document.getElementById('totalLikes').innerText=mine.reduce((a,b)=>a+(b.likes||0),0);
  document.getElementById('mySongs').innerHTML=mine.map(s=>`
-  <div class="card">
-    <img src="${s.img}" width="50" height="50" style="border-radius:8px;object-fit:cover" onerror="this.src='https://via.placeholder.com/50'">
-    <div style="flex:1"><b>${s.title}</b><br><span style="font-size:11px;color:#888">${s.genre} • Plays: ${s.plays||0} • ${s.sell?'$'+s.price:'FREE'}</span></div>
+  <div class="card" style="display:flex;gap:10px;align-items:center">
+    <img src="https://byosites.github.io/byosites/${s.img}" width="55" height="55" style="border-radius:8px;object-fit:cover" onerror="this.src='https://via.placeholder.com/55?text=${encodeURIComponent(s.title)}'">
+    <div style="flex:1"><b>${s.title}</b> <span class="badge badge-code">${s.approvalCode||currentArtist.approvalCode}</span><br><span style="font-size:11px;color:#888">${s.genre} • Plays: ${s.plays||0} • ${s.sell?'$'+s.price:'FREE'} • ${s.legit?'LEGIT':''}</span><br><span style="font-size:10px;color:#666">${(s.bio||'').substring(0,60)}...</span></div>
     <div style="display:flex;flex-direction:column;gap:6px">
-      <button onclick="playMySong('${s.id}')" style="font-size:11px;padding:6px 10px;border-radius:8px;border:none;background:#fff;color:#000;font-weight:800">▶ Play</button>
-      <button onclick="toggleMySell('${s.id}')" style="font-size:11px;padding:6px 10px;border-radius:8px;border:1px solid #333;background:#1a1a1a;color:#ffcc00">${s.sell?'Make FREE':'Sell'}</button>
+      <button onclick="playMySong('${s.id}')" style="font-size:11px;padding:6px 10px;border-radius:8px;border:none;background:#fff;color:#000;font-weight:800">▶ Play Test</button>
+      <button onclick="editMySong('${s.id}')" style="font-size:11px;padding:6px 10px;border-radius:8px;border:1px solid #333;background:#1a1a1a;color:#ffcc00">Edit (code)</button>
     </div>
   </div>
- `).join('')||"<p style='color:#666;font-size:13px'>No songs yet - admin will add after you send via WhatsApp</p>";
+ `).join('')||"<p style='color:#666;font-size:13px'>No songs yet - suspended: "+suspendedCount+" - send MP3 via WhatsApp to admin</p>";
 }
 function playMySong(id){
- let all=JSON.parse(localStorage.getItem(KEY_SONGS)||"[]");
- let s=all.find(x=>x.id===id);
- if(!s) return;
- if(s.artist.toLowerCase()!==currentArtist.name.toLowerCase()){ alert("You can't play others!"); return; }
- document.getElementById('player').style.display='flex';
- document.getElementById('pImg').src=s.img;
- document.getElementById('pTitle').innerText=s.title;
- document.getElementById('pArtist').innerText=s.artist;
- const audio=document.getElementById('audio');
- if(s.audioData && s.audioData.startsWith('data:audio')){ audio.src=s.audioData; } else { audio.src=s.audio; }
- audio.play().then(()=>{
-   s.plays=(s.plays||0)+1;
-   localStorage.setItem(KEY_SONGS, JSON.stringify(all));
-   renderMySongs();
- }).catch(e=>alert("File not found on GitHub yet - upload "+s.audio+" to /music/ folder. Error: "+e.message));
+ let all=JSON.parse(localStorage.getItem(KEY_SONGS)||"[]"); let s=all.find(x=>x.id===id);
+ if(!s) return; if(s.artist.toLowerCase()!==currentArtist.name.toLowerCase()){ alert("You can't play others!"); return; }
+ document.getElementById('player').style.display='flex'; document.getElementById('pImg').src=`https://byosites.github.io/byosites/${s.img}`; document.getElementById('pTitle').innerText=s.title; document.getElementById('pArtist').innerText=s.artist;
+ const audio=document.getElementById('audio'); audio.src=`https://byosites.github.io/byosites/${s.audio}`;
+ audio.play().then(()=>{ s.plays=(s.plays||0)+1; localStorage.setItem(KEY_SONGS, JSON.stringify(all)); renderMySongs(); }).catch(e=>alert("Error: "+e.message+" - Check GitHub /music/ exists: "+s.audio));
 }
-function toggleMySell(id){
- let all=JSON.parse(localStorage.getItem(KEY_SONGS)||"[]");
- let s=all.find(x=>x.id===id);
- if(s.artist.toLowerCase()!==currentArtist.name.toLowerCase()){ alert("You can't edit others!"); return; }
- s.sell=!s.sell;
- if(s.sell&&!s.price){ let p=prompt("Price USD?","1"); if(p) s.price=p; else s.sell=false; }
- localStorage.setItem(KEY_SONGS, JSON.stringify(all));
- renderMySongs();
+function editMySong(id){
+ let code=prompt(`Edit ${id} - Enter your Approval Code ${currentArtist.approvalCode} to continue:`); if(code!==currentArtist.approvalCode){ alert("Wrong code - you need your approval code to edit"); return; }
+ let all=JSON.parse(localStorage.getItem(KEY_SONGS)||"[]"); let s=all.find(x=>x.id===id);
+ let newTitle=prompt("New Title (leave blank keep):",s.title); let newPrice=prompt("New Price USD:",s.price);
+ if(newTitle) s.title=newTitle; if(newPrice) s.price=newPrice;
+ localStorage.setItem(KEY_SONGS, JSON.stringify(all)); renderMySongs(); alert("✅ Saved with your approval code");
 }
-function logout(){ localStorage.removeItem("byomusic_current_artist"); currentArtist=null; document.getElementById('dashboard').style.display='none'; document.getElementById('loginBox').style.display='block'; }
-
+function logout(){ localStorage.removeItem("byomusic_current_artist"); currentArtist=null; dashboard.style.display='none'; loginBox.style.display='block'; }
 let saved=localStorage.getItem("byomusic_current_artist"); if(saved){ currentArtist=JSON.parse(saved); showDashboard(); }
 </script>
 </body></html>
