@@ -29,8 +29,8 @@ audio{width:100%;margin:6px 0}
 </style></head><body>
 
 <div id="lock" class="lock">
-<h2 style="color:#ffcc00">ADMIN</h2>
-<p style="color:#888;font-size:11px">🔒 Secure Codes + Site Reset for Security</p>
+<h2 style="color:#ffcc00">ADMIN SECURE</h2>
+<p style="color:#888;font-size:11px">🔒 One-time code • Account locked • Song locked • 10 MINS expiry</p>
 <input id="pin" type="password" placeholder="">
 <input id="ghToken" type="password" placeholder="GitHub Token ghp_xxx">
 <button class="btn btn-y" onclick="unlock()">Enter</button>
@@ -38,7 +38,7 @@ audio{width:100%;margin:6px 0}
 
 <div id="panel" style="display:none">
 <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px">
-<h3>ADMIN v5.5 <span id="count" style="color:#666;font-size:11px"></span></h3>
+<h3>ADMIN  <span id="count" style="color:#666;font-size:11px"></span></h3>
 <div style="display:flex;gap:6px;flex-wrap:wrap">
 <button class="btn-b" style="width:auto;padding:6px 10px" onclick="exportData()">Backup</button>
 <button class="btn btn-reset" style="width:auto;padding:6px 12px;font-size:11px" onclick="openResetModal()">⚠️ SITE RESET</button>
@@ -55,8 +55,8 @@ audio{width:100%;margin:6px 0}
 </div>
 
 <div class="section" style="border-color:#ff8800">
-<h4 style="color:#ff8800">🔒 Active Secure Codes (60s One-Time)</h4>
-<p style="font-size:11px;color:#888">Codes expire in 60s, locked to buyer account + song, one-time use only</p>
+<h4 style="color:#ff8800">🔒 Active Secure Codes (10 MINS One-Time)</h4>
+<p style="font-size:11px;color:#888">Codes expire in 10 mins for slow internet, locked to buyer account + song, one-time use only</p>
 <div id="secureList"></div>
 <button class="btn btn-r" style="padding:8px;font-size:11px" onclick="clearExpired()">Clear Expired Codes</button>
 </div>
@@ -78,7 +78,7 @@ audio{width:100%;margin:6px 0}
 </div>
 
 <div class="section">
-<h4 style="color:#ffcc00">🎵 MUSIC - Free Direct vs Paid Secure 60s</h4>
+<h4 style="color:#ffcc00">🎵 MUSIC - Free Direct vs Paid Secure 10 MINS</h4>
 <div class="grid2"><div><span class="label">MP3 *</span><input type="file" id="mp3File" accept="audio/*"></div><div><span class="label">Cover *</span><input type="file" id="coverFile" accept="image/*"></div></div>
 <div class="grid2"><input id="sArtist" placeholder="Artist Name *"><input id="sTitle" placeholder="Song Title *"></div>
 <div class="grid2"><select id="sGenre"><option>Amapiano</option><option>Afro House</option><option>Zimdancehall</option><option>Hip Hop</option><option>Gqom</option><option>Afrobeat</option><option>Gospel</option></select><input id="sDate" type="date"></div>
@@ -86,7 +86,7 @@ audio{width:100%;margin:6px 0}
 <div class="grid2"><textarea id="sLyrics" placeholder="Lyrics"></textarea><textarea id="sCredits" placeholder="Credits"></textarea></div>
 <div class="grid2"><input id="sISRC" placeholder="ISRC"><input id="sComposer" placeholder="Composer"></div>
 <div class="grid2"><input id="sPrice" type="number" placeholder="Price USD 0=free 1=paid"><select id="sExplicit"><option value="no">Clean</option><option value="yes">Explicit</option></select></div>
-<label><input type="checkbox" id="sSell"> Sell? (Paid = needs secure 60s code, Free = direct)</label> <label style="margin-left:12px"><input type="checkbox" id="sFeatured"> Featured?</label>
+<label><input type="checkbox" id="sSell"> Sell? (Paid = needs secure 10 min code, Free = direct)</label> <label style="margin-left:12px"><input type="checkbox" id="sFeatured"> Featured?</label>
 <div class="progress"><div id="prog"></div></div>
 <p id="sMsg" style="font-size:12px;color:#ffcc00"></p>
 <button class="btn btn-y" onclick="autoUpload()">🚀 UPLOAD + Auto Secure Logic</button>
@@ -100,26 +100,22 @@ audio{width:100%;margin:6px 0}
 
 <div id="songList"></div>
 
-<!-- SITE RESET SECTION -->
 <div class="resetSection">
 <h4 style="color:#ff0000">⚠️ SECURITY - SITE RESET</h4>
-<p style="font-size:11px;color:#888">For security reasons - Wipes all local data. Use when hacked, compromised, or need fresh start. Backup first!</p>
+<p style="font-size:11px;color:#888">For security reasons - Wipes all local data. Backup first!</p>
 <div class="grid2">
 <button class="btn btn-r" onclick="resetSecureCodes()">Reset Secure Codes Only</button>
 <button class="btn btn-o" onclick="resetSongsOnly()">Reset Songs Only</button>
 <button class="btn btn-b" onclick="resetArtistsOnly()">Reset Artists Only</button>
 <button class="btn btn-reset" onclick="resetAllSite()">🔴 RESET ENTIRE SITE - ALL DATA</button>
 </div>
-<p style="font-size:10px;color:#666;margin-top:8px">Reset deletes localStorage keys: byomusic_songs_v2_final, byomusic_artists_secure, byomusic_secure_codes_v54, byomusic_users_v5, byomusic_payment_codes. GitHub files remain - delete manually via GitHub if needed.</p>
+</div>
 </div>
 
-</div>
-
-<!-- RESET CONFIRM MODAL -->
 <div id="resetModal" style="position:fixed;inset:0;background:rgba(0,0,0,0.95);display:none;place-items:center;z-index:200;padding:16px">
 <div style="background:#1a0000;border:2px solid #ff0000;padding:20px;border-radius:16px;max-width:400px;width:100%">
 <h3 style="color:#ff0000">⚠️ CONFIRM SITE RESET</h3>
-<p style="font-size:12px;color:#aaa;margin:10px 0">This will permanently delete all site data! For security, type <b style="color:#ffcc00">RESET PIN</b> to confirm</p>
+<p style="font-size:12px;color:#aaa;margin:10px 0">Type <b style="color:#ffcc00">RESET PIN</b> to confirm</p>
 <input id="resetConfirmInput" placeholder="Type RESET (PIN)" style="border-color:#ff0000">
 <div style="display:flex;gap:8px;margin-top:12px">
 <button class="btn btn-b" style="flex:1" onclick="closeResetModal()">Cancel</button>
@@ -138,7 +134,7 @@ function unlock(){ if(pin.value!==PIN){ alert("You are Not An Admin, Trespassers
 if(localStorage.getItem(KEY_TOKEN)) ghToken.value=localStorage.getItem(KEY_TOKEN);
 async function toBase64(f){ return new Promise((res,rej)=>{ const r=new FileReader(); r.onload=()=>res(r.result.split(',')[1]); r.onerror=rej; r.readAsDataURL(f); }); }
 async function getSHA(p){ const url=`https://api.github.com/repos/byosites/byosites/contents/${p}`; const res=await fetch(url,{headers:{Authorization:`token ${GH_TOKEN}`}}); if(!res.ok) return null; const j=await res.json(); return j.sha; }
-async function uploadToGitHub(file,path){ const content=await toBase64(file); const url=`https://api.github.com/repos/byosites/byosites/contents/${path}`; const sha=await getSHA(path); const body={message:`v5.5 ${path}`,content}; if(sha) body.sha=sha; const res=await fetch(url,{method:"PUT",headers:{Authorization:`token ${GH_TOKEN}`,"Content-Type":"application/json"},body:JSON.stringify(body)}); if(!res.ok){ const t=await res.text(); throw new Error(t); } return path; }
+async function uploadToGitHub(file,path){ const content=await toBase64(file); const url=`https://api.github.com/repos/byosites/byosites/contents/${path}`; const sha=await getSHA(path); const body={message:`v5.6 ${path}`,content}; if(sha) body.sha=sha; const res=await fetch(url,{method:"PUT",headers:{Authorization:`token ${GH_TOKEN}`,"Content-Type":"application/json"},body:JSON.stringify(body)}); if(!res.ok){ const t=await res.text(); throw new Error(t); } return path; }
 async function deleteFromGitHub(path){ const sha=await getSHA(path); if(!sha) throw new Error("Not found"); const url=`https://api.github.com/repos/byosites/byosites/contents/${path}`; const res=await fetch(url,{method:"DELETE",headers:{Authorization:`token ${GH_TOKEN}`,"Content-Type":"application/json"},body:JSON.stringify({message:`Delete ${path}`,sha})}); if(!res.ok){ const t=await res.text(); throw new Error(t); } }
 
 async function createArtist(){
@@ -169,7 +165,7 @@ async function autoUpload(){
   prog.style.width="85%";
   const song={id:Date.now().toString(), artist, title, genre:sGenre.value, releaseDate:sDate.value, bio:sBio.value||artistData.bio, artistBio:artistData.bio, lyrics:sLyrics.value, credits:sCredits.value, isrc:sISRC.value, composer:sComposer.value||artist, explicit:sExplicit.value, img:coverPath, audio:mp3Path, wa:artistData.wa, approvalCode:artistData.approvalCode, sell:sSell.checked, featured:sFeatured.checked, price:sPrice.value||0, plays:0, likes:0, suspended:false, created:new Date().toISOString()};
   let all=JSON.parse(localStorage.getItem(KEY_SONGS)||"[]"); all.unshift(song); localStorage.setItem(KEY_SONGS, JSON.stringify(all));
-  prog.style.width="100%"; sMsg.innerHTML=`✅ DONE! ${sSell.checked?`PAID SECURE - Generate 60s code below`:`FREE - Direct download`}`;
+  prog.style.width="100%"; sMsg.innerHTML=`✅ DONE! ${sSell.checked?`PAID SECURE - Generate 10 min code below`:`FREE - Direct download`}`;
   render();
  }catch(e){ prog.style.width="0%"; sMsg.innerText="Failed: "+e.message; }
 }
@@ -182,11 +178,12 @@ function render(){
  count.innerText=`${songs.length} songs • ${artists.length} artists • ${secureCodes.filter(c=>!c.used && Date.now()<c.expires).length} active codes`;
  let activeCodes=secureCodes.filter(c=>!c.used && Date.now()<c.expires).sort((a,b)=>b.created-a.created);
  secureList.innerHTML=activeCodes.map(c=>{
-   let secs=Math.max(0, Math.floor((c.expires-Date.now())/1000));
-   return `<div class="secureBox"><b style="color:#ffcc00">${c.code}</b> <span class="badge badge-secure">${secs}s left</span> <span class="badge badge-code">${c.forUser}</span><br><span style="font-size:11px">${c.songTitle} • ${c.forArtist} • $${c.price}</span><br><div class="row" style="margin-top:6px"><button class="btn btn-g" style="padding:6px;font-size:10px" onclick="sendCodeWA('${c.code}')">WhatsApp</button><button class="btn btn-b" style="padding:6px;font-size:10px" onclick="copyCode('${c.code}')">Copy</button><button class="btn btn-r" style="padding:6px;font-size:10px" onclick="revokeCode('${c.code}')">Revoke</button></div></div>`;
- }).join('')||"<p style='color:#666;font-size:11px'>No active codes</p>";
+   let totalSec=Math.max(0, Math.floor((c.expires-Date.now())/1000));
+   let mins=Math.floor(totalSec/60); let secs=totalSec%60;
+   return `<div class="secureBox"><b style="color:#ffcc00">${c.code}</b> <span class="badge badge-secure">${mins}m ${secs}s left</span> <span class="badge badge-code">${c.forUser}</span><br><span style="font-size:11px">${c.songTitle} • ${c.forArtist} • $${c.price} • 10 mins expiry</span><br><div class="row" style="margin-top:6px"><button class="btn btn-g" style="padding:6px;font-size:10px" onclick="sendCodeWA('${c.code}')">WhatsApp</button><button class="btn btn-b" style="padding:6px;font-size:10px" onclick="copyCode('${c.code}')">Copy</button><button class="btn btn-r" style="padding:6px;font-size:10px" onclick="revokeCode('${c.code}')">Revoke</button></div></div>`;
+ }).join('')||"<p style='color:#666;font-size:11px'>No active codes - 10 mins for slow internet</p>";
  artistList.innerHTML=fArtists.map(a=>`<div class="card ${a.suspended?'suspended':''}"><div style="display:flex;gap:10px"><img src="${a.photo?`https://byosites.github.io/byosites/${a.photo}`:'https://via.placeholder.com/60'}" style="width:60px;height:60px;border-radius:10px;object-fit:cover"><div style="flex:1"><b>${a.name}</b> <span class="badge badge-code">${a.approvalCode}</span><br><span style="font-size:11px;color:#888">${a.loc} • ${a.wa}</span></div></div><div class="row" style="margin-top:8px"><button class="btn btn-o" onclick="toggleSuspendArtist('${a.name}')">${a.suspended?'Unsuspend':'Suspend'}</button><button class="btn btn-b" onclick="editArtist('${a.name}')">Edit</button><button class="btn btn-r" onclick="deleteArtist('${a.name}')">Del</button></div></div>`).join('')||"No artists";
- songList.innerHTML=fSongs.map(s=>`<div class="card ${s.suspended?'suspended':''}"><div style="display:flex;gap:10px"><img src="https://byosites.github.io/byosites/${s.img}" style="width:70px;height:70px;border-radius:8px;object-fit:cover"><div style="flex:1"><b>${s.title}</b> - ${s.artist} ${s.suspended?'<span class="badge badge-sus">SUS</span>':'<span class="badge badge-live">LIVE</span>'} <span class="badge badge-code">${s.approvalCode}</span> ${s.sell?`<span class="badge badge-secure">SECURE 60s $${s.price} PAID</span>`:`<span class="badge badge-free">FREE DIRECT</span>`}<br><span style="font-size:10px;color:#666">${s.genre}</span></div></div><audio controls preload="none" src="https://byosites.github.io/byosites/${s.audio}" style="margin-top:8px"></audio><div class="row" style="margin-top:6px"><button class="btn btn-y" onclick="window.open('https://byosites.github.io/byosites/${s.audio}','_blank')">Test</button><button class="btn btn-blue" onclick="genSecureCode('${s.id}')">🔒 Gen 60s Code</button><button class="btn btn-o" onclick="genSecureCodeForPrompt('${s.id}')">For User</button><button class="btn btn-b" onclick="prepareEdit('${s.id}')">Edit</button><button class="btn btn-o" onclick="toggleSuspendSong('${s.id}')">Suspend</button><button class="btn btn-r" onclick="requestDeleteSong('${s.id}')">Del</button></div></div>`).join('')||"No songs";
+ songList.innerHTML=fSongs.map(s=>`<div class="card ${s.suspended?'suspended':''}"><div style="display:flex;gap:10px"><img src="https://byosites.github.io/byosites/${s.img}" style="width:70px;height:70px;border-radius:8px;object-fit:cover"><div style="flex:1"><b>${s.title}</b> - ${s.artist} ${s.suspended?'<span class="badge badge-sus">SUS</span>':'<span class="badge badge-live">LIVE</span>'} <span class="badge badge-code">${s.approvalCode}</span> ${s.sell?`<span class="badge badge-secure">SECURE 10m $${s.price} PAID</span>`:`<span class="badge badge-free">FREE DIRECT</span>`}<br><span style="font-size:10px;color:#666">${s.genre}</span></div></div><audio controls preload="none" src="https://byosites.github.io/byosites/${s.audio}" style="margin-top:8px"></audio><div class="row" style="margin-top:6px"><button class="btn btn-y" onclick="window.open('https://byosites.github.io/byosites/${s.audio}','_blank')">Test</button><button class="btn btn-blue" onclick="genSecureCode('${s.id}')">🔒 Gen 10m Code</button><button class="btn btn-o" onclick="genSecureCodeForPrompt('${s.id}')">For User</button><button class="btn btn-b" onclick="prepareEdit('${s.id}')">Edit</button><button class="btn btn-o" onclick="toggleSuspendSong('${s.id}')">Suspend</button><button class="btn btn-r" onclick="requestDeleteSong('${s.id}')">Del</button></div></div>`).join('')||"No songs";
 }
 
 function genSecureCode(id){
@@ -198,13 +195,13 @@ function genSecureCodeForPrompt(id, buyerUser){
  let all=JSON.parse(localStorage.getItem(KEY_SONGS)||"[]"); let s=all.find(x=>x.id===id); if(!s) return;
  if(!s.sell){ alert("FREE song - no code needed"); return; }
  let code=genSecureCodeOnly();
- let entry={ code:code, songId:id, songTitle:s.title, forUser:buyerUser||"GENERIC", forArtist:s.artist, created:Date.now(), expires:Date.now()+60000, used:false, price:s.price };
+ let entry={ code:code, songId:id, songTitle:s.title, forUser:buyerUser||"GENERIC", forArtist:s.artist, created:Date.now(), expires:Date.now()+600000, used:false, price:s.price };
  let codes=JSON.parse(localStorage.getItem(KEY_SECURE_CODES)||"[]"); codes.push(entry); localStorage.setItem(KEY_SECURE_CODES, JSON.stringify(codes));
- alert(`🔒 SECURE CODE: ${code}\nSong: ${s.title}\nAccount: ${entry.forUser}\nExpires 60s\nOne-time`);
+ alert(`🔒 SECURE CODE: ${code}\nSong: ${s.title}\nAccount: ${entry.forUser}\nExpires 10 MINS\nOne-time`);
  sendCodeWA(code);
  render();
 }
-function sendCodeWA(code){ let codes=JSON.parse(localStorage.getItem(KEY_SECURE_CODES)||"[]"); let c=codes.find(x=>x.code===code); if(!c) return; let msg=`Hi ${c.forUser}! Your SECURE code for ${c.songTitle} is ${c.code}. EXPIRES IN 60 SECONDS! Account ${c.forUser} + song only, one-time.`; let wa=prompt("Enter WhatsApp +263... to send, or cancel:")||""; if(wa){ window.open(`https://wa.me/${wa.replace(/\+/g,'')}?text=${encodeURIComponent(msg)}`,'_blank'); } }
+function sendCodeWA(code){ let codes=JSON.parse(localStorage.getItem(KEY_SECURE_CODES)||"[]"); let c=codes.find(x=>x.code===code); if(!c) return; let msg=`Hi ${c.forUser}! Your SECURE code for ${c.songTitle} is ${c.code}. EXPIRES IN 10 MINS! Account ${c.forUser} + song only, one-time.`; let wa=prompt("Enter WhatsApp +263... to send, or cancel:")||""; if(wa){ window.open(`https://wa.me/${wa.replace(/\+/g,'')}?text=${encodeURIComponent(msg)}`,'_blank'); } }
 function copyCode(code){ navigator.clipboard.writeText(code); alert("Copied: "+code); }
 function revokeCode(code){ if(!confirm("Revoke "+code+"?")) return; let codes=JSON.parse(localStorage.getItem(KEY_SECURE_CODES)||"[]"); localStorage.setItem(KEY_SECURE_CODES, JSON.stringify(codes.filter(c=>c.code!==code))); render(); }
 function clearExpired(){ let codes=JSON.parse(localStorage.getItem(KEY_SECURE_CODES)||"[]"); let expired=codes.filter(c=>!c.used && Date.now()>=c.expires).length; localStorage.setItem(KEY_SECURE_CODES, JSON.stringify(codes.filter(c=>c.used || Date.now()<c.expires))); alert(`Cleared ${expired} expired`); render(); }
@@ -219,35 +216,21 @@ function clearEdit(){ editId.value=""; editTitle.value=""; editBio.value=""; edi
 function toggleSuspendSong(id){ let code=prompt("Enter Approval Code:"); let all=JSON.parse(localStorage.getItem(KEY_SONGS)||"[]"); let s=all.find(x=>x.id===id); if(!s) return; if(code!==s.approvalCode){ alert("Wrong code"); return; } s.suspended=!s.suspended; localStorage.setItem(KEY_SONGS, JSON.stringify(all)); render(); }
 function requestDeleteSong(id){ let all=JSON.parse(localStorage.getItem(KEY_SONGS)||"[]"); let s=all.find(x=>x.id===id); if(!s) return; let code=prompt(`DELETE ${s.title}? Enter Code ${s.approvalCode}:`); if(code!==s.approvalCode){ alert("Wrong code"); return; } if(!confirm("Delete from GitHub?")) return; deleteSong(id,s.audio,s.img); }
 async function deleteSong(id,audioPath,imgPath){ try{ sMsg.innerText="Deleting..."; await deleteFromGitHub(audioPath); try{ await deleteFromGitHub(imgPath); }catch(e){} let all=JSON.parse(localStorage.getItem(KEY_SONGS)||"[]").filter(x=>x.id!==id); localStorage.setItem(KEY_SONGS, JSON.stringify(all)); sMsg.innerText="✅ Deleted"; render(); }catch(e){ sMsg.innerText="Failed: "+e.message; } }
-function exportData(){ let s=localStorage.getItem(KEY_SONGS); let a=localStorage.getItem(KEY_ARTISTS); let p=localStorage.getItem(KEY_SECURE_CODES); let blob=new Blob([s+"\n\n"+a+"\n\nSECURE_CODES:\n"+p],{type:"text/plain"}); let url=URL.createObjectURL(blob); let a2=document.createElement('a'); a2.href=url; a2.download=`backup-secure-v5.5-${Date.now()}.txt`; a2.click(); }
-
-// RESET FUNCTIONS - SECURITY
+function exportData(){ let s=localStorage.getItem(KEY_SONGS); let a=localStorage.getItem(KEY_ARTISTS); let p=localStorage.getItem(KEY_SECURE_CODES); let blob=new Blob([s+"\n\n"+a+"\n\nSECURE_CODES:\n"+p],{type:"text/plain"}); let url=URL.createObjectURL(blob); let a2=document.createElement('a'); a2.href=url; a2.download=`backup-secure-v5.6-${Date.now()}.txt`; a2.click(); }
 function openResetModal(){ document.getElementById('resetModal').style.display='grid'; document.getElementById('resetConfirmInput').value=""; document.getElementById('resetMsg').innerText=""; }
 function closeResetModal(){ document.getElementById('resetModal').style.display='none'; }
-function resetSecureCodes(){ if(!confirm("Reset secure codes only? This clears all 60s payment codes")) return; localStorage.removeItem(KEY_SECURE_CODES); localStorage.removeItem(KEY_PAY_CODES); alert("✅ Secure codes reset"); render(); }
-function resetSongsOnly(){ if(!confirm("Reset SONGS ONLY? All songs will be deleted from site (GitHub files remain). Backup first!")) return; let pin2=prompt("Enter PIN to confirm reset songs:"); if(pin2!==PIN){ alert("Wrong PIN"); return; } localStorage.removeItem(KEY_SONGS); alert("✅ Songs reset - Site empty"); render(); }
+function resetSecureCodes(){ if(!confirm("Reset secure codes only?")) return; localStorage.removeItem(KEY_SECURE_CODES); localStorage.removeItem(KEY_PAY_CODES); alert("✅ Secure codes reset"); render(); }
+function resetSongsOnly(){ if(!confirm("Reset SONGS ONLY? Backup first!")) return; let pin2=prompt("Enter PIN to confirm reset songs:"); if(pin2!==PIN){ alert("Wrong PIN"); return; } localStorage.removeItem(KEY_SONGS); alert("✅ Songs reset"); render(); }
 function resetArtistsOnly(){ if(!confirm("Reset ARTISTS ONLY?")) return; let pin2=prompt("Enter PIN:"); if(pin2!==PIN) return; localStorage.removeItem(KEY_ARTISTS); alert("✅ Artists reset"); render(); }
 function resetAllSite(){ openResetModal(); }
 function executeFullReset(){
  let input=document.getElementById('resetConfirmInput').value.trim();
- if(input!=="RESET PIN"){ document.getElementById('resetMsg').innerText="Type exactly: RESET (PIN)"; return; }
- if(!confirm("FINAL CONFIRM: RESET ENTIRE SITE? This wipes songs, artists, secure codes, users, downloads - ALL LOCAL DATA! GitHub files remain but site will be empty. Are you absolutely sure?")) return;
- // Full reset
- localStorage.removeItem(KEY_SONGS);
- localStorage.removeItem(KEY_ARTISTS);
- localStorage.removeItem(KEY_SECURE_CODES);
- localStorage.removeItem(KEY_PAY_CODES);
- localStorage.removeItem(KEY_USERS);
- localStorage.removeItem(KEY_DOWNLOADS);
- localStorage.removeItem(KEY_CURRENT);
- // Keep token? Remove for security too if wanted - keep token
- // localStorage.removeItem(KEY_TOKEN);
- alert("🔴 SITE RESET COMPLETE!\n\nAll data wiped:\n- Songs deleted\n- Artists deleted\n- Secure codes deleted\n- Users deleted\n- Downloads deleted\n\nSite is now empty and secure. Refresh page.");
- closeResetModal();
- render();
- location.reload();
+ if(input!=="RESET PIN"){ document.getElementById('resetMsg').innerText="Type exactly: RESET PIN"; return; }
+ if(!confirm("FINAL CONFIRM: RESET ENTIRE SITE? Wipes ALL LOCAL DATA!")) return;
+ localStorage.removeItem(KEY_SONGS); localStorage.removeItem(KEY_ARTISTS); localStorage.removeItem(KEY_SECURE_CODES); localStorage.removeItem(KEY_PAY_CODES); localStorage.removeItem(KEY_USERS); localStorage.removeItem(KEY_DOWNLOADS); localStorage.removeItem(KEY_CURRENT);
+ alert("🔴 SITE RESET COMPLETE! All wiped. Refresh.");
+ closeResetModal(); render(); location.reload();
 }
-
 setInterval(()=>{ render(); }, 5000);
 </script>
 </body></html>
