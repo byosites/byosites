@@ -29,7 +29,7 @@ audio{width:100%;margin:6px 0}
 
 <div id="lock" class="lock">
 <h2 style="color:#ffcc00">BYOMUSIC ADMIN</h2>
-<p style="color:#888;font-size:11px">Secure Access • Philip Mbewe</p>
+<p style="color:#888;font-size:11px">Secure Access</p>
 <input id="pin" type="password" placeholder="Enter PIN">
 <input id="ghToken" type="password" placeholder="GitHub Token ghp_xxx">
 <button class="btn btn-y" onclick="unlock()">Enter Admin</button>
@@ -42,7 +42,6 @@ audio{width:100%;margin:6px 0}
 <div style="display:flex;gap:6px;flex-wrap:wrap">
 <button class="btn-b" style="width:auto;padding:6px 10px" onclick="loadData()">Refresh</button>
 <button class="btn-b" style="width:auto;padding:6px 10px" onclick="exportData()">Backup</button>
-<button class="btn btn-reset" style="width:auto;padding:6px 12px;font-size:11px" onclick="openResetModal()">Reset</button>
 </div>
 </div>
 
@@ -57,9 +56,8 @@ audio{width:100%;margin:6px 0}
 
 <div class="section" style="border-color:#ff8800">
 <h4 style="color:#ff8800">🔒 Active Codes (10 Minutes)</h4>
-<p style="font-size:11px;color:#888">One-time codes, locked to buyer + song, expires in 10 mins</p>
 <div id="secureList"></div>
-<button class="btn btn-r" style="padding:8px;font-size:11px" onclick="clearExpired()">Clear Expired Codes</button>
+<button class="btn btn-r" style="padding:8px;font-size:11px" onclick="clearExpired()">Clear Expired</button>
 </div>
 
 <div class="section">
@@ -100,29 +98,6 @@ audio{width:100%;margin:6px 0}
 </div>
 
 <div id="songList"></div>
-
-<div class="resetSection">
-<h4 style="color:#ff0000">⚠️ Danger Zone</h4>
-<div class="grid2">
-<button class="btn btn-r" onclick="resetSecureCodes()">Reset Codes Only</button>
-<button class="btn btn-o" onclick="resetSongsOnly()">Reset Songs Only</button>
-<button class="btn btn-b" onclick="resetArtistsOnly()">Reset Artists Only</button>
-<button class="btn btn-reset" onclick="resetAllSite()">Reset Entire Site</button>
-</div>
-</div>
-</div>
-
-<div id="resetModal" style="position:fixed;inset:0;background:rgba(0,0,0,0.95);display:none;place-items:center;z-index:200;padding:16px">
-<div style="background:#1a0000;border:2px solid #ff0000;padding:20px;border-radius:16px;max-width:400px;width:100%">
-<h3 style="color:#ff0000">Confirm Reset</h3>
-<p style="font-size:12px;color:#aaa;margin:10px 0">Type <b style="color:#ffcc00">RESET PIN</b> to confirm</p>
-<input id="resetConfirmInput" placeholder="Type RESET (PIN)" style="border-color:#ff0000">
-<div style="display:flex;gap:8px;margin-top:12px">
-<button class="btn btn-b" style="flex:1" onclick="closeResetModal()">Cancel</button>
-<button class="btn btn-reset" style="flex:1" onclick="executeFullReset()">Confirm</button>
-</div>
-<p id="resetMsg" style="font-size:11px;color:#ff4444;margin-top:8px"></p>
-</div>
 </div>
 
 <script>
@@ -144,8 +119,27 @@ async function unlock(){
 if(localStorage.getItem(KEY_TOKEN)) ghToken.value=localStorage.getItem(KEY_TOKEN);
 
 async function toBase64(f){ return new Promise((res,rej)=>{ const r=new FileReader(); r.onload=()=>res(r.result.split(',')[1]); r.onerror=rej; r.readAsDataURL(f); }); }
-async function getSHA(p){ const url=`https://api.github.com/repos/byosites/byosites/contents/${p}`; const res=await fetch(url,{headers:{Authorization:`token ${GH_TOKEN}`}}); if(!res.ok) return null; const j=await res.json(); return j.sha; }
-async function uploadToGitHub(file,path){ const content=await toBase64(file); const url=`https://api.github.com/repos/byosites/byosites/contents/${path}`; const sha=await getSHA(path); const body={message:`upload ${path}`,content}; if(sha) body.sha=sha; const res=await fetch(url,{method:"PUT",headers:{Authorization:`token ${GH_TOKEN}`,"Content-Type":"application/json"},body:JSON.stringify(body)}); if(!res.ok){ const t=await res.text(); throw new Error(t); } return path; }
+
+async function getSHA(p){
+ try{
+   const url=`https://api.github.com/repos/byosites/byosites/contents/${p}`;
+   const res=await fetch(url,{headers:{Authorization:`token ${GH_TOKEN}`}});
+   if(res.status===404) return null;
+   if(!res.ok){ let t=await res.text(); console.log("getSHA error",t); return null; }
+   const j=await res.json(); return j.sha;
+ }catch(e){ return null; }
+}
+
+async function uploadToGitHub(file,path){
+ const content=await toBase64(file);
+ const url=`https://api.github.com/repos/byosites/byosites/contents/${path}`;
+ const sha=await getSHA(path);
+ const body={message:`upload ${path}`,content}; if(sha) body.sha=sha;
+ const res=await fetch(url,{method:"PUT",headers:{Authorization:`token ${GH_TOKEN}`,"Content-Type":"application/json"},body:JSON.stringify(body)});
+ if(!res.ok){ const t=await res.text(); throw new Error(t); }
+ return path;
+}
+
 async function uploadJSON(path, jsonObj){
  const content=btoa(unescape(encodeURIComponent(JSON.stringify(jsonObj,null,2))));
  const url=`https://api.github.com/repos/byosites/byosites/contents/${path}`;
@@ -154,8 +148,11 @@ async function uploadJSON(path, jsonObj){
  const res=await fetch(url,{method:"PUT",headers:{Authorization:`token ${GH_TOKEN}`,"Content-Type":"application/json"},body:JSON.stringify(body)});
  if(!res.ok){ const t=await res.text(); throw new Error(t); }
 }
-async function fetchJSONFile(path){ try{ const url=`https://byosites.github.io/byosites/${path}?t=${Date.now()}`; const res=await fetch(url); if(!res.ok) return null; return await res.json(); }catch(e){ return null; } }
-async function deleteFromGitHub(path){ const sha=await getSHA(path); if(!sha) throw new Error("File not found"); const url=`https://api.github.com/repos/byosites/byosites/contents/${path}`; const res=await fetch(url,{method:"DELETE",headers:{Authorization:`token ${GH_TOKEN}`,"Content-Type":"application/json"},body:JSON.stringify({message:`Delete ${path}`,sha})}); if(!res.ok){ const t=await res.text(); throw new Error(t); } }
+
+async function fetchJSONFile(path){
+ try{ const url=`https://byosites.github.io/byosites/${path}?t=${Date.now()}`; const res=await fetch(url); if(!res.ok) return null; return await res.json(); }
+ catch(e){ return null; }
+}
 
 async function loadData(){
  let sData=await fetchJSONFile('music/songs.json'); let aData=await fetchJSONFile('music/artists.json'); let cData=await fetchJSONFile('music/secure_codes.json');
@@ -171,17 +168,18 @@ async function createArtist(){
  const bio=aBio.value.trim(); if(!bio){ aMsg.innerText="Biography required"; return; }
  let photoFile=aPhotoFile.files[0]; let photoPath="";
  try{
-  if(photoFile){ aMsg.innerText="Uploading..."; const pPath=`music/artist-${Date.now()}-${photoFile.name.replace(/\s+/g,'-')}`; await uploadToGitHub(photoFile,pPath); photoPath=pPath; }
+  if(photoFile){ aMsg.innerText="Uploading photo..."; const pPath=`music/artist-${Date.now()}-${photoFile.name.replace(/\s+/g,'-')}`; await uploadToGitHub(photoFile,pPath); photoPath=pPath; }
   let idx=artists.findIndex(a=>a.name.toLowerCase()===name.toLowerCase());
   let code = idx>=0 && artists[idx].approvalCode ? artists[idx].approvalCode : genCode();
   aCodeShow.innerText=code;
   let obj={name,pass,wa:aWA.value,loc:aLoc.value,bio,genre:aGenre.value,year:aYear.value,fb:aFB.value,ig:aIG.value,yt:aYT.value,tik:aTik.value,photo:photoPath|| (idx>=0?artists[idx].photo:""), approvalCode:code, createdAt:new Date().toLocaleDateString(), suspended:false};
   if(idx>=0) artists[idx]={...artists[idx],...obj}; else artists.push(obj);
-  await uploadJSON('music/artists.json', artists); localStorage.setItem(KEY_ARTISTS, JSON.stringify(artists));
+  aMsg.innerText="Saving to GitHub..."; await uploadJSON('music/artists.json', artists); localStorage.setItem(KEY_ARTISTS, JSON.stringify(artists));
   aMsg.innerHTML=`✅ ${name} saved - Code: <b style="color:#ffcc00">${code}</b>`;
   render();
  }catch(e){ aMsg.innerText="Failed: "+e.message; }
 }
+
 async function autoUpload(){
  const mp3=mp3File.files[0]; const cover=coverFile.files[0]; const artist=sArtist.value.trim(); const title=sTitle.value.trim();
  if(!artist||!title){ sMsg.innerText="Artist and Title required"; return; }
@@ -196,7 +194,7 @@ async function autoUpload(){
   songs.unshift(song); await uploadJSON('music/songs.json', songs); localStorage.setItem(KEY_SONGS, JSON.stringify(songs));
   prog.style.width="100%"; sMsg.innerHTML=`✅ Upload complete - ${title}`;
   render();
- }catch(e){ prog.style.width="0%"; sMsg.innerText="Failed: "+e.message; }
+ }catch(e){ prog.style.width="0%"; sMsg.innerText="Failed: "+e.message; console.log(e); }
 }
 
 function render(){
@@ -210,10 +208,10 @@ function render(){
    return `<div class="secureBox"><b style="color:#ffcc00">${c.code}</b> <span class="badge badge-secure">${mins}m ${secs}s left</span> <span class="badge badge-code">${c.forUser}</span><br><span style="font-size:11px">${c.songTitle} • ${c.forArtist} • $${c.price}</span><br><div class="row" style="margin-top:6px"><button class="btn btn-g" style="padding:6px;font-size:10px" onclick="sendCodeWA('${c.code}')">WhatsApp</button><button class="btn btn-b" style="padding:6px;font-size:10px" onclick="copyCode('${c.code}')">Copy</button><button class="btn btn-r" style="padding:6px;font-size:10px" onclick="revokeCode('${c.code}')">Revoke</button></div></div>`;
  }).join('')||"<p style='color:#666;font-size:11px'>No active codes</p>";
  artistList.innerHTML=fArtists.map(a=>`<div class="card ${a.suspended?'suspended':''}"><div style="display:flex;gap:10px"><img src="${a.photo?`https://byosites.github.io/byosites/${a.photo}`:'https://via.placeholder.com/60'}" style="width:60px;height:60px;border-radius:10px;object-fit:cover"><div style="flex:1"><b>${a.name}</b> <span class="badge badge-code">${a.approvalCode}</span><br><span style="font-size:11px;color:#888">${a.loc} • ${a.wa}</span></div></div><div class="row" style="margin-top:8px"><button class="btn btn-o" onclick="toggleSuspendArtist('${a.name}')">${a.suspended?'Unsuspend':'Suspend'}</button><button class="btn btn-b" onclick="editArtist('${a.name}')">Edit</button><button class="btn btn-r" onclick="deleteArtist('${a.name}')">Delete</button></div></div>`).join('')||"No artists";
- songList.innerHTML=fSongs.map(s=>`<div class="card ${s.suspended?'suspended':''}"><div style="display:flex;gap:10px"><img src="https://byosites.github.io/byosites/${s.img}" style="width:70px;height:70px;border-radius:8px;object-fit:cover"><div style="flex:1"><b>${s.title}</b> - ${s.artist} ${s.suspended?'<span class="badge badge-sus">SUS</span>':'<span class="badge badge-live">LIVE</span>'} <span class="badge badge-code">${s.approvalCode}</span> ${s.sell?`<span class="badge badge-secure">$${s.price} PAID</span>`:`<span class="badge badge-free">FREE</span>`}<br><span style="font-size:10px;color:#666">${s.genre} • ★ ${(getAvg(s)).toFixed(1)} • ❤ ${s.likes||0} • 💬 ${s.comments? s.comments.length:0}</span></div></div><audio controls preload="none" src="https://byosites.github.io/byosites/${s.audio}" style="margin-top:8px"></audio><div class="row" style="margin-top:6px"><button class="btn btn-y" onclick="window.open('https://byosites.github.io/byosites/${s.audio}','_blank')">Test</button><button class="btn btn-blue" onclick="genSecureCode('${s.id}')">Generate Code</button><button class="btn btn-b" onclick="prepareEdit('${s.id}')">Edit</button><button class="btn btn-o" onclick="toggleSuspendSong('${s.id}')">Suspend</button><button class="btn btn-r" onclick="requestDeleteSong('${s.id}')">Delete</button></div></div>`).join('')||"No songs";
+ songList.innerHTML=fSongs.map(s=>`<div class="card ${s.suspended?'suspended':''}"><div style="display:flex;gap:10px"><img src="https://byosites.github.io/byosites/${s.img}" style="width:70px;height:70px;border-radius:8px;object-fit:cover"><div style="flex:1"><b>${s.title}</b> - ${s.artist} ${s.suspended?'<span class="badge badge-sus">SUS</span>':'<span class="badge badge-live">LIVE</span>'} <span class="badge badge-code">${s.approvalCode}</span> ${s.sell?`<span class="badge badge-secure">$${s.price} PAID</span>`:`<span class="badge badge-free">FREE</span>`}<br><span style="font-size:10px;color:#666">${s.genre}</span></div></div><audio controls preload="none" src="https://byosites.github.io/byosites/${s.audio}" style="margin-top:8px"></audio><div class="row" style="margin-top:6px"><button class="btn btn-y" onclick="window.open('https://byosites.github.io/byosites/${s.audio}','_blank')">Test</button><button class="btn btn-blue" onclick="genSecureCode('${s.id}')">Generate Code</button><button class="btn btn-b" onclick="prepareEdit('${s.id}')">Edit</button><button class="btn btn-o" onclick="toggleSuspendSong('${s.id}')">Suspend</button><button class="btn btn-r" onclick="requestDeleteSong('${s.id}')">Delete</button></div></div>`).join('')||"No songs";
 }
 function getAvg(s){ if(!s.ratings) return 0; let vals=Object.values(s.ratings); if(vals.length===0) return 0; return vals.reduce((a,b)=>a+b,0)/vals.length; }
-async function genSecureCode(id){ let buyer=prompt("Enter buyer username:")||"GENERIC"; let s=songs.find(x=>x.id===id); if(!s) return; if(!s.sell){ alert("Free song - no code needed"); return; } let code=genSecureCodeOnly(); let entry={code:code, songId:id, songTitle:s.title, forUser:buyer, forArtist:s.artist, created:Date.now(), expires:Date.now()+600000, used:false, price:s.price}; secureCodes.push(entry); localStorage.setItem(KEY_SECURE_CODES, JSON.stringify(secureCodes)); await uploadJSON('music/secure_codes.json', secureCodes).catch(()=>{}); alert(`Code: ${code} for ${buyer} - Valid 10 mins`); sendCodeWA(code); render(); }
+async function genSecureCode(id){ let buyer=prompt("Enter buyer username:")||"GENERIC"; let s=songs.find(x=>x.id===id); if(!s) return; if(!s.sell){ alert("Free song - no code needed"); return; } let code=genSecureCodeOnly(); let entry={code:code, songId:id, songTitle:s.title, forUser:buyer, forArtist:s.artist, created:Date.now(), expires:Date.now()+600000, used:false, price:s.price}; secureCodes.push(entry); localStorage.setItem(KEY_SECURE_CODES, JSON.stringify(secureCodes)); await uploadJSON('music/secure_codes.json', secureCodes).catch(e=>{console.log(e)}); alert(`Code: ${code} for ${buyer} - Valid 10 mins`); render(); }
 function sendCodeWA(code){ let c=secureCodes.find(x=>x.code===code); if(!c) return; let msg=`Hi ${c.forUser}! Your code for ${c.songTitle} is ${c.code}. Expires in 10 mins.`; let wa=prompt("Enter WhatsApp number:")||""; if(wa){ window.open(`https://wa.me/${wa.replace(/\+/g,'')}?text=${encodeURIComponent(msg)}`,'_blank'); } }
 function copyCode(code){ navigator.clipboard.writeText(code); alert("Copied: "+code); }
 async function revokeCode(code){ if(!confirm("Revoke "+code+"?")) return; secureCodes=secureCodes.filter(c=>c.code!==code); localStorage.setItem(KEY_SECURE_CODES, JSON.stringify(secureCodes)); await uploadJSON('music/secure_codes.json', secureCodes).catch(()=>{}); render(); }
@@ -226,22 +224,16 @@ async function saveEditMusic(){ let id=editId.value; if(!id){ alert("Click Edit 
 function clearEdit(){ editId.value=""; editTitle.value=""; editBio.value=""; editPrice.value=""; editApproval.value=""; }
 async function toggleSuspendSong(id){ let code=prompt("Enter Approval Code:"); let s=songs.find(x=>x.id===id); if(!s) return; if(code!==s.approvalCode){ alert("Wrong code"); return; } s.suspended=!s.suspended; localStorage.setItem(KEY_SONGS, JSON.stringify(songs)); await uploadJSON('music/songs.json', songs).catch(()=>{}); render(); }
 function requestDeleteSong(id){ let s=songs.find(x=>x.id===id); if(!s) return; let code=prompt(`DELETE ${s.title}? Enter Code:`); if(code!==s.approvalCode){ alert("Wrong code"); return; } if(!confirm("Delete from GitHub?")) return; deleteSong(id,s.audio,s.img); }
-async function deleteSong(id,audioPath,imgPath){ try{ sMsg.innerText="Deleting..."; await deleteFromGitHub(audioPath); try{ await deleteFromGitHub(imgPath); }catch(e){} songs=songs.filter(x=>x.id!==id); localStorage.setItem(KEY_SONGS, JSON.stringify(songs)); await uploadJSON('music/songs.json', songs).catch(()=>{}); sMsg.innerText="✅ Deleted"; render(); }catch(e){ sMsg.innerText="Failed: "+e.message; } }
-function exportData(){ let blob=new Blob([JSON.stringify(songs,null,2)],{type:"application/json"}); let url=URL.createObjectURL(blob); let a=document.createElement('a'); a.href=url; a.download=`backup-${Date.now()}.json`; a.click(); }
-function openResetModal(){ document.getElementById('resetModal').style.display='grid'; }
-function closeResetModal(){ document.getElementById('resetModal').style.display='none'; }
-async function resetSecureCodes(){ if(!confirm("Reset codes?")) return; secureCodes=[]; localStorage.removeItem(KEY_SECURE_CODES); await uploadJSON('music/secure_codes.json', []).catch(()=>{}); render(); }
-async function resetSongsOnly(){ if(!confirm("Reset Songs? Backup first!")) return; let pin2=prompt("Enter PIN:"); if(pin2!==PIN) return; songs=[]; localStorage.removeItem(KEY_SONGS); await uploadJSON('music/songs.json', []).catch(()=>{}); render(); }
-async function resetArtistsOnly(){ if(!confirm("Reset Artists?")) return; let pin2=prompt("Enter PIN:"); if(pin2!==PIN) return; artists=[]; localStorage.removeItem(KEY_ARTISTS); await uploadJSON('music/artists.json', []).catch(()=>{}); render(); }
-function resetAllSite(){ openResetModal(); }
-async function executeFullReset(){
- let input=document.getElementById('resetConfirmInput').value.trim();
- if(input!=="RESET PIN"){ document.getElementById('resetMsg').innerText="Type exactly: RESET PIN"; return; }
- if(!confirm("Final confirm: Reset entire site?")) return;
- songs=[]; artists=[]; secureCodes=[]; localStorage.removeItem(KEY_SONGS); localStorage.removeItem(KEY_ARTISTS); localStorage.removeItem(KEY_SECURE_CODES);
- try{ await uploadJSON('music/songs.json', []); await uploadJSON('music/artists.json', []); await uploadJSON('music/secure_codes.json', []); }catch(e){}
- alert("Site reset complete"); closeResetModal(); render(); location.reload();
+async function deleteSong(id,audioPath,imgPath){
+ try{
+  sMsg.innerText="Deleting...";
+  let shaA=await getSHA(audioPath); if(shaA){ await fetch(`https://api.github.com/repos/byosites/byosites/contents/${audioPath}`,{method:"DELETE",headers:{Authorization:`token ${GH_TOKEN}`,"Content-Type":"application/json"},body:JSON.stringify({message:`Delete ${audioPath}`,sha:shaA})}); }
+  let shaI=await getSHA(imgPath); if(shaI){ try{ await fetch(`https://api.github.com/repos/byosites/byosites/contents/${imgPath}`,{method:"DELETE",headers:{Authorization:`token ${GH_TOKEN}`,"Content-Type":"application/json"},body:JSON.stringify({message:`Delete ${imgPath}`,sha:shaI})}); }catch(e){} }
+  songs=songs.filter(x=>x.id!==id); localStorage.setItem(KEY_SONGS, JSON.stringify(songs)); await uploadJSON('music/songs.json', songs).catch(()=>{});
+  sMsg.innerText="✅ Deleted"; render();
+ }catch(e){ sMsg.innerText="Failed: "+e.message; }
 }
+function exportData(){ let blob=new Blob([JSON.stringify(songs,null,2)],{type:"application/json"}); let url=URL.createObjectURL(blob); let a=document.createElement('a'); a.href=url; a.download=`backup-${Date.now()}.json`; a.click(); }
 setInterval(()=>{ render(); }, 5000);
 </script>
 </body></html>
