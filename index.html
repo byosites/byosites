@@ -1,404 +1,406 @@
-<!DOCTYPE html>
-<html lang="en"><head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#08090d">
 <title>BYOMUSIC</title>
+<meta name="monetag" content="60d1ee500fd165e59fd4fca69bdb638d">
 <link rel="icon" href="music/profile.png">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<!-- GOOGLE ADSENSE - YOUR REAL ID -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7880131696089557" crossorigin="anonymous"></script>
 <style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:Inter,Arial}
-body{background:#050505;color:#fff;padding-bottom:90px}
-header{position:sticky;top:0;z-index:30;background:#080808;padding:12px 16px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #1a1a1a;flex-wrap:wrap;gap:8px}
-.logo{font-weight:900;font-size:20px;display:flex;gap:8px;align-items:center}
-.logo i{background:#ffcc00;color:#000;width:32px;height:32px;display:grid;place-items:center;border-radius:8px}
-.searchWrap{max-width:1100px;margin:14px auto;padding:0 12px;position:sticky;top:62px;z-index:20}
-.searchBox{display:flex;gap:8px;background:#111;border:1px solid #222;border-radius:14px;padding:8px 12px;align-items:center}
-.searchBox input{flex:1;background:transparent;border:none;margin:0;padding:8px;color:#fff;outline:none;font-size:14px}
-.hero{padding:20px 16px;text-align:center}
-.grid{max-width:1100px;margin:16px auto;padding:0 12px;display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px}
-.card{background:#111;border:1px solid #1e1e1e;border-radius:16px;overflow:hidden;position:relative}
-.card img{width:100%;height:200px;object-fit:cover;background:#0a0a0a}
-.body{padding:12px}
-.btn{padding:8px 12px;border-radius:10px;font-weight:800;font-size:11px;display:inline-flex;gap:6px;align-items:center;border:none;cursor:pointer;text-decoration:none}
-.btn-y{background:#ffcc00;color:#000}.btn-g{background:#25D366;color:#fff}.btn-d{background:#1a1a1a;color:#ccc;border:1px solid #222}.btn-w{background:#fff;color:#000}.btn-blue{background:#00aaff;color:#fff}.btn-r{background:#ff4444;color:#fff}
-.player{position:fixed;bottom:0;left:0;right:0;background:#111;border-top:1px solid #222;padding:10px 14px;display:none;align-items:center;gap:12px;z-index:99}
-.modal{position:fixed;inset:0;background:rgba(0,0,0,0.92);display:none;place-items:center;z-index:100;padding:16px}
-.modalBox{background:#0f0f0f;border:1px solid #222;padding:20px;border-radius:16px;max-width:600px;width:100%;max-height:90vh;overflow:auto}
-input,textarea{width:100%;padding:12px;background:#111;border:1px solid #333;color:#fff;border-radius:10px;margin:6px 0;box-sizing:border-box}
-textarea{height:60px}
-.badge{font-size:10px;padding:2px 6px;border-radius:6px}
-.badge-free{background:#25D366}.badge-paid{background:#ff4444}.badge-secure{background:#00aaff}.badge-top{background:#ffcc00;color:#000;font-weight:900}
-.tabs{display:flex;gap:6px;overflow:auto;padding:0 12px;max-width:1100px;margin:0 auto}
-.tab{padding:8px 14px;border-radius:20px;background:#111;border:1px solid #222;font-size:12px;cursor:pointer;white-space:nowrap}
-.tab.active{background:#ffcc00;color:#000;font-weight:900}
-.artistPage{display:none;max-width:900px;margin:20px auto;padding:0 16px}
-.aboutPage{display:none;max-width:900px;margin:20px auto;padding:0 16px}
-.codeBox{background:#001a33;border:1px dashed #00aaff;padding:10px;border-radius:10px;text-align:center;margin:8px 0}
-#searchInfo{font-size:11px;color:#ffcc00;margin:8px 4px}
-.toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:#111;border:1px solid #333;padding:10px 16px;border-radius:10px;font-size:12px;z-index:200;display:none;max-width:90%}
-.countdown{color:#ff4444;font-weight:900}
-.aboutCard{background:linear-gradient(135deg,#111,#0a0a0a);border:1px solid #222;border-radius:20px;padding:24px;margin:16px 0}
-.creatorImg{width:120px;height:120px;border-radius:50%;object-fit:cover;border:3px solid #ffcc00;margin:0 auto;display:block}
-.stars{color:#ffcc00;cursor:pointer;font-size:18px}
-.star-off{color:#333}
-.comment{background:#0a0a0a;border:1px solid #1a1a1a;padding:10px;border-radius:10px;margin:6px 0;font-size:12px}
-.comment b{color:#ffcc00;font-size:11px}
-.like-active{background:#ff4444!important;color:#fff!important;border-color:#ff4444!important}
+:root{--gold:#ffcf33;--bg:#07080d;--glass:rgba(255,255,255,.075);--line:rgba(255,255,255,.13);--muted:#9da3b1}
+*{box-sizing:border-box}
+body{margin:0;background:radial-gradient(ellipse at 15% 0%,#282044 0,transparent 38%),radial-gradient(ellipse at 90% 25%,#142b38 0,transparent 35%),var(--bg);color:#fff;font-family:Inter,system-ui,Arial;padding-bottom:230px;min-height:100vh}
+button,input,textarea{font:inherit}
+button{cursor:pointer}
+header{position:sticky;top:0;z-index:20;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;padding:13px max(16px,calc((100% - 1120px)/2));background:rgba(7,8,13,.72);backdrop-filter:blur(24px) saturate(160%);-webkit-backdrop-filter:blur(24px) saturate(160%);border-bottom:1px solid var(--line)}
+.logo{font-weight:950;font-size:20px;letter-spacing:.5px}
+.logo i{background:var(--gold);color:#111;padding:9px;border-radius:11px;margin-right:7px}
+.actions{display:flex;gap:7px;align-items:center;flex-wrap:wrap}
+.btn{border:1px solid var(--line);border-radius:12px;padding:9px 13px;background:var(--glass);color:#fff;font-weight:750;font-size:12px}
+.btn.gold{background:var(--gold);color:#111;border-color:var(--gold)}
+.btn.green{background:#168b54;border-color:#168b54}
+.btn.red{background:#a52b39;border-color:#a52b39}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.wrap{max-width:1120px;margin:auto;padding:0 14px}
+.hero{text-align:center;padding:34px 12px 22px}
+.hero h1{font-size:clamp(32px,7vw,54px);margin:0;font-weight:950;letter-spacing:-2px}
+.hero h1 span{color:var(--gold)}
+.muted{color:var(--muted)}
+.search{display:flex;gap:8px;padding:9px 12px;background:var(--glass);border:1px solid var(--line);border-radius:16px;backdrop-filter:blur(18px);margin:0 auto 15px;max-width:760px}
+.search input{background:transparent;border:0;outline:0;color:white;flex:1;min-width:0}
+.tabs{display:flex;gap:7px;overflow:auto;padding:4px 0 12px}
+.tab{white-space:nowrap;border:1px solid var(--line);border-radius:30px;padding:9px 15px;background:var(--glass);color:#ddd;font-size:12px}
+.tab.active{background:var(--gold);color:#111;border-color:var(--gold);font-weight:900}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(245px,1fr));gap:15px}
+.glass{background:linear-gradient(145deg,rgba(255,255,255,.105),rgba(255,255,255,.035));border:1px solid var(--line);border-radius:20px;box-shadow:0 12px 35px #0005;backdrop-filter:blur(22px) saturate(145%);-webkit-backdrop-filter:blur(22px) saturate(145%);overflow:hidden}
+.song img,.artist img{width:100%;height:190px;object-fit:cover;background:#151821}
+.cardbody{padding:13px}
+.cardbody h3{font-size:15px;margin:0 0 5px}
+.meta{font-size:11px;color:var(--muted);margin:6px 0 11px}
+.row{display:flex;gap:7px;flex-wrap:wrap;align-items:center}
+.pill{font-size:10px;border-radius:8px;padding:4px 7px;background:#222}
+.free{background:#17653f}
+.paid{background:#842e37}
+.empty{text-align:center;padding:45px 10px;color:var(--muted);grid-column:1/-1}
+.player{position:fixed;bottom:72px;left:0;right:0;z-index:30;background:rgba(10,12,18,.88);border-top:1px solid var(--line);backdrop-filter:blur(26px);padding:10px max(12px,calc((100% - 1120px)/2));display:none}
+.playerhead{display:flex;align-items:center;gap:10px}
+.playerhead img{width:48px;height:48px;object-fit:cover;border-radius:12px}
+.playerhead .info{flex:1;min-width:0}
+.playerhead b,.playerhead small{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.playerhead small{color:var(--muted)}
+.controls{display:flex;justify-content:center;align-items:center;gap:12px;margin:7px}
+.controls button{border:1px solid var(--line);background:#242631;color:white;border-radius:50%;width:37px;height:37px}
+.controls .main{width:44px;height:44px;background:var(--gold);color:#111;border:0;font-size:17px}
+.progress{display:flex;align-items:center;gap:9px;font-size:10px;color:var(--muted)}
+.progress input{flex:1;accent-color:var(--gold)}
+.modal{position:fixed;inset:0;background:#000b;z-index:50;display:none;place-items:center;padding:14px}
+.modal.show{display:grid}
+.modalbox{width:min(620px,100%);max-height:90vh;overflow:auto;padding:20px}
+.modalbox h2{margin-top:0;color:var(--gold)}
+input,textarea{width:100%;padding:12px;border:1px solid var(--line);border-radius:12px;background:#080a10;color:white;margin:6px 0;outline:none}
+textarea{min-height:90px;resize:vertical}
+.close{float:right}
+.stars{color:var(--gold);font-size:20px;cursor:pointer}
+.lyrics{white-space:pre-wrap;line-height:1.7;color:#ddd;background:#080a10;padding:14px;border-radius:12px;max-height:240px;overflow:auto}
+.comment{padding:10px;background:#0b0d14;border:1px solid var(--line);border-radius:12px;margin:7px 0;font-size:12px}
+.toast{position:fixed;z-index:80;bottom:235px;left:50%;transform:translateX(-50%);background:#20232d;border:1px solid var(--line);padding:11px 16px;border-radius:12px;display:none;max-width:90%;font-size:12px}
+.page{display:none}
+.page.active{display:block}
+.inboxitem{padding:12px;border-bottom:1px solid var(--line);font-size:12px}
+.liveDot{width:8px;height:8px;background:#25D366;border-radius:50%;display:inline-block;animation:pulse 1.5s infinite}
+@keyframes pulse{0%{opacity:1}50%{opacity:.3}100%{opacity:1}}
+@media(max-width:560px){header{padding:10px}.logo{font-size:17px}.btn{padding:8px 10px}.player{padding:9px 10px}.grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.song img{height:140px}.cardbody{padding:10px}.cardbody h3{font-size:13px}.hero{padding-top:25px}}
 </style>
-</head><body>
+</head>
+<body>
 <header>
-<div class="logo"><i class="fas fa-music"></i> BYOMUSIC</div>
-<div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap">
-<span id="userHello" style="font-size:12px;color:#ffcc00;display:none"></span>
-<button id="loginBtn" class="btn btn-d" onclick="openModal('authModal')">Sign In / Up</button>
-<button id="logoutBtn" class="btn btn-d" style="display:none" onclick="logout()">Logout</button>
-<button class="btn btn-d" onclick="openAbout()">About</button>
-<a href="artist.html" class="btn btn-d">Artist</a>
-<a href="https://wa.me/263789706161" class="btn btn-g"><i class="fab fa-whatsapp"></i></a>
+<div class="logo"><i class="fa-solid fa-music"></i>BYO<span style="color:var(--gold)">MUSIC</span></div>
+<div class="actions">
+<span id="hello" class="muted" style="font-size:12px"></span>
+<button class="btn" id="inboxBtn" hidden onclick="openInbox()">🔔 Inbox <span id="unread"></span></button>
+<button class="btn" id="authBtn" onclick="openAuth()">Sign in / up</button>
+<button class="btn" id="outBtn" hidden onclick="signOutUser()">Logout</button>
+<button class="btn" onclick="showAbout()">About</button>
 </div>
 </header>
 
-<div class="searchWrap" id="searchWrap">
-<div class="searchBox">
-<i class="fas fa-search" style="color:#666"></i>
-<input id="searchInput" type="text" placeholder="Search songs, artists..." oninput="doSearch()">
-<button id="clearSearch" class="btn btn-d" style="display:none" onclick="clearSearch()">X</button>
-<button class="btn btn-y" onclick="doSearch()"><i class="fas fa-search"></i></button>
-</div>
-<div id="searchInfo" style="display:none"></div>
+<!-- TOP SHOP AD - AUTO LOADS FROM music/ads.json - Admin > Ads controls this -->
+<div id="shopAd" style="max-width:1120px;margin:12px auto 0;padding:0 14px;">
+  <a id="shopAdLink" href="https://wa.me/263789706161?text=I%20want%20to%20advertise%20on%20BYOMUSIC" style="display:block;background:linear-gradient(90deg,#ffcf33,#ff9a00);color:#111;text-align:center;padding:12px;border-radius:14px;font-weight:900;font-size:13px;text-decoration:none">
+    📢 ADVERTISE HERE - Your Shop Here - $10/week - Tap to Book
+  </a>
 </div>
 
-<div class="hero" id="hero">
-<h1 style="font-size:32px;font-weight:900">BYO<span style="color:#ffcc00">MUSIC</span></h1>
-<p style="color:#888;font-size:11px;max-width:600px;margin:8px auto">Music For All - Direct Download Fixed</p>
-<span id="stat" style="color:#555;font-size:11px">Loading SYNCED data...</span>
+<!-- REFERRAL BANNER -->
+<div style="max-width:1120px;margin:12px auto 0;padding:0 14px;">
+  <div class="glass" style="padding:14px;text-align:center;border:1px solid #ffcf33">
+    <b style="color:var(--gold)">🔥 Letha Umngane, Faka Mahhala! / Bring a Friend, Get FREE Upload!</b><br>
+    <span class="muted" style="font-size:12px">Your Code: <b id="myRefCode" style="color:#fff">BYO-GUEST</b> • Share it, when 1 friend pays you get 1 FREE upload</span><br>
+    <button class="btn gold" style="margin-top:8px" onclick="shareReferral()">📤 Share My Code on WhatsApp</button>
+    <button class="btn" style="margin-top:8px" onclick="copyRefLink()">🔗 Copy Link</button>
+  </div>
 </div>
 
-<div class="tabs" id="tabs">
-<div class="tab active" onclick="setFilter('all',this)">All</div>
-<div class="tab" onclick="setFilter('top',this)">🔥 Top Rated</div>
-<div class="tab" onclick="setFilter('free',this)">🆓 Free</div>
-<div class="tab" onclick="setFilter('paid',this)">💰 Paid </div>
-<div class="tab" onclick="setFilter('artists',this)">👤 Artists</div>
-<div class="tab" onclick="openAbout()">ℹ️ About</div>
+<main class="wrap">
+<section id="homePage" class="page active">
+<div class="hero">
+<h1>BYO<span>MUSIC</span></h1>
+<p class="muted">Zimbabwean music. One place. Worldwide.</p>
+<p id="status" class="muted" style="font-size:11px">Connecting to live music library…</p>
+<p style="font-size:11px;color:#25D366"><span class="liveDot"></span>Online</p>
+</div>
+<div class="search">
+<i class="fa fa-search muted"></i>
+<input id="search" placeholder="Search songs, artists or lyrics" oninput="render()">
+<button class="btn gold" onclick="document.getElementById('search').value='';render()">Clear</button>
+</div>
+<nav class="tabs">
+<button class="tab active" data-filter="all" onclick="setFilter('all',this)">All music</button>
+<button class="tab" data-filter="top" onclick="setFilter('top',this)">🔥 Top rated</button>
+<button class="tab" data-filter="free" onclick="setFilter('free',this)">Free</button>
+<button class="tab" data-filter="paid" onclick="setFilter('paid',this)">Paid</button>
+<button class="tab" data-filter="artists" onclick="setFilter('artists',this)">Artists</button>
+</nav>
+<div id="grid" class="grid"><div class="empty">Loading music…</div></div>
+
+<!-- MID-FEED GOOGLE AD -->
+<div style="margin:20px 0;text-align:center">
+  <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-7880131696089557" data-ad-slot="auto" data-ad-format="auto" data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
 </div>
 
-<div class="grid" id="grid"></div>
-<div id="artistPage" class="artistPage"><button class="btn btn-d" onclick="closeArtistPage()">← Back</button><div id="artistDetail"></div><div id="artistSongs" class="grid" style="margin:12px 0;padding:0"></div></div>
+</section>
+<section id="aboutPage" class="page">
+<button class="btn" onclick="showHome()">← Back</button>
+<div class="glass" style="padding:24px;margin-top:15px;text-align:center">
+<img src="music/profile.png" onerror="this.style.display='none'" style="width:110px;height:110px;object-fit:cover;border-radius:50%;border:3px solid var(--gold)">
+<h2>Philip Mbewe</h2>
+<p style="color:var(--gold)">Founder & Developer · Bulawayo, Zimbabwe</p>
+<p class="muted">BYOMUSIC supports Zimbabwean music through discovery, listening and artist-focused distribution.</p>
+<p class="muted">© 2026 BYOMUSIC • v7.2 - Monetag Verified + Ads Fixed</p>
+</div>
+</section>
+</main>
+<div id="player" class="player">
+<div class="playerhead">
+<img id="pImg" src="">
+<div class="info"><b id="pTitle">—</b><small id="pArtist">—</small></div>
+<button class="btn" onclick="openQueue()">Queue</button>
+<button class="btn" onclick="openSong(current?current.id:'')">🎤 Lyrics</button>
+</div>
+<div class="controls">
+<button onclick="previous()">⏮</button>
+<button class="main" id="playBtn" onclick="togglePlay()">▶</button>
+<button onclick="next()">⏭</button>
+<button onclick="toggleShuffle()" id="shuffleBtn">🔀</button>
+<button onclick="toggleRepeat()" id="repeatBtn">🔁</button>
+</div>
+<div class="progress"><span id="elapsed">0:00</span><input id="seek" type="range" min="0" max="1000" value="0" oninput="seekAudio(this.value)"><span id="duration">0:00</span></div>
+<audio id="audio"></audio>
+</div>
 
-<div id="aboutPage" class="aboutPage">
-<button class="btn btn-d" onclick="closeAbout()">← Back to Music</button>
-<div class="aboutCard" style="text-align:center">
-<img src="music/profile.png" class="creatorImg" onerror="this.src='https://via.placeholder.com/200?text=Philip+Mbewe'">
-<h2 style="margin-top:16px">Philip Mbewe</h2>
-<p style="color:#ffcc00;font-size:12px;font-weight:900">Young Creator & Developer • Bulawayo, Zimbabwe</p>
-<p style="color:#888;font-size:11px">Founder of BYOMUSIC</p>
-</div>
-<div class="aboutCard">
-<h3 style="color:#ffcc00">ℹ️ About BYOMUSIC</h3>
-<p style="font-size:13px;color:#ccc;line-height:1.6;margin-top:10px">
-BYOMUSIC is a proudly Zimbabwean music platform created by <b style="color:#ffcc00">Philip Mbewe</b> from Bulawayo.<br><br>
-<b>Features:</b> Direct free downloads, secure 10-min paid codes, comments, likes, 5-star ratings, top rated sorting, SYNCED across all devices including user accounts.<br><br>
-<b>Mission:</b> Make Zim music accessible worldwide while ensuring artists get paid securely.
-</p>
-</div>
-<div class="aboutCard" style="text-align:center;border-color:#ffcc00">
-<p style="font-size:11px;color:#888">© 2026 BYOMUSIC • Created with ❤️ by Philip Mbewe • Bulawayo, Zimbabwe • SYNCED v6.2</p>
-</div>
+<!-- GOOGLE BANNER AD - BOTTOM -->
+<div id="googleBottomAd" style="position:fixed;bottom:0;left:0;right:0;z-index:40;background:#000;text-align:center;padding:4px 0 0;border-top:1px solid #222">
+  <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-7880131696089557" data-ad-slot="auto" data-ad-format="auto" data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+  <div style="font-size:9px;color:#555">Advertisement • BYOMUSIC</div>
 </div>
 
-<div id="authModal" class="modal" onclick="if(event.target==this)closeModal('authModal')"><div class="modalBox"><h3 style="color:#ffcc00">Account</h3><p style="font-size:11px;color:#888">SYNCED - Works on all devices</p><div style="display:flex;gap:6px;margin:10px 0"><button class="btn btn-y" style="flex:1" onclick="showAuth('signup')">Sign Up</button><button class="btn btn-d" style="flex:1" onclick="showAuth('signin')">Sign In</button></div><div id="signupBox"><input id="suName" placeholder="Username *"><input id="suPass" type="password" placeholder="Password *"><input id="suPass2" type="password" placeholder="Confirm *"><button class="btn btn-y" style="width:100%" onclick="signUp()">Create SYNCED Account</button></div><div id="signinBox" style="display:none"><input id="siName" placeholder="Username"><input id="siPass" type="password" placeholder="Password"><button class="btn btn-w" style="width:100%" onclick="signIn()">Sign In</button></div><p id="authMsg" style="font-size:11px;color:#ff4444"></p></div></div>
-<div id="songModal" class="modal" onclick="if(event.target==this)closeModal('songModal')"><div class="modalBox" id="songDetailBox"><div id="songDetail"></div></div></div>
-<div id="payModal" class="modal" onclick="if(event.target==this)closeModal('payModal')"><div class="modalBox"><h3 style="color:#ffcc00">🔒 Secure One-Time Code - 10 MINS</h3><div class="codeBox"><b id="paySongTitle"></b><br><span style="font-size:11px;color:#888">Price: <span id="payPrice" style="color:#ffcc00"></span></span><br><span style="font-size:10px;color:#00aaff">Account: <b id="payAccount" style="color:#ffcc00"></b></span><br><span style="font-size:10px;color:#888">Expires in: <b id="countdown" class="countdown">10m 00s</b></span></div><p style="font-size:11px;color:#888">Code works ONLY for your account + this song + 10 minutes. One-time use.</p><input id="payCodeInput" placeholder="Enter Secure Code e.g. BYO-..."><button class="btn btn-y" style="width:100%" onclick="checkPayCode()">Unlock & Direct Download</button><a id="payWaLink" href="#" class="btn btn-g" style="width:100%;margin-top:8px;text-align:center;text-decoration:none"><i class="fab fa-whatsapp"></i> Request Secure Code</a><p id="payMsg" style="font-size:11px;color:#ff4444;margin-top:8px"></p></div></div>
-<div class="player" id="player"><img id="pImg" width="44" height="44" style="border-radius:8px"><div style="flex:1"><b id="pTitle" style="font-size:12px"></b><p id="pArtist" style="font-size:11px;color:#888"></p><span id="pRating" style="font-size:10px;color:#ffcc00"></span></div><audio id="audio" controls style="width:160px"></audio><button onclick="document.getElementById('player').style.display='none'" style="background:#222;color:#888;border:none;padding:6px 10px;border-radius:8px">X</button></div>
+<div id="authModal" class="modal" onclick="if(event.target===this)hideModal('authModal')">
+<div class="modalbox glass">
+<button class="btn close" onclick="hideModal('authModal')">✕</button>
+<h2>BYOMUSIC Account</h2>
+<p class="muted">Enjoy the music</p>
+<div class="row"><button class="btn gold" onclick="authMode('signup')">Create account</button><button class="btn" onclick="authMode('signin')">Sign in</button></div>
+<div id="authFields"></div>
+<p class="muted" style="font-size:11px">Referred by: <span id="referredByDisplay" style="color:var(--gold)">None</span></p>
+<p id="authError" style="color:#ff7777;font-size:12px"></p>
+</div>
+</div>
+<div id="songModal" class="modal" onclick="if(event.target===this)hideModal('songModal')">
+<div class="modalbox glass"><button class="btn close" onclick="hideModal('songModal')">✕</button><div id="songDetail"></div></div>
+</div>
+<div id="inboxModal" class="modal" onclick="if(event.target===this)hideModal('inboxModal')">
+<div class="modalbox glass"><button class="btn close" onclick="hideModal('inboxModal')">✕</button><h2>My inbox - Realtime</h2><p class="muted" style="font-size:11px">Codes arrive in 3 sec - no need to refresh</p><div id="inboxList"></div><button class="btn" style="width:100%" onclick="markAllRead()">Mark All Read</button></div>
+</div>
+<div id="queueModal" class="modal" onclick="if(event.target===this)hideModal('queueModal')">
+<div class="modalbox glass"><button class="btn close" onclick="hideModal('queueModal')">✕</button><h2>Up next - Playlist</h2><div id="queueList"></div></div>
+</div>
+<div id="payModal" class="modal" onclick="if(event.target===this)hideModal('payModal')">
+<div class="modalbox glass"><button class="btn close" onclick="hideModal('payModal')">✕</button><h2>🔒 Secure Code - 10 Mins</h2><div style="background:#001a33;border:1px dashed #00aaff;padding:12px;border-radius:12px;text-align:center"><b id="paySongTitle"></b><br><span class="muted">Price: <span id="payPrice" style="color:var(--gold)"></span></span><br><span class="muted">Account: <b id="payAccount" style="color:var(--gold)"></b></span><br><span class="muted">Expires: <b id="countdown" style="color:#ff5555">10m 00s</b></span></div><input id="payCodeInput" placeholder="Enter code e.g. BYO-..."><button class="btn gold" style="width:100%" onclick="checkPayCode()">Unlock & Download</button><a id="payWaLink" href="#" class="btn green" style="width:100%;text-align:center;display:block;margin-top:8px;text-decoration:none">WhatsApp Request Code</a><p id="payMsg" style="color:#ff7777;font-size:12px"></p></div>
+</div>
 <div id="toast" class="toast"></div>
 
-<script>
-const KEY_SONGS="byomusic_songs_v2_final"; const KEY_ARTISTS="byomusic_artists_secure"; const KEY_USERS="byomusic_users_v5"; const KEY_CURRENT="byomusic_current_user_v5"; const KEY_SECURE_CODES="byomusic_secure_codes_v54"; const KEY_TOKEN="byomusic_gh_token";
-let songs=[]; let artists=[]; let users=[]; let currentUser=null; let secureCodes=[];
-let filter='all'; let currentPaySong=null; let lastSearch=""; let countdownInterval=null;
-
-function showToast(msg){ let t=document.getElementById('toast'); t.innerText=msg; t.style.display='block'; setTimeout(()=>t.style.display='none',3500); }
-
-async function fetchJSONFile(path){
- try{ const url=`https://byosites.github.io/byosites/${path}?t=${Date.now()}`; const res=await fetch(url); if(!res.ok) return null; return await res.json(); }
- catch(e){ return null; }
+<script type="module">
+import {initializeApp} from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
+import {getAuth,onAuthStateChanged,createUserWithEmailAndPassword,signInWithEmailAndPassword,signOut,updateProfile} from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
+const firebaseConfig = {
+  apiKey: "AIzaSyBeJwgHaGbUJNvki5Uu5iTrHvybwkGeBcw",
+  authDomain: "byomusic-cf50c.firebaseapp.com",
+  projectId: "byomusic-cf50c",
+  storageBucket: "byomusic-cf50c.firebasestorage.app",
+  messagingSenderId: "988323942811",
+  appId: "1:988323942811:web:7315895722f8eea7a8d13e",
+  measurementId: "G-4FY2564E90"
+};
+const app=initializeApp(firebaseConfig);
+const auth=getAuth(app);
+const $=id=>document.getElementById(id);
+const KEY_SONGS="byomusic_songs_v2_final", KEY_ARTISTS="byomusic_artists_secure", KEY_USERS="byomusic_users_v5", KEY_SECURE_CODES="byomusic_secure_codes_v54", KEY_TOKEN="byomusic_gh_token";
+let user=null, songs=[], artists=[], secureCodes=[], inbox=[];
+let filter="all", current=null, queue=[], qi=-1, repeat=false, isShuffle=false;
+let unreadCount=0, seenCodes=JSON.parse(localStorage.getItem("byomusic_seen_codes")||"[]"), lastKnownComments=0, lastKnownLikes=0, currentPaySong=null, countdownInterval=null;
+const asset=p=>!p?"":/^https?:\/\//i.test(p)?p:`https://byosites.github.io/byosites/${String(p).replace(/^\/+/,"")}`;
+const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const fmt=n=>{n=Number(n)||0;return Math.floor(n/60)+":"+String(Math.floor(n%60)).padStart(2,"0")};
+function toast(m){$("toast").textContent=m;$("toast").style.display="block";setTimeout(()=>$("toast").style.display="none",4000);}
+function beep(){try{new Audio("https://actions.google.com/sounds/v1/alarms/beep_short.ogg").play();}catch(e){}}
+function modal(id,on=true){$(id).classList.toggle("show",on);}
+window.hideModal=id=>modal(id,false);
+window.openAuth=()=>{authMode("signup");modal("authModal");};
+window.authMode=mode=>{
+$("authFields").innerHTML=mode==="signup"?`<input id="displayName" placeholder="Display name (username)"><input id="authEmail" type="email" placeholder="Email address"><input id="authPass" type="password" placeholder="Password (6+ chars)"><button class="btn gold" style="width:100%" id="authSubmit">Create account</button>`:`<input id="authEmail" type="email" placeholder="Email address"><input id="authPass" type="password" placeholder="Password"><button class="btn gold" style="width:100%" id="authSubmit">Sign in</button>`;
+$("authSubmit").onclick=()=>submitAuth(mode);$("authError").textContent="";
+let ref=localStorage.getItem("byo_referred_by")||"None"; if($("referredByDisplay")) $("referredByDisplay").textContent=ref;
+};
+async function submitAuth(mode){
+try{
+let email=$("authEmail").value.trim(), pass=$("authPass").value;
+if(!email||!pass) throw Error("Enter email and password.");
+if(mode==="signup"){let name=$("displayName").value.trim(); if(!name) throw Error("Enter display name."); let c=await createUserWithEmailAndPassword(auth,email,pass); await updateProfile(c.user,{displayName:name}); await c.user.reload();}
+else{await signInWithEmailAndPassword(auth,email,pass);}
+modal("authModal",false); toast("Welcome to BYOMUSIC");
+}catch(e){$("authError").textContent=e.message;}
 }
-
-async function getGH_SHA(path, token){
- try{
-   const url=`https://api.github.com/repos/byosites/byosites/contents/${path}`;
-   const res=await fetch(url,{headers:{Authorization:`token ${token}`}});
-   if(res.status===404) return null;
-   if(!res.ok) return null;
-   const j=await res.json(); return j.sha;
- }catch(e){ return null; }
-}
-
-async function uploadJSON_GH(path, obj, token){
- if(!token) return false;
- const content=btoa(unescape(encodeURIComponent(JSON.stringify(obj,null,2))));
- const url=`https://api.github.com/repos/byosites/byosites/contents/${path}`;
- const sha=await getGH_SHA(path, token);
- const body={message:`sync ${path}`,content}; if(sha) body.sha=sha;
- const res=await fetch(url,{method:"PUT",headers:{Authorization:`token ${token}`,"Content-Type":"application/json"},body:JSON.stringify(body)});
- if(!res.ok){ let t=await res.text(); console.log("upload fail",path,t); return false; }
- return true;
-}
-
-function saveAllLocal(){
- localStorage.setItem(KEY_SONGS, JSON.stringify(songs));
- localStorage.setItem(KEY_ARTISTS, JSON.stringify(artists));
- localStorage.setItem(KEY_USERS, JSON.stringify(users));
- localStorage.setItem(KEY_CURRENT, JSON.stringify(currentUser));
- localStorage.setItem(KEY_SECURE_CODES, JSON.stringify(secureCodes));
-}
-
-async function saveAllAndSync(){
- saveAllLocal();
- let token=localStorage.getItem(KEY_TOKEN);
- if(token){
-   try{
-     await uploadJSON_GH('music/songs.json', songs, token);
-     await uploadJSON_GH('music/users.json', users, token);
-     await uploadJSON_GH('music/secure_codes.json', secureCodes, token);
-   }catch(e){ console.log("sync error",e); }
- }
-}
-
+window.signOutUser=()=>signOut(auth);
+onAuthStateChanged(auth,u=>{
+user=u;
+$("hello").textContent=u?`Hi, ${u.displayName||u.email}`:"";
+$("authBtn").hidden=!!u; $("outBtn").hidden=!u; $("inboxBtn").hidden=!u;
+updateBell(); render();
+});
+async function fetchJSONFile(path){try{const r=await fetch(`https://byosites.github.io/byosites/${path}?t=${Date.now()}`); if(!r.ok) return null; return await r.json();}catch(e){return null;}}
+async function getGH_SHA(path,token){try{const r=await fetch(`https://api.github.com/repos/byosites/byosites/contents/${path}`,{headers:{Authorization:`token ${token}`}}); if(r.status===404) return null; if(!r.ok) return null; const j=await r.json(); return j.sha;}catch(e){return null;}}
+async function uploadJSON_GH(path,obj,token){if(!token) return false; const content=btoa(unescape(encodeURIComponent(JSON.stringify(obj,null,2)))); const url=`https://api.github.com/repos/byosites/byosites/contents/${path}`; const sha=await getGH_SHA(path,token); const body={message:`sync ${path}`,content}; if(sha) body.sha=sha; const r=await fetch(url,{method:"PUT",headers:{Authorization:`token ${token}`,"Content-Type":"application/json"},body:JSON.stringify(body)}); return r.ok;}
+function saveLocal(){localStorage.setItem(KEY_SONGS,JSON.stringify(songs)); localStorage.setItem(KEY_ARTISTS,JSON.stringify(artists)); localStorage.setItem(KEY_SECURE_CODES,JSON.stringify(secureCodes));}
+async function saveAndSync(){saveLocal(); let t=localStorage.getItem(KEY_TOKEN); if(t){try{await uploadJSON_GH('music/songs.json',songs,t); await uploadJSON_GH('music/secure_codes.json',secureCodes,t);}catch(e){}}}
 async function loadSyncedData(){
- try{
-  let sRes=await fetchJSONFile('music/songs.json');
-  let aRes=await fetchJSONFile('music/artists.json');
-  let cRes=await fetchJSONFile('music/secure_codes.json');
-  let uRes=await fetchJSONFile('music/users.json');
-  let localSongs=JSON.parse(localStorage.getItem(KEY_SONGS)||"[]");
-  let localArtists=JSON.parse(localStorage.getItem(KEY_ARTISTS)||"[]");
-  let localCodes=JSON.parse(localStorage.getItem(KEY_SECURE_CODES)||"[]");
-  let localUsers=JSON.parse(localStorage.getItem(KEY_USERS)||"[]");
-  let localCurrent=JSON.parse(localStorage.getItem(KEY_CURRENT)||"null");
-
-  if(sRes && Array.isArray(sRes) && sRes.length>0) songs=sRes; else songs=localSongs;
-  if(aRes && Array.isArray(aRes) && aRes.length>0) artists=aRes; else artists=localArtists;
-  if(cRes && Array.isArray(cRes)) secureCodes=cRes; else secureCodes=localCodes;
-
-  if(uRes && Array.isArray(uRes)){
-    let merged={};
-    [...localUsers, ...uRes].forEach(u=>{ if(u && u.name) merged[u.name.toLowerCase()]=u; });
-    users=Object.values(merged);
-  } else {
-    users=localUsers;
+let sRes=await fetchJSONFile('music/songs.json'); let aRes=await fetchJSONFile('music/artists.json'); let cRes=await fetchJSONFile('music/secure_codes.json'); let adRes=await fetchJSONFile('music/ads.json');
+if(sRes&&Array.isArray(sRes)&&sRes.length>0) songs=sRes; else songs=JSON.parse(localStorage.getItem(KEY_SONGS)||"[]");
+if(aRes&&Array.isArray(aRes)&&aRes.length>0) artists=aRes; else artists=JSON.parse(localStorage.getItem(KEY_ARTISTS)||"[]");
+if(cRes&&Array.isArray(cRes)) secureCodes=cRes; else secureCodes=JSON.parse(localStorage.getItem(KEY_SECURE_CODES)||"[]");
+if(adRes){
+  let shopAds = adRes.shopAds || (Array.isArray(adRes)?adRes:[]);
+  let active = shopAds.filter(a=>!a.expires || Date.now()<a.expires)[0];
+  let link=document.getElementById("shopAdLink");
+  if(active && link){
+    if(active.image){ link.innerHTML=`<img src="${asset(active.image)}" style="width:100%;max-height:100px;object-fit:cover;border-radius:10px"><br>📢 ${esc(active.name)} - Tap`; link.href=active.link||"https://wa.me/263789706161"; }
+    else { link.textContent="📢 "+active.name+" - Tap to Visit"; link.href=active.link||"https://wa.me/263789706161"; link.style.background="linear-gradient(90deg,#ffcf33,#ff9a00)"; }
   }
-
-  if(localCurrent) currentUser=localCurrent;
-  else if(users.length>0 && localCurrent) currentUser=localCurrent;
-
-  if(users.length>0) localStorage.setItem(KEY_USERS, JSON.stringify(users));
-  if(songs.length>0) localStorage.setItem(KEY_SONGS, JSON.stringify(songs));
-  if(artists.length>0) localStorage.setItem(KEY_ARTISTS, JSON.stringify(artists));
-  if(secureCodes.length>0) localStorage.setItem(KEY_SECURE_CODES, JSON.stringify(secureCodes));
-
-  stat.innerText=`${songs.length} songs • ${artists.length} artists • ${users.length} users • ${songs.reduce((a,s)=>a+(s.comments? s.comments.length:0),0)} comments • SYNCED v6.2`;
- }catch(e){
-  songs=JSON.parse(localStorage.getItem(KEY_SONGS)||"[]");
-  artists=JSON.parse(localStorage.getItem(KEY_ARTISTS)||"[]");
-  users=JSON.parse(localStorage.getItem(KEY_USERS)||"[]");
-  secureCodes=JSON.parse(localStorage.getItem(KEY_SECURE_CODES)||"[]");
-  currentUser=JSON.parse(localStorage.getItem(KEY_CURRENT)||"null");
-  stat.innerText=`${songs.length} songs • ${artists.length} artists • Local`;
- }
- updateHeader();
- render();
 }
-
-function openModal(id){ document.getElementById(id).style.display='grid'; } 
-function closeModal(id){ document.getElementById(id).style.display='none'; if(id==='payModal' && countdownInterval) clearInterval(countdownInterval); }
-function showAuth(t){ document.getElementById('signupBox').style.display=t=='signup'?'block':'none'; document.getElementById('signinBox').style.display=t=='signin'?'block':'none'; }
-function updateHeader(){ 
-  let uh=document.getElementById('userHello'); let lb=document.getElementById('loginBtn'); let lob=document.getElementById('logoutBtn');
-  if(currentUser){ uh.style.display='inline'; uh.innerText='Hi, '+currentUser.name; lb.style.display='none'; lob.style.display='inline-flex'; } 
-  else { uh.style.display='none'; lb.style.display='inline-flex'; lob.style.display='none'; } 
+if(lastKnownComments===0) lastKnownComments=songs.reduce((a,s)=>a+(s.comments?s.comments.length:0),0);
+if(lastKnownLikes===0) lastKnownLikes=songs.reduce((a,s)=>a+(s.likes||0),0);
+$("status").textContent=`${songs.length} songs • ${artists.length} artists • ${songs.reduce((a,s)=>a+(s.comments?s.comments.length:0),0)} comments • `;
+saveLocal(); render();
 }
-
-async function signUp(){ 
-  const name=document.getElementById('suName').value.trim(); 
-  const p=document.getElementById('suPass').value; 
-  const p2=document.getElementById('suPass2').value; 
-  let msg=document.getElementById('authMsg');
-  if(!name||!p){ msg.innerText="Need username+pass"; return; } 
-  if(p!==p2){ msg.innerText="Passwords no match"; return; } 
-  if(users.find(u=>u.name.toLowerCase()===name.toLowerCase())){ msg.innerText="Username exists - sign in"; return; } 
-  let u={name, pass:p, created:new Date().toISOString(), likes:[], ratings:{}}; 
-  users.push(u); 
-  currentUser=u; 
-  await saveAllAndSync();
-  updateHeader(); closeModal('authModal'); render(); 
-  showToast("✅ Account created & SYNCED");
+async function checkRealtime(){
+if(!user) return;
+let cRes=await fetchJSONFile('music/secure_codes.json');
+if(cRes&&Array.isArray(cRes)){
+let myName=user.displayName||user.email;
+let myCodes=cRes.filter(c=>(c.forUser===myName||c.forUser===user.email) && !c.used && Date.now()<c.expires);
+myCodes.forEach(c=>{ if(!seenCodes.includes(c.code)){ seenCodes.push(c.code); localStorage.setItem("byomusic_seen_codes",JSON.stringify(seenCodes)); unreadCount++; updateBell(); beep(); toast(`🔔 NEW CODE for ${c.songTitle||c.songId}: ${c.code}`); setTimeout(()=>openInbox(),800); }});
+secureCodes=cRes; saveLocal();
 }
-
-async function signIn(){ 
-  const name=document.getElementById('siName').value.trim(); 
-  const p=document.getElementById('siPass').value; 
-  let msg=document.getElementById('authMsg');
-  let u=users.find(u=>u.name.toLowerCase()===name.toLowerCase() && u.pass===p); 
-  if(!u){ msg.innerText="Wrong username or password"; return; } 
-  currentUser=u; 
-  saveAllLocal(); 
-  updateHeader(); closeModal('authModal'); render(); 
-  showToast("Welcome "+u.name);
+let sRes=await fetchJSONFile('music/songs.json');
+if(sRes&&Array.isArray(sRes)&&sRes.length>0){
+let tc=sRes.reduce((a,s)=>a+(s.comments?s.comments.length:0),0); let tl=sRes.reduce((a,s)=>a+(s.likes||0),0);
+if(lastKnownComments>0&&tc>lastKnownComments){unreadCount++; updateBell(); beep(); toast(`💬 New comment! ${tc-lastKnownComments} new`);}
+if(lastKnownLikes>0&&tl>lastKnownLikes){toast(`❤ Someone liked a song!`);}
+lastKnownComments=tc; lastKnownLikes=tl; songs=sRes; saveLocal(); render();
 }
-
-async function logout(){ currentUser=null; localStorage.removeItem(KEY_CURRENT); updateHeader(); render(); showToast("Logged out"); }
-
-function setFilter(f,el){ filter=f; document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active')); if(el) el.classList.add('active'); clearSearchUI(); document.getElementById('artistPage').style.display='none'; document.getElementById('aboutPage').style.display='none'; document.getElementById('hero').style.display='block'; document.getElementById('searchWrap').style.display='block'; document.getElementById('tabs').style.display='flex'; document.getElementById('grid').style.display='grid'; render(); }
-function getArtistData(name){ return artists.find(a=>a.name.toLowerCase()===name.toLowerCase())||null; }
-function doSearch(){ let q=document.getElementById('searchInput').value.trim().toLowerCase(); lastSearch=q; if(q.length===0){ clearSearchUI(); filter='all'; render(); return; } document.getElementById('clearSearch').style.display='inline-flex'; document.getElementById('searchInfo').style.display='block'; filter='search'; renderSearch(q); }
-function clearSearchUI(){ document.getElementById('searchInput').value=""; document.getElementById('clearSearch').style.display='none'; document.getElementById('searchInfo').style.display='none'; lastSearch=""; }
-function clearSearch(){ clearSearchUI(); filter='all'; document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active')); document.querySelector('.tab').classList.add('active'); document.getElementById('artistPage').style.display='none'; document.getElementById('aboutPage').style.display='none'; document.getElementById('hero').style.display='block'; document.getElementById('searchWrap').style.display='block'; document.getElementById('tabs').style.display='flex'; document.getElementById('grid').style.display='grid'; render(); }
-function openAbout(){ document.getElementById('hero').style.display='none'; document.getElementById('searchWrap').style.display='none'; document.getElementById('tabs').style.display='none'; document.getElementById('grid').style.display='none'; document.getElementById('artistPage').style.display='none'; document.getElementById('aboutPage').style.display='block'; window.scrollTo(0,0); }
-function closeAbout(){ document.getElementById('aboutPage').style.display='none'; document.getElementById('hero').style.display='block'; document.getElementById('searchWrap').style.display='block'; document.getElementById('tabs').style.display='flex'; document.getElementById('grid').style.display='grid'; filter='all'; document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active')); document.querySelector('.tab').classList.add('active'); render(); }
-
-function getAvgRating(s){ if(!s.ratings || Object.keys(s.ratings).length===0) return 0; let vals=Object.values(s.ratings); return vals.reduce((a,b)=>a+b,0)/vals.length; }
-
-function renderSearch(q){ let list=[...songs].filter(s=>!s.suspended); let filtered=list.filter(s=>`${s.title} ${s.artist} ${s.genre}`.toLowerCase().includes(q)); document.getElementById('searchInfo').innerText=`Search "${q}" → ${filtered.length} songs`; if(filtered.length===0){ document.getElementById('grid').innerHTML=`<div style="grid-column:1/-1;text-align:center;padding:40px;color:#666">No results for "${q}"</div>`; return; } document.getElementById('grid').innerHTML=filtered.map(s=>{ let isPaid=s.sell; let avg=s.avgRating? s.avgRating.toFixed(1):"0.0"; return `<div class="card"><img src="https://byosites.github.io/byosites/${s.img}" style="height:160px"><div class="body"><b>${s.title}</b><div style="color:#ffcc00;font-size:11px">${s.artist} • ★ ${avg}</div><button class="btn ${isPaid?'btn-y':'btn-g'}" onclick="${isPaid?`buyWithCode('${s.id}')`:`downloadSong('${s.id}')`}">${isPaid?`Buy $${s.price}`:'Direct DL'}</button></div></div>`; }).join(''); }
-
-function render(){
- if(filter==='search' && lastSearch){ renderSearch(lastSearch); return; }
- let list=[...songs].filter(s=>!s.suspended);
- list.forEach(s=>{ s.avgRating=getAvgRating(s); });
- if(filter==='artists'){ renderArtists(); return; }
- if(filter==='free') list=list.filter(s=>!s.sell);
- if(filter==='paid') list=list.filter(s=>s.sell);
- if(filter==='top') list=list.sort((a,b)=>(b.avgRating||0)-(a.avgRating||0) || (b.likes||0)-(a.likes||0));
- else list=list.sort((a,b)=>(b.avgRating||0)-(a.avgRating||0));
- document.getElementById('grid').innerHTML=list.map((s,i)=>{
-   let isPaid=s.sell; let hasSecureAccess=secureCodes.find(c=>c.songId===s.id && c.forUser===currentUser?.name && c.used);
-   let avg=s.avgRating? s.avgRating.toFixed(1):"0.0"; let likes=s.likes||0; let comments=s.comments? s.comments.length:0;
-   let topBadge = filter==='top' || i<3 && s.avgRating>=4 ? `<span class="badge badge-top">🔥 #${i+1} TOP ${avg}★</span>` : '';
-   let badge=isPaid?`<span class="badge badge-paid">🔒 $${s.price} 10m</span>`:`<span class="badge badge-free">🆓 FREE</span>`;
-   let liked = currentUser && s.likedBy && s.likedBy.includes(currentUser.name);
-   return `<div class="card">
-    <div style="position:relative"><img src="https://byosites.github.io/byosites/${s.img}" style="height:200px;cursor:pointer" onclick="openSong('${s.id}')" onerror="this.src='https://via.placeholder.com/400'"><div style="position:absolute;top:8px;left:8px;display:flex;gap:4px;flex-wrap:wrap">${topBadge} ${badge}</div></div>
-    <div class="body"><b>${s.title}</b><div style="color:#ffcc00;font-size:12px;cursor:pointer" onclick="openArtist('${s.artist}')">${s.artist}</div>
-    <div style="color:#888;font-size:11px;margin:6px 0;display:flex;gap:10px;align-items:center"><span>★ ${avg} (${s.ratings?Object.keys(s.ratings).length:0})</span><span>❤ ${likes}</span><span>💬 ${comments}</span><span>▶ ${s.plays||0}</span></div>
-    <div style="display:flex;gap:6px;margin-top:8px;flex-wrap:wrap">
-      <button class="btn btn-w" onclick="playSong('${s.id}')"><i class="fas fa-play"></i> Play</button>
-      ${isPaid ? (hasSecureAccess?`<button class="btn btn-blue" onclick="downloadSong('${s.id}')"><i class="fas fa-download"></i> DL</button>`:`<button class="btn btn-y" onclick="buyWithCode('${s.id}')"><i class="fas fa-lock"></i> Buy $${s.price}</button>`) : `<button class="btn btn-g" onclick="downloadSong('${s.id}')"><i class="fas fa-download"></i> Free DL</button>`}
-      <button class="btn btn-d ${liked?'like-active':''}" onclick="likeSong('${s.id}')"><i class="fas fa-heart"></i> ${liked?'Liked':'Like'}</button>
-      <button class="btn btn-d" onclick="openSong('${s.id}')"><i class="fas fa-comment"></i> Comment</button>
-    </div></div></div>`;
- }).join('');
 }
-
-function renderArtists(){ document.getElementById('grid').innerHTML=artists.filter(a=>!a.suspended).map(a=>`<div class="card" onclick="openArtist('${a.name}')"><img src="${a.photo?`https://byosites.github.io/byosites/${a.photo}`:'https://via.placeholder.com/400'}" style="height:180px"><div class="body"><b>${a.name}</b></div></div>`).join(''); }
-function openArtist(name){ let ad=getArtistData(name); if(!ad) return; let artistSongs=songs.filter(s=>s.artist.toLowerCase()===name.toLowerCase()); document.getElementById('hero').style.display='none'; document.getElementById('searchWrap').style.display='none'; document.getElementById('tabs').style.display='none'; document.getElementById('grid').style.display='none'; document.getElementById('aboutPage').style.display='none'; document.getElementById('artistPage').style.display='block'; document.getElementById('artistDetail').innerHTML=`<div style="background:#111;padding:16px;border-radius:16px"><h2>${ad.name}</h2><p style="color:#888">${ad.bio}</p></div>`; document.getElementById('artistSongs').innerHTML=artistSongs.map(s=>`<div class="card"><img src="https://byosites.github.io/byosites/${s.img}" style="height:140px"><div class="body"><b>${s.title}</b><button class="btn ${s.sell?'btn-y':'btn-g'}" onclick="${s.sell?`buyWithCode('${s.id}')`:`downloadSong('${s.id}')`}">${s.sell?'Buy':'Direct DL'}</button></div></div>`).join(''); }
-function closeArtistPage(){ document.getElementById('artistPage').style.display='none'; document.getElementById('aboutPage').style.display='none'; document.getElementById('hero').style.display='block'; document.getElementById('searchWrap').style.display='block'; document.getElementById('tabs').style.display='flex'; document.getElementById('grid').style.display='grid'; render(); }
-function playSong(id){ const s=songs.find(x=>x.id===id); document.getElementById('player').style.display='flex'; document.getElementById('pImg').src=`https://byosites.github.io/byosites/${s.img}`; document.getElementById('pTitle').innerText=s.title; document.getElementById('pArtist').innerText=s.artist; document.getElementById('pRating').innerText=`★ ${s.avgRating? s.avgRating.toFixed(1):'0.0'} • ❤ ${s.likes||0} • 💬 ${s.comments? s.comments.length:0}`; document.getElementById('audio').src=`https://byosites.github.io/byosites/${s.audio}`; document.getElementById('audio').play().then(async ()=>{ s.plays=(s.plays||0)+1; await saveAllAndSync(); }); }
-
-async function likeSong(id){
- if(!currentUser){ openModal('authModal'); showToast("Login to like"); return; }
- let s=songs.find(x=>x.id===id); if(!s.likedBy) s.likedBy=[]; if(!s.likes) s.likes=0;
- if(s.likedBy.includes(currentUser.name)){ s.likedBy=s.likedBy.filter(n=>n!==currentUser.name); s.likes=Math.max(0,s.likes-1); showToast("Unliked"); } else { s.likedBy.push(currentUser.name); s.likes++; showToast("❤ Liked "+s.title); }
- await saveAllAndSync(); render(); if(document.getElementById('songDetail')) openSong(id);
+function updateBell(){let b=$("inboxBtn"); if(!user){b.hidden=true; return;} b.hidden=false; $("unread").textContent=unreadCount?`(${unreadCount})`:"";}
+window.markAllRead=()=>{unreadCount=0; updateBell(); hideModal('inboxModal');};
+window.openInbox=()=>{
+if(!user) return openAuth();
+let myName=user.displayName||user.email;
+let myCodes=secureCodes.filter(c=>c.forUser===myName||c.forUser===user.email).sort((a,b)=>b.created-a.created);
+$("inboxList").innerHTML=`
+<h3 style="color:#00aaff">🔒 Your Secure Codes (${myCodes.length})</h3>
+${myCodes.map(c=>`<div class="inboxitem"><b style="color:var(--gold);font-size:16px;letter-spacing:2px">${c.code}</b><br><span class="muted">${c.songTitle||c.songId} • $${c.price||''} • ${c.used?'USED ❌':'ACTIVE ✅'} • Expires ${new Date(c.expires).toLocaleTimeString()}</span><br>${!c.used?`<button class="btn gold" onclick="useCodeFromInbox('${c.code}','${c.songId}')">Use Code Now → Download</button>`:''}</div>`).join('')||"<p class='muted'>No codes yet</p>"}
+<h3 style="margin-top:16px">💬 Recent Comments</h3>
+${songs.flatMap(s=>(s.comments||[]).map(cm=>({song:s.title,...cm}))).slice(0,5).map(cm=>`<div class="comment"><b>${esc(cm.user||cm.userName)}</b> on ${esc(cm.song)}<br>${esc(cm.text)}</div>`).join('')||"<p class='muted'>No comments</p>"}`;
+unreadCount=0; updateBell(); modal("inboxModal");
+};
+window.useCodeFromInbox=(code,songId)=>{hideModal('inboxModal'); let s=songs.find(x=>x.id===songId); if(!s) return; currentPaySong=s; $("payCodeInput").value=code; checkPayCode();};
+window.setFilter=(f,el)=>{filter=f; document.querySelectorAll(".tab").forEach(x=>x.classList.remove("active")); el.classList.add("active"); render();};
+function avg(s){let r=Object.values(s.ratings||{}).map(Number).filter(Number.isFinite); return r.length?r.reduce((a,b)=>a+b,0)/r.length:0;}
+window.render=()=>{
+let q=$("search").value.trim().toLowerCase();
+let list=filter==="artists"?artists.filter(a=>!a.suspended):songs.filter(s=>!s.suspended);
+if(filter==="free")list=list.filter(s=>!s.sell&&!s.paid);
+if(filter==="paid")list=list.filter(s=>s.sell||s.paid);
+if(filter==="top")list.sort((a,b)=>avg(b)-avg(a));
+if(q)list=list.filter(x=>`${x.title||x.name||""} ${x.artist||""} ${x.genre||""} ${x.lyrics||""} ${x.bio||""}`.toLowerCase().includes(q));
+$("grid").innerHTML=list.length?list.map(x=>filter==="artists"?artistCard(x):songCard(x)).join(""):`<div class="empty">No results found.</div>`;
+};
+function songCard(s){
+let paid=!!(s.sell||s.paid);
+return `<article class="glass song"><img src="${esc(asset(s.cover||s.img))}" onerror="this.src='music/profile.png'"><div class="cardbody"><div class="row"><span class="pill ${paid?"paid":"free"}">${paid?"PAID":"FREE"}</span><span class="muted" style="font-size:11px">★ ${avg(s).toFixed(1)} · ❤ ${Number(s.likes)||0}</span></div><h3>${esc(s.title)}</h3><div class="meta">${esc(s.artist||"Unknown")} · ${esc(s.genre||"Music")}</div><p class="muted" style="font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${s.lyrics?'🎤 '+esc(s.lyrics.substring(0,50)):''}</p><div class="row"><button class="btn gold" onclick="playSong('${s.id}')">▶ Play</button><button class="btn" onclick="openSong('${s.id}')">Details</button>${!paid?`<button class="btn green" onclick="downloadSong('${s.id}')">Download</button>`:`<button class="btn" onclick="requestPaid('${s.id}')">Get access</button>`}</div></div></article>`;
 }
-
-async function rateSong(id, rating){
- if(!currentUser){ openModal('authModal'); showToast("Login to rate"); return; }
- let s=songs.find(x=>x.id===id); if(!s.ratings) s.ratings={}; s.ratings[currentUser.name]=rating;
- await saveAllAndSync(); showToast(`Rated ${rating}★ for ${s.title}`); render(); openSong(id);
-}
-
-async function addComment(id){
- if(!currentUser){ openModal('authModal'); showToast("Login to comment"); return; }
- let input=document.getElementById('commentInput'); let text=input.value.trim(); if(!text){ showToast("Enter comment"); return; }
- let s=songs.find(x=>x.id===id); if(!s.comments) s.comments=[];
- s.comments.unshift({user:currentUser.name, text:text, time:new Date().toLocaleString()});
- input.value=""; await saveAllAndSync(); showToast("Comment added"); render(); openSong(id);
-}
-
-function downloadSong(id){
- let s=songs.find(x=>x.id===id);
- if(s.sell){
-   if(!currentUser){ openModal('authModal'); showToast("Login required"); return; }
-   let codeEntry=secureCodes.find(c=>c.songId===id && c.forUser===currentUser.name && c.used);
-   if(!codeEntry){ buyWithCode(id); return; }
- }
- let fileUrl=`https://byosites.github.io/byosites/${s.audio}`;
- let filename=`${s.artist} - ${s.title}.mp3`;
- showToast(`⬇️ Downloading ${s.title}...`);
- let a=document.createElement('a'); a.href=fileUrl; a.download=filename; a.target="_blank"; document.body.appendChild(a); a.click(); document.body.removeChild(a);
- showToast(`✅ Download started`);
-}
-
-function buyWithCode(id){
- if(!currentUser){ openModal('authModal'); showToast("Create account first"); return; }
- let s=songs.find(x=>x.id===id); currentPaySong=s;
- document.getElementById('paySongTitle').innerText=s.title; document.getElementById('payPrice').innerText='$'+s.price; document.getElementById('payAccount').innerText=currentUser.name;
- document.getElementById('payWaLink').href=`https://wa.me/263789706161?text=Hi%20Admin%20I%20want%20SECURE%20CODE%2010MINS%20for%20${encodeURIComponent(s.title)}%20by%20${s.artist}%20ID:${s.id}%20MyAccount:${encodeURIComponent(currentUser.name)}`;
- document.getElementById('payCodeInput').value=""; document.getElementById('payMsg').innerText=""; openModal('payModal');
- startCountdown(600);
-}
-
-function startCountdown(sec){
- let el=document.getElementById('countdown'); let remaining=sec;
- if(countdownInterval) clearInterval(countdownInterval);
- el.innerText=Math.floor(remaining/60)+'m '+(remaining%60)+'s';
- countdownInterval=setInterval(()=>{ remaining--; let m=Math.floor(remaining/60); let s=remaining%60; el.innerText=m+'m '+s+'s'; if(remaining<=0){ clearInterval(countdownInterval); el.innerText='EXPIRED'; document.getElementById('payMsg').innerText='Code expired! Request new'; } },1000);
-}
-
-async function checkPayCode(){
- let code=document.getElementById('payCodeInput').value.trim(); if(!code){ document.getElementById('payMsg').innerText="Enter secure code"; return; }
- if(!currentUser){ document.getElementById('payMsg').innerText="Login required"; return; }
- let s=currentPaySong;
- let entry=secureCodes.find(c=>c.code===code && c.songId===s.id);
- if(!entry){ document.getElementById('payMsg').innerText="Invalid code!"; return; }
- if(entry.forUser!==currentUser.name){ document.getElementById('payMsg').innerText=`Code locked to ${entry.forUser}, you are ${currentUser.name}`; return; }
- if(entry.used){ document.getElementById('payMsg').innerText="Code already used! One-time only"; return; }
- let now=Date.now(); if(now>entry.expires){ document.getElementById('payMsg').innerText=`Code expired! Valid only 10 mins`; secureCodes=secureCodes.filter(c=>c.code!==code); await saveAllAndSync(); return; }
- entry.used=true; entry.usedAt=now; await saveAllAndSync();
- closeModal('payModal'); showToast(`✅ Code verified! Downloading ${s.title}`);
- downloadSong(s.id); render();
-}
-
-function openSong(id){
- let s=songs.find(x=>x.id===id); 
- let avg=getAvgRating(s); let likes=s.likes||0; let comments=s.comments||[];
- let hasAccess=secureCodes.find(c=>c.songId===id && c.forUser===currentUser?.name && c.used); let isPaid=s.sell;
- let userRating = currentUser && s.ratings ? s.ratings[currentUser.name] : 0;
- let starsHtml = [1,2,3,4,5].map(st=>`<span class="stars ${st<=userRating?'':'star-off'}" onclick="rateSong('${s.id}',${st})">★</span>`).join('');
- let commentsHtml = comments.map(c=>`<div class="comment"><b>${c.user}</b> <span style="color:#666;font-size:10px">${c.time}</span><br>${c.text}</div>`).join('') || "<p style='color:#666;font-size:11px'>No comments yet - be first!</p>";
- let liked = currentUser && s.likedBy && s.likedBy.includes(currentUser.name);
- document.getElementById('songDetail').innerHTML=`
-  <img src="https://byosites.github.io/byosites/${s.img}" style="width:100%;height:220px;object-fit:cover;border-radius:12px" onerror="this.src='https://via.placeholder.com/400'">
-  <h3 style="margin-top:10px">${s.title} ${isPaid?`<span style="background:#ff4444;padding:2px 6px;border-radius:6px;font-size:10px">10m SECURE $${s.price}</span>`:`<span style="background:#25D366;padding:2px 6px;border-radius:6px;font-size:10px">FREE DIRECT</span>`}</h3>
-  <p style="color:#ffcc00;cursor:pointer" onclick="openArtist('${s.artist}'); closeModal('songModal')">${s.artist}</p>
-  <div style="color:#888;font-size:11px;margin:6px 0">★ ${avg.toFixed(1)} (${s.ratings?Object.keys(s.ratings).length:0} ratings) • ❤ ${likes} likes • 💬 ${comments.length} comments • ▶ ${s.plays||0} plays</div>
-  <div style="background:#111;padding:10px;border-radius:10px;margin:10px 0;border:1px solid #222">
-    <b style="font-size:12px;color:#ffcc00">Rate this song:</b><br>
-    <div style="margin:6px 0">${starsHtml} <span style="font-size:11px;color:#888">${userRating?`You rated ${userRating}★`:''}</span></div>
-  </div>
-  <div style="display:flex;gap:6px;margin:12px 0;flex-wrap:wrap">
-    <button class="btn btn-w" onclick="playSong('${s.id}')"><i class="fas fa-play"></i> Play</button>
-    ${isPaid ? (hasAccess?`<button class="btn btn-blue" onclick="downloadSong('${s.id}'); closeModal('songModal')"><i class="fas fa-download"></i> Direct DL</button>`:`<button class="btn btn-y" onclick="closeModal('songModal'); buyWithCode('${s.id}')"><i class="fas fa-lock"></i> Buy 10m Code $${s.price}</button>`) : `<button class="btn btn-g" onclick="downloadSong('${s.id}'); closeModal('songModal')"><i class="fas fa-download"></i> Direct DL</button>`}
-    <button class="btn btn-d ${liked?'like-active':''}" onclick="likeSong('${s.id}')"><i class="fas fa-heart"></i> ${liked?'Liked':'Like'} ${likes}</button>
-  </div>
-  <div style="background:#0a0a0a;border:1px solid #1a1a1a;padding:12px;border-radius:12px;margin-top:14px">
-    <b style="color:#ffcc00;font-size:13px">💬 Comments (${comments.length})</b>
-    <div style="display:flex;gap:6px;margin-top:8px">
-      <input id="commentInput" placeholder="${currentUser?'Write a comment...':'Login to comment'}" style="flex:1;margin:0">
-      <button class="btn btn-y" style="width:auto;padding:10px 14px" onclick="addComment('${s.id}')">Post</button>
-    </div>
-    <div style="margin-top:10px;max-height:200px;overflow:auto">${commentsHtml}</div>
-  </div>
- `;
- openModal('songModal');
-}
-
-// INIT
+function artistCard(a){return `<article class="glass artist" onclick="artistDetails('${a.id}')"><img src="${esc(asset(a.photo))}" onerror="this.src='music/profile.png'"><div class="cardbody"><h3>${esc(a.name)}</h3><div class="meta">${esc(a.bio||"Artist")}</div></div></article>`;}
+window.showAbout=()=>{document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));$("aboutPage").classList.add("active");};
+window.showHome=()=>{document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));$("homePage").classList.add("active");};
+window.artistDetails=id=>{let a=artists.find(x=>x.id===id); if(!a) return; toast(`${a.name}: ${a.bio||"Artist"}`); $("search").value=a.name; render(); showHome();};
+window.playSong=id=>{let list=songs.filter(s=>!s.suspended); queue=list; qi=queue.findIndex(s=>s.id===id); playCurrent();};
+function playCurrent(){let s=queue[qi]; if(!s) return; current=s; $("player").style.display="block"; $("pImg").src=asset(s.cover||s.img); $("pTitle").textContent=s.title; $("pArtist").textContent=s.artist||""; $("audio").src=asset(s.audio||s.audioUrl); $("audio").play().then(()=>$("playBtn").textContent="Ⅱ").catch(()=>toast("Could not play audio - check file")); }
+window.togglePlay=()=>{let a=$("audio"); if(!a.src) return; if(a.paused){a.play(); $("playBtn").textContent="Ⅱ";}else{a.pause(); $("playBtn").textContent="▶";}};
+window.next=()=>{if(!queue.length) return; if(isShuffle) qi=Math.floor(Math.random()*queue.length); else qi=(qi+1)%queue.length; playCurrent();};
+window.previous=()=>{if(!queue.length) return; qi=(qi-1+queue.length)%queue.length; playCurrent();};
+window.toggleRepeat=()=>{repeat=!repeat; $("repeatBtn").style.color=repeat?"var(--gold)":"white";};
+window.toggleShuffle=()=>{isShuffle=!isShuffle; $("shuffleBtn").style.color=isShuffle?"var(--gold)":"white"; toast(isShuffle?"Shuffle ON":"Shuffle OFF");};
+$("audio").addEventListener("ended",()=>{if(repeat){$("audio").currentTime=0; $("audio").play();}else{next();}});
+$("audio").addEventListener("timeupdate",()=>{let a=$("audio"); $("elapsed").textContent=fmt(a.currentTime); $("duration").textContent=fmt(a.duration); $("seek").value=a.duration?Math.round(a.currentTime/a.duration*1000):0;});
+window.seekAudio=v=>{let a=$("audio"); if(a.duration) a.currentTime=a.duration*Number(v)/1000;};
+window.openQueue=()=>{$("queueList").innerHTML=queue.map((s,i)=>`<div class="inboxitem" onclick="qi=${i};playCurrent();hideModal('queueModal')">${esc(s.title)} · ${esc(s.artist)}</div>`).join(""); modal("queueModal");};
+window.downloadSong=id=>{let s=songs.find(x=>x.id===id); if(!s) return; if(s.sell||s.paid){toast("Paid track - request access"); return;} let a=document.createElement("a"); a.href=asset(s.audio||s.audioUrl); a.download=`${s.artist||"Artist"} - ${s.title}.mp3`; a.target="_blank"; document.body.append(a); a.click(); a.remove();};
+window.requestPaid=id=>{
+let s=songs.find(x=>x.id===id); if(!s) return;
+if(!user){openAuth(); return;}
+currentPaySong=s; $("paySongTitle").textContent=s.title; $("payPrice").textContent="$"+(s.price||""); $("payAccount").textContent=user.displayName||user.email;
+$("payWaLink").href=`https://wa.me/263789706161?text=Hi%20Admin%20I%20want%20CODE%20for%20${encodeURIComponent(s.title)}%20ID:${s.id}%20Account:${encodeURIComponent(user.displayName||user.email)}%20Ref:${encodeURIComponent(localStorage.getItem("byo_referred_by")||"none")}`;
+$("payCodeInput").value=""; $("payMsg").textContent=""; modal("payModal"); startCountdown(600);
+};
+function startCountdown(sec){let el=$("countdown"); let rem=sec; if(countdownInterval) clearInterval(countdownInterval); el.textContent=Math.floor(rem/60)+"m "+(rem%60)+"s"; countdownInterval=setInterval(()=>{rem--; el.textContent=Math.floor(rem/60)+"m "+(rem%60)+"s"; if(rem<=0){clearInterval(countdownInterval); el.textContent="EXPIRED";}},1000);}
+window.checkPayCode=async()=>{
+let code=$("payCodeInput").value.trim(); if(!code){$("payMsg").textContent="Enter code"; return;}
+if(!user){$("payMsg").textContent="Login required"; return;}
+let s=currentPaySong; let entry=secureCodes.find(c=>c.code===code && c.songId===s.id);
+if(!entry){$("payMsg").textContent="Invalid code!"; return;}
+let myName=user.displayName||user.email;
+if(entry.forUser!==myName && entry.forUser!==user.email){$("payMsg").textContent=`Code locked to ${entry.forUser}, you are ${myName}`; return;}
+if(entry.used){$("payMsg").textContent="Code already used!"; return;}
+if(Date.now()>entry.expires){$("payMsg").textContent="Code expired!"; return;}
+entry.used=true; entry.usedAt=Date.now(); await saveAndSync(); hideModal('payModal'); toast(`✅ Code verified! Downloading ${s.title}`); downloadSong(s.id); render();
+};
+window.openSong=id=>{
+let s=songs.find(x=>x.id===id); if(!s) return;
+let comments=s.comments||[]; let myRating=user?(s.ratings||{})[user.uid]||0:0;
+$("songDetail").innerHTML=`
+<img src="${esc(asset(s.cover||s.img))}" style="width:100%;height:190px;object-fit:cover;border-radius:14px">
+<h2>${esc(s.title)}</h2><p style="color:var(--gold)">${esc(s.artist||"")}</p>
+<p class="muted">${esc(s.bio||"")} · ★ ${avg(s).toFixed(1)} · ❤ ${s.likes||0} · ▶ ${s.plays||0}</p>
+<div class="row"><button class="btn gold" onclick="playSong('${s.id}')">▶ Play</button>${!(s.sell||s.paid)?`<button class="btn green" onclick="downloadSong('${s.id}')">Download</button>`:''}<button class="btn" onclick="likeSong('${s.id}')">❤ Like</button></div>
+<h3>Lyrics</h3><div class="lyrics">${esc(s.lyrics||"Lyrics have not been added.")}</div>
+<h3>Rate</h3><div class="row">${[1,2,3,4,5].map(n=>`<span class="stars" onclick="rateSong('${s.id}',${n})">${n<=myRating?"★":"☆"}</span>`).join("")}</div>
+<h3>Comments (${comments.length})</h3>
+<div class="row"><input id="commentText" placeholder="${user?"Write a comment…":"Sign in to comment"}"><button class="btn gold" onclick="commentSong('${s.id}')">Post</button></div>
+<div>${comments.slice().reverse().map(c=>`<div class="comment"><b>${esc(c.user||c.userName||"Listener")}</b><br>${esc(c.text)}</div>`).join("")}</div>`;
+modal("songModal");
+};
+window.likeSong=async id=>{
+if(!user){openAuth(); return;}
+let s=songs.find(x=>x.id===id); if(!s) return; if(!s.likedBy) s.likedBy=[]; if(!s.likes) s.likes=0;
+if(s.likedBy.includes(user.uid)){s.likedBy=s.likedBy.filter(x=>x!==user.uid); s.likes=Math.max(0,s.likes-1);} else {s.likedBy.push(user.uid); s.likes++;}
+await saveAndSync(); toast("Like updated"); render(); openSong(id);
+};
+window.rateSong=async(id,n)=>{
+if(!user){openAuth(); return;}
+let s=songs.find(x=>x.id===id); if(!s) return; if(!s.ratings) s.ratings={}; s.ratings[user.uid]=n; await saveAndSync(); toast("Rating saved"); render(); openSong(id);
+};
+window.commentSong=async id=>{
+if(!user){openAuth(); return;}
+let val=$("commentText")?.value.trim(); if(!val) return;
+let s=songs.find(x=>x.id===id); if(!s) return; if(!s.comments) s.comments=[];
+s.comments.unshift({uid:user.uid,user:user.displayName||user.email,userName:user.displayName||user.email,text:val,createdAt:Date.now(),time:new Date().toLocaleString()});
+await saveAndSync(); openSong(id); toast("Comment added");
+};
 loadSyncedData();
-setInterval(loadSyncedData, 30000);
+setInterval(checkRealtime,3000);
+setInterval(loadSyncedData,30000);
 </script>
-<footer style="text-align:center;padding:20px;margin-top:20px;border-top:1px solid #222;color:#666;font-size:11px">
-© 2026 BYOMUSIC • Created by <b style="color:#ffcc00">Philip Mbewe</b> • Bulawayo, Zimbabwe 🇿🇼<br>
-SYNCED v6.2 - Users + Songs + Codes
-</footer>
-</body></html>
+
+<script>
+function getRefCode(){
+  let code = localStorage.getItem("byo_ref_code");
+  if(!code){ code = "BYO-" + Math.floor(1000+Math.random()*9000); localStorage.setItem("byo_ref_code", code); }
+  let el = document.getElementById("myRefCode"); if(el) el.textContent = code; return code;
+}
+function getRefLink(){ let code = getRefCode(); return location.origin + location.pathname + "?ref=" + code; }
+function shareReferral(){
+  let code = getRefCode();
+  let msg = `Sawubona! Faka ingoma yakho ku-BYOMUSIC ngo-$3. Sebenzisa i-code yami ${code} sobabili sizathola i-bonus! Link: ${getRefLink()} \n\nHello! Upload your song on BYOMUSIC for $3. Use my code ${code} and we both get a bonus!`;
+  window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`, "_blank");
+}
+function copyRefLink(){ let link = getRefLink(); navigator.clipboard.writeText(link).then(()=>alert("Copied: " + link)); }
+let urlRef = new URLSearchParams(window.location.search).get("ref");
+if(urlRef){ localStorage.setItem("byo_referred_by", urlRef); }
+getRefCode();
+</script>
+</body>
+</html>
