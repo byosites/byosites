@@ -56,21 +56,21 @@ h2{color:var(--gold)}
 <body>
 <div id="login" class="login">
 <h2>♫ BYOMUSIC ADMIN</h2>
-<p class="muted">Admin PIN</p>
+<p class="muted">Admin PIN - Stored in GitHub</p>
 <input id="adminPin" type="password" placeholder="Admin PIN *">
+<input id="ghTokenInput" type="password" placeholder="GitHub Token ghp_... (first time only)">
 <button class="btn gold full" id="loginBtn">Unlock Admin</button>
-<p class="muted" style="margin-top:10px">GitHub Token (for upload - saved on this device):</p>
-<input id="ghTokenInput" type="password" placeholder="ghp_... GitHub Token">
-<button class="btn dark full" id="saveTokenBtn">Save GitHub Token</button>
+<p class="muted" style="margin-top:10px">GitHub stores data. Netlify shows pages. Token saved on this phone only, never shown to visitors.</p>
+<p class="muted">Get token: GitHub > Settings > Developer settings > Tokens (classic) > Tick repo</p>
 <p id="loginMessage" class="muted"></p>
 </div>
 
 <div id="dashboard">
 <div class="header">
 <h2>BYOMUSIC CONTROL</h2>
-<div class="row"><button class="btn dark" id="refreshBtn">Refresh</button><button class="btn red" id="logoutBtn">Logout</button></div>
+<div class="row"><a href="https://byomusic.netlify.app/" target="_blank" style="text-decoration:none"><button class="btn gold" type="button">🌐 View Live Site ↗</button></a><button class="btn dark" id="refreshBtn">Refresh</button><button class="btn red" id="logoutBtn">Logout</button></div>
 </div>
-<p class="muted" id="connection">Connecting</p>
+<p class="muted" id="connection">Connecting to GitHub...</p>
 <div class="stats">
 <div class="stat"><b id="songCount">0</b><small>Songs</small></div>
 <div class="stat"><b id="artistCount">0</b><small>Artists</small></div>
@@ -83,7 +83,7 @@ h2{color:var(--gold)}
 <div class="stat"><b id="topReferrer">-</b><small>Top Referrer</small></div>
 <div class="stat"><b id="activeAds">0</b><small>Active Shop Ads</small></div>
 </div>
-<div class="notice">v7.0 - Songs: <b>music/songs.json</b> • Artists: <b>music/artists.json</b> • Codes: <b>music/secure_codes.json</b> • Referrals: <b>music/referrals.json</b> • Ads: <b>music/ads.json</b></div>
+<div class="notice">v9.0 - GitHub Stored • Songs: <b>data/songs.json</b> • Artists: <b>data/artists.json</b> • Codes: <b>data/secure_codes.json</b> • Referrals: <b>data/referrals.json</b> • Ads: <b>data/ads.json</b> • Files: <b>music/</b> in GitHub</div>
 <div class="tabs">
 <button class="btn dark tab active" data-page="songs">🎵 Songs</button>
 <button class="btn dark tab" data-page="artists">👤 Artists</button>
@@ -97,7 +97,7 @@ h2{color:var(--gold)}
 <section id="songs" class="page active">
 <div class="section">
 <h3>Upload music</h3>
-<p class="muted">Files upload <b>byosites</b></p>
+<p class="muted">Files upload to <b>GitHub music/ folder</b> - Netlify shows them</p>
 <label class="label">MP3 / Audio file</label><input id="audioFile" type="file" accept="audio/*">
 <label class="label">Cover image</label><input id="coverFile" type="file" accept="image/*">
 <div class="grid"><input id="songTitle" placeholder="Song title *"><input id="songArtist" placeholder="Artist name *"></div>
@@ -119,7 +119,11 @@ h2{color:var(--gold)}
 </section>
 
 <section id="artists" class="page">
-<div class="section"><h3>Create artist</h3><input id="artistName" placeholder="Artist name *"><input id="artistWhatsApp" placeholder="WhatsApp number"><input id="artistLocation" placeholder="Location"><input id="artistGenre" placeholder="Genre"><input id="artistPhoto" type="file" accept="image/*"><textarea id="artistBio" placeholder="Artist biography *"></textarea><div class="grid"><input id="artistFacebook" placeholder="Facebook URL"><input id="artistInstagram" placeholder="Instagram URL"></div><div class="grid"><input id="artistYoutube" placeholder="YouTube URL"><input id="artistTikTok" placeholder="TikTok URL"></div>
+<div class="section"><h3>Create artist - With Login</h3>
+<p class="muted">Artist will login at <b>artist.html</b> with Name + Password below. Approval Code is auto-generated - send it to them on WhatsApp.</p>
+<input id="artistName" placeholder="Artist name *">
+<div class="grid"><input id="artistPass" type="text" placeholder="Artist Password * e.g. jaytee123"><input id="artistApproval" placeholder="Approval Code (auto if empty)"></div>
+<input id="artistWhatsApp" placeholder="WhatsApp number"><input id="artistLocation" placeholder="Location"><input id="artistGenre" placeholder="Genre"><input id="artistPhoto" type="file" accept="image/*"><textarea id="artistBio" placeholder="Artist biography *"></textarea><div class="grid"><input id="artistFacebook" placeholder="Facebook URL"><input id="artistInstagram" placeholder="Instagram URL"></div><div class="grid"><input id="artistYoutube" placeholder="YouTube URL"><input id="artistTikTok" placeholder="TikTok URL"></div>
 <label class="label">Their Referral Code (if they were referred by someone)</label>
 <input id="artistReferral" placeholder="e.g. BYO-1234">
 <button class="btn gold full" id="artistSaveBtn">Save artist to GitHub</button><p id="artistMessage" class="muted"></p></div>
@@ -127,14 +131,13 @@ h2{color:var(--gold)}
 </section>
 
 <section id="codes" class="page">
-<div class="section"><h3>Generate secure download code</h3><div class="notice">Code saved to <b>music/secure_codes.json</b>. Buyer gets it in <b>3 seconds</b> via bell + inbox.</div><select id="codeSongSelect"></select><input id="codeSongId" placeholder="Song ID (auto from select)"><input id="buyerName" placeholder="Buyer's Display Name or Email - MUST match exactly"><button class="btn blue full" id="generateCodeBtn">Generate Code - Send Instantly</button><p id="codeMessage" class="muted"></p><div id="codeList"></div></div>
+<div class="section"><h3>Generate secure download code</h3><div class="notice">Code saved to <b>GitHub: data/secure_codes.json</b>. Buyer gets it in <b>3 seconds</b> via bell + inbox.</div><select id="codeSongSelect"></select><input id="codeSongId" placeholder="Song ID (auto from select)"><input id="buyerName" placeholder="Buyer's Display Name or Email - MUST match exactly"><button class="btn blue full" id="generateCodeBtn">Generate Code - Send Instantly</button><p id="codeMessage" class="muted"></p><div id="codeList"></div></div>
 </section>
 
 <section id="users" class="page">
 <div class="section"><h3>Users</h3><p class="muted">Users register via Firebase Auth on public site.</p><div id="userList">Loading users…</div></div>
 </section>
 
-<!-- REFERRALS TAB -->
 <section id="referrals" class="page">
 <div class="section">
 <h3>🔥 Referral Leaderboard - Who Brings You Money?</h3>
@@ -164,20 +167,19 @@ Bring a Friend, Get FREE Upload! Share your code now.</textarea>
 </div>
 </section>
 
-<!-- ADS TAB -->
 <section id="ads" class="page">
 <div class="section">
-<h3>📢 Google AdSense Settings</h3>
-<p class="muted">Get your ID from adsense.google.com. Put it here, then also replace it in your main BYOMUSIC file.</p>
+<h3>📢 Google AdSense Settings - Linked to GitHub</h3>
+<p class="muted">Your public site uses Mid-Feed AdSense + Top Shop Banner only. No bottom black ad.</p>
 <label class="label">Your AdSense Publisher ID</label>
-<input id="adsenseId" placeholder="ca-pub-XXXXXXXXXXXXXXXX">
-<button class="btn blue full" id="saveAdsenseBtn">Save AdSense ID</button>
+<input id="adsenseId" placeholder="ca-pub-7880131696089557" value="ca-pub-7880131696089557">
+<button class="btn blue full" id="saveAdsenseBtn">Save AdSense ID to GitHub</button>
 <p id="adsenseMsg" class="muted"></p>
-<div class="notice">Status: Google pays you when users see ads. You need 500+ users to make $15-$30/month. Keep Byo shop ads too - they pay more!</div>
+<div class="notice">Status: Google pays you when users see ads. Keep Byo shop ads too - they pay more!</div>
 </div>
 <div class="section">
 <h3>🏪 Bulawayo Shop Ads - $10/week Each</h3>
-<p class="muted">When a shop pays you, add it here. It will show on the public site as Top Banner.</p>
+<p class="muted">When a shop pays you, add it here. It will show on the public site as Top Banner (GitHub).</p>
 <input id="shopName" placeholder="Shop Name e.g. Mzilikazi Chicken">
 <input id="shopImage" placeholder="Shop Banner Image URL or music/ads/shop.jpg">
 <input id="shopLink" placeholder="Shop WhatsApp Link e.g. https://wa.me/263...">
@@ -187,72 +189,118 @@ Bring a Friend, Get FREE Upload! Share your code now.</textarea>
 <div id="shopAdList"></div>
 </div>
 <div class="section">
-<h3>Current Ads Config (for public site)</h3>
-<p class="muted">Copy this into your main file if needed:</p>
+<h3>Current Ads Config (for public site - GitHub)</h3>
+<p class="muted">This is what your public site reads. No bottom ad:</p>
 <textarea id="adsConfigDisplay" readonly></textarea>
 </div>
 </section>
 
 <section id="settings" class="page">
-<div class="section"><h3>Admin session</h3><p class="muted">Logged in as Admin (PIN) •</p><p class="muted">GitHub Token: <span id="tokenStatus"></span></p><input id="settingsToken" placeholder="Update GitHub Token ghp_..."><button class="btn dark full" id="updateTokenBtn">Update Token</button><hr><p class="muted">Change Admin PIN:</p><input id="newPin" type="password" placeholder="New PIN"><button class="btn gold full" id="changePinBtn">Change PIN</button></div>
+<div class="section"><h3>Admin session</h3><p class="muted">Logged in as Admin (PIN) • Stored in GitHub</p><p class="muted">Storage: <b>GitHub JSON</b> • Token saved on this phone only</p><a href="https://byomusic.netlify.app/" target="_blank"><button class="btn gold full" type="button">🌐 Open Linked Public Site - Check Update</button></a><hr><p class="muted">Change Admin PIN:</p><input id="newPin" type="password" placeholder="New PIN"><button class="btn gold full" id="changePinBtn">Change PIN Locally</button><hr><p class="muted">GitHub Token:</p><input id="newToken" type="password" placeholder="Paste new ghp_... token"><button class="btn dark full" id="changeTokenBtn">Save New Token</button><button class="btn red full" id="clearTokenBtn">Clear Token (Logout Token)</button></div>
 <div class="danger"><h3>Danger zone</h3><button class="btn red full" id="exportBtn">Export backup</button><button class="btn red full" id="clearCodesBtn">Clear Expired Codes</button><button class="btn red full" id="clearReferralsBtn">Clear All Referrals (Danger)</button></div>
 </section>
 </div>
 
 <script>
 const $=id=>document.getElementById(id);
-const KEY_TOKEN="byomusic_gh_token", KEY_PIN="byomusic_admin_pin", KEY_SESSION="byomusic_admin_session";
+const KEY_PIN="byomusic_admin_pin", KEY_SESSION="byomusic_admin_session";
 const DEFAULT_PIN="6161";
-let songs=[], artists=[], users=[], secureCodes=[], referrals=[], shopAds=[], adsConfig={adsenseId:""};
+const PUBLIC_URL="https://byomusic.netlify.app/";
+let songs=[], artists=[], users=[], secureCodes=[], referrals=[], shopAds=[], adsConfig={adsenseId:"ca-pub-7880131696089557", bottomAdRemoved:true, version:"9.0"};
 function getPin(){return localStorage.getItem(KEY_PIN)||DEFAULT_PIN;}
+function getToken(){ return localStorage.getItem("byo_github_token")||""; }
 function message(id,t){$(id).textContent=t;}
 function safe(s){return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
-function getToken(){return localStorage.getItem(KEY_TOKEN)||"";}
-function setToken(t){localStorage.setItem(KEY_TOKEN,t); $("tokenStatus").textContent=t?"✅ Saved":"❌ Not set";}
-setToken(getToken());
+const asset=p=>{ if(!p) return ""; if(/^https?:\/\//i.test(p)) return p; if(p.startsWith("/")) return p; return p.replace(/^\/+/,""); };
+// ===== GITHUB STORAGE =====
+const GH_USER="byosites";
+const GH_REPO="-BYOMusic";
+const GH_BRANCH="main";
+const GH_RAW=`https://raw.githubusercontent.com/${GH_USER}/${GH_REPO}/${GH_BRANCH}`;
+const GH_API=`https://api.github.com/repos/${GH_USER}/${GH_REPO}/contents`;
+const TYPE_TO_FILE={ songs:"songs.json", artists:"artists.json", users:"users.json", secure_codes:"secure_codes.json", referrals:"referrals.json", ads:"ads.json" };
+async function fetchGitHub(type){
+  try{
+    let file=TYPE_TO_FILE[type]||type+".json";
+    const r=await fetch(`${GH_RAW}/data/${file}?t=${Date.now()}`);
+    if(!r.ok) return null;
+    const txt=await r.text();
+    if(!txt.trim()) return null;
+    return JSON.parse(txt);
+  }catch(e){ console.log("GitHub read",type,e.message); return null; }
+}
+async function fetchJSONFile(path){
+  let type = path.replace("music/","").replace("data/","").replace(".json","");
+  if(type==="secure_codes") type="secure_codes";
+  return await fetchGitHub(type);
+}
+async function saveToGitHub(type, data){
+  let token=getToken();
+  if(!token) throw new Error("No GitHub Token - go to Settings > paste token, or re-login");
+  let file=TYPE_TO_FILE[type]||type+".json";
+  let path=`data/${file}`;
+  // Get SHA
+  let get=await fetch(`${GH_API}/${path}`,{ headers:{ Authorization:`Bearer ${token}` } });
+  let sha=null;
+  if(get.ok){ let j=await get.json(); sha=j.sha; }
+  else if(get.status!==404){ throw new Error("GitHub get failed: "+await get.text()); }
+  let content=btoa(unescape(encodeURIComponent(JSON.stringify(data,null,2))));
+  let body={ message:`Update ${file} via Admin`, content, branch:GH_BRANCH };
+  if(sha) body.sha=sha;
+  let put=await fetch(`${GH_API}/${path}`,{ method:"PUT", headers:{ Authorization:`Bearer ${token}`, "Content-Type":"application/json" }, body:JSON.stringify(body) });
+  if(!put.ok) throw new Error("GitHub save failed: "+await put.text());
+  return true;
+}
+// Alias so old code still works
+async function saveToNetlify(type,data){ return await saveToGitHub(type,data); }
+async function uploadFile_GH(file, path){
+  let token=getToken();
+  if(!token) throw new Error("No GitHub Token");
+  const base64 = await new Promise((res,rej)=>{
+    const fr=new FileReader();
+    fr.onload=()=>res(fr.result.split(",")[1]);
+    fr.onerror=rej;
+    fr.readAsDataURL(file);
+  });
+  // Check if file exists to get SHA
+  let sha=null;
+  try{
+    let get=await fetch(`${GH_API}/${path}`,{ headers:{ Authorization:`Bearer ${token}` } });
+    if(get.ok){ let j=await get.json(); sha=j.sha; }
+  }catch(e){}
+  let body={ message:`Upload ${path}`, content:base64, branch:GH_BRANCH };
+  if(sha) body.sha=sha;
+  const r=await fetch(`${GH_API}/${path}`,{ method:"PUT", headers:{ Authorization:`Bearer ${token}`, "Content-Type":"application/json" }, body:JSON.stringify(body) });
+  if(!r.ok) throw new Error("File upload failed: "+await r.text());
+  // Return raw URL - Netlify will serve it via GitHub raw, and also via local music/ after deploy
+  return path;
+}
+function fileSafe(n){return n.replace(/[^a-zA-Z0-9._-]/g,"_");}
 if(localStorage.getItem(KEY_SESSION)==="1"){showDashboard();}
-$("saveTokenBtn").onclick=()=>{let t=$("ghTokenInput").value.trim(); if(!t) return message("loginMessage","Enter token"); setToken(t); message("loginMessage","Token saved");};
-$("updateTokenBtn").onclick=()=>{let t=$("settingsToken").value.trim(); if(!t) return; setToken(t); alert("Token updated");};
-$("changePinBtn").onclick=()=>{let n=$("newPin").value.trim(); if(n.length<4) return alert("PIN too short"); localStorage.setItem(KEY_PIN,n); alert("PIN changed"); $("newPin").value="";};
+$("changePinBtn").onclick=()=>{let n=$("newPin").value.trim(); if(n.length<4) return alert("PIN too short"); localStorage.setItem(KEY_PIN,n); alert("PIN changed locally."); $("newPin").value="";};
+$("changeTokenBtn").onclick=()=>{let t=$("newToken").value.trim(); if(!t.startsWith("ghp_") && !t.startsWith("github_pat_")) return alert("Token should start with ghp_"); localStorage.setItem("byo_github_token",t); alert("Token saved!"); $("newToken").value="";};
+$("clearTokenBtn").onclick=()=>{localStorage.removeItem("byo_github_token"); alert("Token cleared. You will need to login again.");};
 $("loginBtn").onclick=()=>{
 let pin=$("adminPin").value.trim();
-if(pin===getPin()){localStorage.setItem(KEY_SESSION,"1"); showDashboard();}
+let tokenInput=$("ghTokenInput").value.trim();
+if(tokenInput) localStorage.setItem("byo_github_token", tokenInput);
+if(pin===getPin()){
+  if(!getToken()){ message("loginMessage","Paste GitHub Token first - GitHub > Settings > Developer settings > Tokens (classic) > Tick repo"); return; }
+  localStorage.setItem(KEY_SESSION,"1"); showDashboard();
+}
 else message("loginMessage","Wrong PIN");
 };
 $("logoutBtn").onclick=()=>{localStorage.removeItem(KEY_SESSION); $("login").style.display="block"; $("dashboard").style.display="none";};
-function showDashboard(){$("login").style.display="none"; $("dashboard").style.display="block"; $("connection").textContent="🟢 Online"; loadAll();}
-async function fetchJSONFile(path){try{const r=await fetch(`https://byosites.github.io/byosites/${path}?t=${Date.now()}`); if(!r.ok) return null; return await r.json();}catch(e){return null;}}
-async function getGH_SHA(path,token){try{const r=await fetch(`https://api.github.com/repos/byosites/byosites/contents/${path}`,{headers:{Authorization:`token ${token}`}}); if(r.status===404) return null; if(!r.ok) return null; const j=await r.json(); return j.sha;}catch(e){return null;}}
-async function uploadJSON_GH(path,obj,token){
-if(!token) throw Error("GitHub Token not set");
-const content=btoa(unescape(encodeURIComponent(JSON.stringify(obj,null,2))));
-const url=`https://api.github.com/repos/byosites/byosites/contents/${path}`;
-const sha=await getGH_SHA(path,token);
-const body={message:`admin sync ${path}`,content}; if(sha) body.sha=sha;
-const r=await fetch(url,{method:"PUT",headers:{Authorization:`token ${token}`,"Content-Type":"application/json"},body:JSON.stringify(body)});
-if(!r.ok) throw Error("GitHub upload failed: "+await r.text());
-return true;
-}
-async function uploadFile_GH(file,path){
-let token=getToken(); if(!token) throw Error("GitHub Token not set");
-let base64=await new Promise((res,rej)=>{let fr=new FileReader(); fr.onload=()=>res(fr.result.split(",")[1]); fr.onerror=rej; fr.readAsDataURL(file);});
-const url=`https://api.github.com/repos/byosites/byosites/contents/${path}`;
-const sha=await getGH_SHA(path,token);
-const body={message:`upload ${path}`,content:base64}; if(sha) body.sha=sha;
-const r=await fetch(url,{method:"PUT",headers:{Authorization:`token ${token}`,"Content-Type":"application/json"},body:JSON.stringify(body)});
-if(!r.ok) throw Error("File upload failed: "+await r.text());
-return path;
-}
-function fileSafe(n){return n.replace(/[^a-zA-Z0-9._-]/g,"_");}
+function showDashboard(){$("login").style.display="none"; $("dashboard").style.display="block"; $("connection").textContent="🟢 Online - GitHub JSON - "+PUBLIC_URL; loadAll();}
 $("refreshBtn").onclick=()=>loadAll();
 async function loadAll(){
-let sRes=await fetchJSONFile('music/songs.json'); let aRes=await fetchJSONFile('music/artists.json'); let uRes=await fetchJSONFile('music/users.json'); let cRes=await fetchJSONFile('music/secure_codes.json'); let rRes=await fetchJSONFile('music/referrals.json'); let adRes=await fetchJSONFile('music/ads.json');
+let sRes=await fetchGitHub('songs'); let aRes=await fetchGitHub('artists'); let uRes=await fetchGitHub('users'); let cRes=await fetchGitHub('secure_codes'); let rRes=await fetchGitHub('referrals'); let adRes=await fetchGitHub('ads');
 if(sRes&&Array.isArray(sRes)) songs=sRes;
 if(aRes&&Array.isArray(aRes)) artists=aRes;
 if(uRes&&Array.isArray(uRes)) users=uRes;
 if(cRes&&Array.isArray(cRes)) secureCodes=cRes;
 if(rRes&&Array.isArray(rRes)) referrals=rRes;
-if(adRes&&adRes.shopAds) { shopAds=adRes.shopAds; adsConfig=adRes; if(adRes.adsenseId) $("adsenseId").value=adRes.adsenseId; }
+if(adRes&&adRes.shopAds) { shopAds=adRes.shopAds; adsConfig=adRes; adsConfig.bottomAdRemoved=true; adsConfig.version="9.0"; if(adRes.adsenseId) $("adsenseId").value=adRes.adsenseId; }
 else if(adRes&&Array.isArray(adRes)) shopAds=adRes;
 $("songCount").textContent=songs.length; $("artistCount").textContent=artists.length; $("userCount").textContent=users.length;
 $("codeCount").textContent=secureCodes.filter(c=>!c.used && Date.now()<c.expires).length;
@@ -265,31 +313,32 @@ let top = Object.entries(counts).sort((a,b)=>b[1]-a[1])[0];
 $("topReferrer").textContent=top?top[0]+" ("+top[1]+")":"-";
 renderSongs(); renderArtists(); renderCodes(); renderUsers(); renderReferrals(); renderShopAds();
 $("codeSongSelect").innerHTML=`<option value="">-- Select Song --</option>`+songs.map(s=>`<option value="${s.id}">${safe(s.title)} - ${safe(s.artist)}</option>`).join("");
-$("adsConfigDisplay").value=JSON.stringify({adsenseId:adsConfig.adsenseId||"",shopAds},null,2);
+$("adsConfigDisplay").value=JSON.stringify({adsenseId:adsConfig.adsenseId||"ca-pub-7880131696089557",bottomAdRemoved:true,version:"9.0",shopAds},null,2);
 }
 $("codeSongSelect").onchange=e=>{ $("codeSongId").value=e.target.value; };
 document.querySelectorAll(".tab").forEach(btn=>{btn.onclick=()=>{document.querySelectorAll(".tab").forEach(x=>x.classList.remove("active")); document.querySelectorAll(".page").forEach(x=>x.classList.remove("active")); btn.classList.add("active"); $(btn.dataset.page).classList.add("active");};});
 $("uploadBtn").onclick=async()=>{
 const audio=$("audioFile").files[0]; const cover=$("coverFile").files[0]; const title=$("songTitle").value.trim(); const artist=$("songArtist").value.trim();
 if(!audio||!cover||!title||!artist){message("uploadMessage","Select audio, cover, title, artist"); return;}
+if(audio.size>25*1024*1024){ message("uploadMessage","⚠️ MP3 too big for GitHub (>25MB). Compress it or use <25MB. GitHub limit is 25MB via API."); return; }
 try{
 $("uploadBtn").disabled=true; $("uploadProgress").style.width="10%"; message("uploadMessage","Uploading audio to GitHub…");
 const id="song_"+Date.now()+"_"+Math.random().toString(36).slice(2,7);
 const audioPath=`music/songs/${id}_${fileSafe(audio.name)}`;
 const coverPath=`music/covers/${id}_${fileSafe(cover.name)}`;
-await uploadFile_GH(audio,audioPath); $("uploadProgress").style.width="60%"; message("uploadMessage","Uploading cover…");
+await uploadFile_GH(audio,audioPath); $("uploadProgress").style.width="60%"; message("uploadMessage","Uploading cover to GitHub…");
 await uploadFile_GH(cover,coverPath); $("uploadProgress").style.width="80%";
 const paid=$("songPaid").checked;
 const refCode=$("songReferral").value.trim();
 const song={id,title,artist,genre:$("songGenre").value,releaseDate:$("songDate").value,bio:$("songBio").value.trim(),lyrics:$("songLyrics").value.trim(),credits:$("songCredits").value.trim(),composer:$("songComposer").value.trim(),isrc:$("songISRC").value.trim(),explicit:$("songExplicit").value,paid,sell:paid,featured:$("songFeatured").checked,price:Number($("songPrice").value)||0,audio:audioPath,img:coverPath,audioUrl:audioPath,cover:coverPath,likes:0,likedBy:[],ratings:{},comments:[],suspended:false,referredBy:refCode||"",createdAt:Date.now(),created:new Date().toISOString()};
 songs.unshift(song);
-await uploadJSON_GH('music/songs.json',songs,getToken());
+await saveToGitHub('songs',songs);
 if(refCode){
   referrals.unshift({code:refCode,newUser:artist,songTitle:title,songId:id,createdAt:Date.now(),rewardGiven:false});
-  await uploadJSON_GH('music/referrals.json',referrals,getToken());
-  message("uploadMessage","✅ Song uploaded + Referral counted for "+refCode);
+  await saveToGitHub('referrals',referrals);
+  message("uploadMessage","✅ Song uploaded to GitHub + Referral counted for "+refCode);
 } else {
-  message("uploadMessage","✅ Song uploaded & published");
+  message("uploadMessage","✅ Song uploaded to GitHub & published - wait ~10s for Netlify");
 }
 $("uploadProgress").style.width="100%";
 ["songTitle","songArtist","songBio","songLyrics","songCredits","songComposer","songISRC","songPrice","songReferral"].forEach(id=>$(id).value=""); $("audioFile").value=""; $("coverFile").value=""; $("songPaid").checked=false;
@@ -299,44 +348,49 @@ loadAll();
 function renderSongs(){
 const q=$("songSearch").value.toLowerCase().trim();
 const list=songs.filter(s=>`${s.title} ${s.artist} ${s.genre}`.toLowerCase().includes(q));
-$("songList").innerHTML=list.map(s=>`<div class="item"><div class="itemhead"><img src="https://byosites.github.io/byosites/${safe(s.img||s.cover)}" onerror="this.style.opacity='.2'"><div style="flex:1;min-width:0"><b>${safe(s.title)}</b><br><small class="muted">${safe(s.artist)} · ${safe(s.genre)} · ID: ${s.id}</small><br><span class="badge ${s.suspended?"suspended":"live"}">${s.suspended?"SUSPENDED":"LIVE"}</span> <span class="badge">${s.sell||s.paid?"PAID":"FREE"}</span> ${s.referredBy?`<span class="badge" style="background:#ffcc00;color:#111">REF: ${safe(s.referredBy)}</span>`:""}</div></div><audio controls preload="none" src="https://byosites.github.io/byosites/${safe(s.audio||s.audioUrl)}" style="width:100%;margin-top:8px"></audio><div class="row"><button class="btn orange" data-action="suspend" data-id="${s.id}">${s.suspended?"Unsuspend":"Suspend"}</button><button class="btn dark" data-action="edit" data-id="${s.id}">Edit</button><button class="btn red" data-action="delete" data-id="${s.id}">Delete</button></div></div>`).join("")||"<p class='muted'>No songs</p>";
+$("songList").innerHTML=list.map(s=>`<div class="item"><div class="itemhead"><img src="${safe(asset(s.img||s.cover))}" onerror="this.style.opacity='.2'"><div style="flex:1;min-width:0"><b>${safe(s.title)}</b><br><small class="muted">${safe(s.artist)} · ${safe(s.genre)} · ID: ${s.id}</small><br><span class="badge ${s.suspended?"suspended":"live"}">${s.suspended?"SUSPENDED":"LIVE"}</span> <span class="badge">${s.sell||s.paid?"PAID":"FREE"}</span> ${s.referredBy?`<span class="badge" style="background:#ffcc00;color:#111">REF: ${safe(s.referredBy)}</span>`:""}</div></div><audio controls preload="none" src="${safe(asset(s.audio||s.audioUrl))}" style="width:100%;margin-top:8px"></audio><div class="row"><button class="btn orange" data-action="suspend" data-id="${s.id}">${s.suspended?"Unsuspend":"Suspend"}</button><button class="btn dark" data-action="edit" data-id="${s.id}">Edit</button><button class="btn red" data-action="delete" data-id="${s.id}">Delete</button></div></div>`).join("")||"<p class='muted'>No songs</p>";
 }
 $("songSearch").oninput=renderSongs;
 $("songList").onclick=async e=>{
 const btn=e.target.closest("button[data-action]"); if(!btn) return;
 const song=songs.find(x=>x.id===btn.dataset.id); if(!song) return;
 try{
-if(btn.dataset.action==="suspend"){song.suspended=!song.suspended; await uploadJSON_GH('music/songs.json',songs,getToken()); renderSongs();}
-if(btn.dataset.action==="edit"){const title=prompt("Song title:",song.title); if(title===null) return; const bio=prompt("Description:",song.bio||""); if(bio===null) return; const price=prompt("Price:",song.price||0); if(price===null) return; song.title=title.trim(); song.bio=bio; song.price=Number(price)||0; await uploadJSON_GH('music/songs.json',songs,getToken()); renderSongs();}
-if(btn.dataset.action==="delete"){if(!confirm("Delete "+song.title+"?")) return; songs=songs.filter(x=>x.id!==song.id); await uploadJSON_GH('music/songs.json',songs,getToken()); renderSongs();}
+if(btn.dataset.action==="suspend"){song.suspended=!song.suspended; await saveToGitHub('songs',songs); renderSongs();}
+if(btn.dataset.action==="edit"){const title=prompt("Song title:",song.title); if(title===null) return; const bio=prompt("Description:",song.bio||""); if(bio===null) return; const price=prompt("Price:",song.price||0); if(price===null) return; song.title=title.trim(); song.bio=bio; song.price=Number(price)||0; await saveToGitHub('songs',songs); renderSongs();}
+if(btn.dataset.action==="delete"){if(!confirm("Delete "+song.title+"?")) return; songs=songs.filter(x=>x.id!==song.id); await saveToGitHub('songs',songs); renderSongs();}
 }catch(e){alert(e.message);}
 };
 $("artistSaveBtn").onclick=async()=>{
-const name=$("artistName").value.trim(); const bio=$("artistBio").value.trim(); if(!name||!bio){message("artistMessage","Name + bio required"); return;}
+const name=$("artistName").value.trim(); const bio=$("artistBio").value.trim(); const pass=$("artistPass").value.trim();
+if(!name||!bio){message("artistMessage","Name + bio required"); return;}
+if(!pass){message("artistMessage","Artist Password required - artist needs it to login at artist.html"); return;}
 try{
 $("artistSaveBtn").disabled=true; let photoUrl="";
 const photo=$("artistPhoto").files[0];
 if(photo){const path=`music/artists/${Date.now()}_${fileSafe(photo.name)}`; await uploadFile_GH(photo,path); photoUrl=path;}
 const refCode=$("artistReferral").value.trim();
-const artist={id:"artist_"+Date.now(),name,bio,wa:$("artistWhatsApp").value.trim(),loc:$("artistLocation").value.trim(),genre:$("artistGenre").value.trim(),fb:$("artistFacebook").value.trim(),ig:$("artistInstagram").value.trim(),yt:$("artistYoutube").value.trim(),tik:$("artistTikTok").value.trim(),photo:photoUrl,suspended:false,referredBy:refCode||"",createdAt:Date.now()};
-artists.push(artist); await uploadJSON_GH('music/artists.json',artists,getToken());
-if(refCode){ referrals.unshift({code:refCode,newUser:name,songTitle:"Artist Joined",songId:artist.id,createdAt:Date.now(),rewardGiven:false}); await uploadJSON_GH('music/referrals.json',referrals,getToken()); }
-message("artistMessage","✅ Artist saved"+(refCode?" + Referral counted":"")); ["artistName","artistBio","artistWhatsApp","artistLocation","artistGenre","artistFacebook","artistInstagram","artistYoutube","artistTikTok","artistReferral"].forEach(id=>$(id).value=""); $("artistPhoto").value=""; loadAll();
+let approval = $("artistApproval").value.trim() || ("BYO-"+Math.random().toString(36).slice(2,8).toUpperCase());
+let refCodeForArtist = "BYO-"+name.replace(/[^A-Za-z0-9]/g,'').toUpperCase().slice(0,6)+"-"+approval.slice(-4);
+const artist={id:"artist_"+Date.now(),name,bio,pass,approvalCode:approval,refCode:refCodeForArtist,wa:$("artistWhatsApp").value.trim(),loc:$("artistLocation").value.trim(),genre:$("artistGenre").value.trim(),fb:$("artistFacebook").value.trim(),ig:$("artistInstagram").value.trim(),yt:$("artistYoutube").value.trim(),tik:$("artistTikTok").value.trim(),photo:photoUrl,suspended:false,referredBy:refCode||"",createdAt:Date.now()};
+artists.push(artist); await saveToGitHub('artists',artists);
+if(refCode){ referrals.unshift({code:refCode,newUser:name,songTitle:"Artist Joined",songId:artist.id,createdAt:Date.now(),rewardGiven:false}); await saveToGitHub('referrals',referrals); }
+message("artistMessage","✅ Artist saved to GitHub! Password: "+pass+" | Approval: "+approval+" | Referral: "+refCodeForArtist+" - Send these to artist on WhatsApp");
+["artistName","artistBio","artistWhatsApp","artistLocation","artistGenre","artistFacebook","artistInstagram","artistYoutube","artistTikTok","artistReferral","artistPass","artistApproval"].forEach(id=>$(id).value=""); $("artistPhoto").value=""; loadAll();
 }catch(e){message("artistMessage",e.message);}finally{$("artistSaveBtn").disabled=false;}
 };
 function renderArtists(){
 const q=$("artistSearch").value.toLowerCase().trim();
 const list=artists.filter(a=>`${a.name} ${a.bio||""} ${a.genre||""}`.toLowerCase().includes(q));
-$("artistList").innerHTML=list.map(a=>`<div class="item"><div class="itemhead"><img src="https://byosites.github.io/byosites/${safe(a.photo)}"><div style="flex:1"><b>${safe(a.name)}</b><br><small class="muted">${safe(a.genre||"Artist")}</small><br><span class="badge ${a.suspended?"suspended":"live"}">${a.suspended?"SUSPENDED":"ACTIVE"}</span> ${a.referredBy?`<span class="badge" style="background:#ffcc00;color:#111">REF: ${safe(a.referredBy)}</span>`:""}</div></div><p class="muted">${safe(a.bio||"")}</p><div class="row"><button class="btn orange" data-artist-action="suspend" data-id="${a.id}">${a.suspended?"Unsuspend":"Suspend"}</button><button class="btn dark" data-artist-action="edit" data-id="${a.id}">Edit</button><button class="btn red" data-artist-action="delete" data-id="${a.id}">Delete</button></div></div>`).join("")||"<p class='muted'>No artists</p>";
+$("artistList").innerHTML=list.map(a=>`<div class="item"><div class="itemhead"><img src="${safe(asset(a.photo))}"><div style="flex:1"><b>${safe(a.name)}</b><br><small class="muted">${safe(a.genre||"Artist")} • Pass: ${safe(a.pass||"—")} • Approval: ${safe(a.approvalCode||"—")} • Ref: ${safe(a.refCode||"—")}</small><br><span class="badge ${a.suspended?"suspended":"live"}">${a.suspended?"SUSPENDED":"ACTIVE"}</span> ${a.referredBy?`<span class="badge" style="background:#ffcc00;color:#111">REF: ${safe(a.referredBy)}</span>`:""}</div></div><p class="muted">${safe(a.bio||"")}</p><div class="row"><button class="btn orange" data-artist-action="suspend" data-id="${a.id}">${a.suspended?"Unsuspend":"Suspend"}</button><button class="btn dark" data-artist-action="edit" data-id="${a.id}">Edit</button><button class="btn red" data-artist-action="delete" data-id="${a.id}">Delete</button></div></div>`).join("")||"<p class='muted'>No artists</p>";
 }
 $("artistSearch").oninput=renderArtists;
 $("artistList").onclick=async e=>{
 const btn=e.target.closest("button[data-artist-action]"); if(!btn) return;
 const a=artists.find(x=>x.id===btn.dataset.id); if(!a) return;
 try{
-if(btn.dataset.artistAction==="suspend"){a.suspended=!a.suspended; await uploadJSON_GH('music/artists.json',artists,getToken()); renderArtists();}
-if(btn.dataset.artistAction==="edit"){const name=prompt("Artist name:",a.name); if(name===null) return; const bio=prompt("Bio:",a.bio||""); if(bio===null) return; a.name=name.trim(); a.bio=bio; await uploadJSON_GH('music/artists.json',artists,getToken()); renderArtists();}
-if(btn.dataset.artistAction==="delete"){if(!confirm("Delete "+a.name+"?")) return; artists=artists.filter(x=>x.id!==a.id); await uploadJSON_GH('music/artists.json',artists,getToken()); renderArtists();}
+if(btn.dataset.artistAction==="suspend"){a.suspended=!a.suspended; await saveToGitHub('artists',artists); renderArtists();}
+if(btn.dataset.artistAction==="edit"){const name=prompt("Artist name:",a.name); if(name===null) return; const bio=prompt("Bio:",a.bio||""); if(bio===null) return; a.name=name.trim(); a.bio=bio; await saveToGitHub('artists',artists); renderArtists();}
+if(btn.dataset.artistAction==="delete"){if(!confirm("Delete "+a.name+"?")) return; artists=artists.filter(x=>x.id!==a.id); await saveToGitHub('artists',artists); renderArtists();}
 }catch(e){alert(e.message);}
 };
 $("generateCodeBtn").onclick=async()=>{
@@ -348,15 +402,13 @@ message("codeMessage","Generating…");
 const code="BYO-"+Math.random().toString(36).slice(2,8).toUpperCase();
 const entry={code,songId,songTitle:song.title,forUser:buyerName,price:song.price||0,created:Date.now(),expires:Date.now()+10*60*1000,used:false};
 secureCodes.unshift(entry);
-await uploadJSON_GH('music/secure_codes.json',secureCodes,getToken());
+await saveToGitHub('secure_codes',secureCodes);
 message("codeMessage",`✅ Code for ${buyerName}: ${code} - Buyer gets it in 3 sec`);
 renderCodes();
 }catch(e){message("codeMessage","Failed: "+e.message);}
 };
 function renderCodes(){$("codeList").innerHTML=`<h4>Recent Codes</h4>`+secureCodes.slice(0,15).map(c=>`<div class="item"><b style="color:var(--gold)">${c.code}</b> - ${safe(c.songTitle)} - For: <b>${safe(c.forUser)}</b> - ${c.used?"USED ❌":"ACTIVE ✅"} - Expires ${new Date(c.expires).toLocaleTimeString()} <button class="btn dark" onclick="navigator.clipboard.writeText('${c.code}')">Copy</button></div>`).join("");}
 function renderUsers(){$("userList").innerHTML=users.length?users.map(u=>`<div class="item"><b>${safe(u.name||u.displayName||u.email)}</b> - ${safe(u.email||"")}<br><small class="muted">Use this name exactly when generating code</small></div>`).join(""):"<p class='muted'>No users yet</p>";}
-
-// REFERRALS
 function renderReferrals(){
 let q=($("referralSearch")?.value||"").toLowerCase().trim();
 let counts={};
@@ -365,34 +417,32 @@ let sorted=Object.entries(counts).sort((a,b)=>b[1].count-a[1].count);
 let filtered=sorted.filter(([code])=>!q || code.toLowerCase().includes(q));
 $("referralList").innerHTML=filtered.length?filtered.map(([code,data],idx)=>{
 let reward = data.count>=5?"👑 KING - 1 Month FREE Pro":data.count>=3?"⭐ STAR - 1 Week TOP":data.count>=1?"🎁 1 FREE Upload":"";
-return `<div class="item ${idx===0?"leader":""}"><b style="color:var(--gold);font-size:16px">${idx===0?"👑 #1 ":"#"+(idx+1)+" "}${safe(code)}</b> - <b>${data.count} referrals</b> - <span style="color:#20a765">${reward}</span><br><small class="muted">${data.items.slice(0,5).map(i=>safe(i.newUser)+" ("+safe(i.songTitle||"")+ ")").join(" • ")}</small><br><div class="row"><button class="btn green" onclick="markReward('${code}')">✅ Mark Reward Given</button><button class="btn dark" onclick="copyText('${code}')">Copy Code</button></div></div>`;
+return `<div class="item ${idx===0?"leader":""}"><b style="color:var(--gold);font-size:16px">${idx===0?"👑 #1 ":"#"+(idx+1)+" "}${safe(code)}</b> - <b>${data.count} referrals</b> - <span style="color:#20a765">${reward}</span><br><small class="muted">${data.items.slice(0,5).map(i=>safe(i.newUser)+" ("+safe(i.songTitle||"")+ ")").join(" • ")}</small><br><div class="row"><button class="btn green" onclick="window.markReward('${safe(code)}')">✅ Mark Reward Given</button><button class="btn dark" onclick="window.copyText('${safe(code)}')">Copy Code</button></div></div>`;
 }).join(""):"<p class='muted'>No referrals yet. When you upload a song, enter the referrer code in the Referral field.</p>";
 }
-function copyText(t){navigator.clipboard.writeText(t); alert("Copied "+t);}
-async function markReward(code){
+window.copyText=function(t){navigator.clipboard.writeText(t); alert("Copied "+t);};
+window.markReward=async function(code){
   let items=referrals.filter(r=>r.code===code);
   items.forEach(i=>i.rewardGiven=true);
-  await uploadJSON_GH('music/referrals.json',referrals,getToken());
+  await saveToGitHub('referrals',referrals);
   alert("Reward marked for "+code+" - Give them FREE upload / TOP placement now!");
   renderReferrals();
-}
+};
 $("referralSearch").oninput=renderReferrals;
 $("addReferralBtn").onclick=async()=>{
 let code=$("manualRefCode").value.trim(); let newUser=$("manualRefNewUser").value.trim(); let song=$("manualRefSong").value.trim();
 if(!code||!newUser){message("referralMsg","Enter Code + New Artist"); return;}
 referrals.unshift({code,newUser,songTitle:song||"Manual",songId:"manual_"+Date.now(),createdAt:Date.now(),rewardGiven:false});
-await uploadJSON_GH('music/referrals.json',referrals,getToken());
+await saveToGitHub('referrals',referrals);
 message("referralMsg","✅ Referral added for "+code);
 ["manualRefCode","manualRefNewUser","manualRefSong"].forEach(id=>$(id).value="");
 loadAll();
 };
-
-// ADS
 $("saveAdsenseBtn").onclick=async()=>{
 let id=$("adsenseId").value.trim(); if(!id) return message("adsenseMsg","Enter AdSense ID");
-adsConfig.adsenseId=id; adsConfig.shopAds=shopAds;
-await uploadJSON_GH('music/ads.json',adsConfig,getToken());
-message("adsenseMsg","✅ AdSense ID saved: "+id+" - Also paste it in your main BYOMUSIC file!");
+adsConfig.adsenseId=id; adsConfig.shopAds=shopAds; adsConfig.bottomAdRemoved=true; adsConfig.version="9.0";
+await saveToGitHub('ads',adsConfig);
+message("adsenseMsg","✅ AdSense ID saved to GitHub: "+id);
 loadAll();
 };
 $("addShopAdBtn").onclick=async()=>{
@@ -400,20 +450,19 @@ let name=$("shopName").value.trim(); let img=$("shopImage").value.trim(); let li
 if(!name){message("shopAdMsg","Enter Shop Name"); return;}
 let ad={id:"ad_"+Date.now(),name,image:img||"",link:link||"",price,weeks,createdAt:Date.now(),expires:Date.now()+weeks*7*24*60*60*1000,active:true};
 shopAds.unshift(ad);
-adsConfig.shopAds=shopAds;
-await uploadJSON_GH('music/ads.json',adsConfig,getToken());
-message("shopAdMsg","✅ Shop Ad added: "+name+" - $"+price+" for "+weeks+" week(s)");
+adsConfig.shopAds=shopAds; adsConfig.bottomAdRemoved=true; adsConfig.version="9.0";
+await saveToGitHub('ads',adsConfig);
+message("shopAdMsg","✅ Shop Ad added to GitHub: "+name+" - $"+price+" for "+weeks+" week(s)");
 ["shopName","shopImage","shopLink","shopPrice","shopWeeks"].forEach(id=>$(id).value="");
 loadAll();
 };
 function renderShopAds(){
-$("shopAdList").innerHTML=shopAds.length?shopAds.map(a=>`<div class="item"><b>${safe(a.name)}</b> - $${a.price} - ${a.weeks} week(s) - ${a.expires>Date.now()?"ACTIVE ✅":"EXPIRED ❌"} - Expires ${new Date(a.expires).toLocaleDateString()}<br><small class="muted">${safe(a.link||"")}</small><div class="row"><button class="btn red" onclick="deleteAd('${a.id}')">Delete</button><button class="btn dark" onclick="copyText('${a.image||""}')">Copy Image</button></div></div>`).join(""):"<p class='muted'>No shop ads yet. Add your first $10 shop!</p>";
+$("shopAdList").innerHTML=shopAds.length?shopAds.map(a=>`<div class="item"><b>${safe(a.name)}</b> - $${a.price} - ${a.weeks} week(s) - ${a.expires>Date.now()?"ACTIVE ✅":"EXPIRED ❌"} - Expires ${new Date(a.expires).toLocaleDateString()}<br><small class="muted">${safe(a.link||"")}</small><div class="row"><button class="btn red" onclick="window.deleteAd('${a.id}')">Delete</button><button class="btn dark" onclick="window.copyText('${safe(a.image||"")}')">Copy Image</button></div></div>`).join(""):"<p class='muted'>No shop ads yet. Add your first $10 shop!</p>";
 }
-async function deleteAd(id){ shopAds=shopAds.filter(a=>a.id!==id); adsConfig.shopAds=shopAds; await uploadJSON_GH('music/ads.json',adsConfig,getToken()); loadAll(); }
-
+window.deleteAd=async function(id){ shopAds=shopAds.filter(a=>a.id!==id); adsConfig.shopAds=shopAds; adsConfig.bottomAdRemoved=true; await saveToGitHub('ads',adsConfig); loadAll(); }
 $("exportBtn").onclick=()=>{const data={exportedAt:new Date().toISOString(),songs,artists,users,secureCodes,referrals,shopAds,adsConfig}; const blob=new Blob([JSON.stringify(data,null,2)],{type:"application/json"}); const url=URL.createObjectURL(blob); const a=document.createElement("a"); a.href=url; a.download="byomusic-backup.json"; a.click(); URL.revokeObjectURL(url);};
-$("clearCodesBtn").onclick=async()=>{secureCodes=secureCodes.filter(c=>!c.used && Date.now()<c.expires); await uploadJSON_GH('music/secure_codes.json',secureCodes,getToken()); renderCodes(); alert("Expired cleared");};
-$("clearReferralsBtn").onclick=async()=>{ if(!confirm("Delete ALL referrals?")) return; referrals=[]; await uploadJSON_GH('music/referrals.json',referrals,getToken()); loadAll(); };
+$("clearCodesBtn").onclick=async()=>{secureCodes=secureCodes.filter(c=>!c.used && Date.now()<c.expires); await saveToGitHub('secure_codes',secureCodes); renderCodes(); alert("Expired cleared");};
+$("clearReferralsBtn").onclick=async()=>{ if(!confirm("Delete ALL referrals?")) return; referrals=[]; await saveToGitHub('referrals',referrals); loadAll(); };
 </script>
 </body>
-</html>
+  </html>
