@@ -106,8 +106,8 @@ textarea{min-height:90px;resize:vertical}
 <div class="hero">
 <h1>BYO<span>MUSIC</span></h1>
 <p class="muted">Zimbabwean music. One place. Worldwide.</p>
-<p id="status" class="muted" style="font-size:11px">Connecting to live music library…</p>
-<p style="font-size:11px;color:#25D366"><span class="liveDot"></span>Online</p>
+<p id="status" class="muted" style="font-size:11px">Connecting to GitHub live library…</p>
+<p style="font-size:11px;color:#25D366"><span class="liveDot"></span>Online • Stored in GitHub</p>
 </div>
 <div class="search">
 <i class="fa fa-search muted"></i>
@@ -135,7 +135,7 @@ textarea{min-height:90px;resize:vertical}
 <h2>Philip Mbewe</h2>
 <p style="color:var(--gold)">Founder & Developer · Bulawayo, Zimbabwe</p>
 <p class="muted">BYOMUSIC supports Zimbabwean music through discovery, listening and artist-focused distribution.</p>
-<p class="muted">© 2026 BYOMUSIC • v7.3 - Clean</p>
+<p class="muted">© 2026 BYOMUSIC • v9.0 - GitHub Stored • Data in GitHub JSON</p>
 </div>
 </section>
 </main>
@@ -197,11 +197,16 @@ const firebaseConfig = {
 const app=initializeApp(firebaseConfig);
 const auth=getAuth(app);
 const $=id=>document.getElementById(id);
-const KEY_SONGS="byomusic_songs_v2_final", KEY_ARTISTS="byomusic_artists_secure", KEY_USERS="byomusic_users_v5", KEY_SECURE_CODES="byomusic_secure_codes_v54", KEY_TOKEN="byomusic_gh_token";
+// ===== GITHUB STORAGE - GITHUB STORES DATA, NETLIFY SHOWS PAGES =====
+const GH_USER = "byosites";
+const GH_REPO = "-BYOMusic";
+const GH_BRANCH = "main";
+const GH_RAW = `https://raw.githubusercontent.com/${GH_USER}/${GH_REPO}/${GH_BRANCH}/data`;
+const KEY_SONGS="byomusic_songs_v2_final", KEY_ARTISTS="byomusic_artists_secure", KEY_USERS="byomusic_users_v5", KEY_SECURE_CODES="byomusic_secure_codes_v54";
 let user=null, songs=[], artists=[], secureCodes=[], inbox=[];
 let filter="all", current=null, queue=[], qi=-1, repeat=false, isShuffle=false;
 let unreadCount=0, seenCodes=JSON.parse(localStorage.getItem("byomusic_seen_codes")||"[]"), lastKnownComments=0, lastKnownLikes=0, currentPaySong=null, countdownInterval=null;
-const asset=p=>!p?"":/^https?:\/\//i.test(p)?p:`https://byosites.github.io/byosites/${String(p).replace(/^\/+/,"")}`;
+const asset=p=>{ if(!p) return ""; if(/^https?:\/\//i.test(p)) return p; if(p.startsWith("/")) return p; return p.replace(/^\/+/,""); };
 const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const fmt=n=>{n=Number(n); if(!Number.isFinite(n)||n<0) return "0:00"; return Math.floor(n/60)+":"+String(Math.floor(n%60)).padStart(2,"0")};
 function toast(m){$("toast").textContent=m;$("toast").style.display="block";setTimeout(()=>$("toast").style.display="none",4000);}
@@ -230,13 +235,46 @@ $("hello").textContent=u?`Hi, ${u.displayName||u.email}`:"";
 $("authBtn").hidden=!!u; $("outBtn").hidden=!u; $("inboxBtn").hidden=!u;
 updateBell(); render();
 });
-async function fetchJSONFile(path){try{const r=await fetch(`https://byosites.github.io/byosites/${path}?t=${Date.now()}`); if(!r.ok) return null; return await r.json();}catch(e){return null;}}
-async function getGH_SHA(path,token){try{const r=await fetch(`https://api.github.com/repos/byosites/byosites/contents/${path}`,{headers:{Authorization:`token ${token}`}}); if(!r.ok) return null; const j=await r.json(); return j.sha;}catch(e){return null;}}
-async function uploadJSON_GH(path,obj,token){if(!token) return false; const content=btoa(unescape(encodeURIComponent(JSON.stringify(obj,null,2)))); const url=`https://api.github.com/repos/byosites/byosites/contents/${path}`; const sha=await getGH_SHA(path,token); const body={message:`sync ${path}`,content}; if(sha) body.sha=sha; const r=await fetch(url,{method:"PUT",headers:{Authorization:`token ${token}`,"Content-Type":"application/json"},body:JSON.stringify(body)}); return r.ok;}
+// ===== GITHUB: READ - PUBLIC, NO TOKEN NEEDED =====
+async function fetchGitHub(file){
+  try{
+    const r=await fetch(`${GH_RAW}/${file}?t=${Date.now()}`);
+    if(!r.ok) return null;
+    const txt=await r.text();
+    if(!txt.trim()) return null;
+    return JSON.parse(txt);
+  }catch(e){ console.log("GitHub read",file,e.message); return null; }
+}
+// ===== GITHUB: SAVE - ONLY IF ADMIN TOKEN EXISTS (Admin page sets it) =====
+async function saveToGitHub(file, data){
+  try{
+    let token = localStorage.getItem("byo_github_token");
+    if(!token) return false;
+    // Get SHA
+    let get = await fetch(`https://api.github.com/repos/${GH_USER}/${GH_REPO}/contents/data/${file}`, { headers:{ Authorization:`Bearer ${token}` } });
+    if(!get.ok) return false;
+    let j = await get.json();
+    let content = btoa(unescape(encodeURIComponent(JSON.stringify(data, null, 2))));
+    let put = await fetch(`https://api.github.com/repos/${GH_USER}/${GH_REPO}/contents/data/${file}`, {
+      method:"PUT",
+      headers:{ Authorization:`Bearer ${token}`, "Content-Type":"application/json" },
+      body: JSON.stringify({ message:`Update ${file}`, content, sha:j.sha, branch:GH_BRANCH })
+    });
+    return put.ok;
+  }catch(e){ console.log("GitHub save",e.message); return false; }
+}
 function saveLocal(){localStorage.setItem(KEY_SONGS,JSON.stringify(songs)); localStorage.setItem(KEY_ARTISTS,JSON.stringify(artists)); localStorage.setItem(KEY_SECURE_CODES,JSON.stringify(secureCodes));}
-async function saveAndSync(){saveLocal(); let t=localStorage.getItem(KEY_TOKEN); if(t){try{await uploadJSON_GH('music/songs.json',songs,t); await uploadJSON_GH('music/secure_codes.json',secureCodes,t);}catch(e){}}}
+async function saveAndSync(){
+  saveLocal();
+  // Likes/comments/ratings: if this browser is Admin (has token), push to GitHub. Otherwise local only.
+  // Admin page will also push. This keeps public page fast and safe.
+  try{ await saveToGitHub("songs.json", songs); }catch(e){}
+}
 async function loadSyncedData(){
-let sRes=await fetchJSONFile('music/songs.json'); let aRes=await fetchJSONFile('music/artists.json'); let cRes=await fetchJSONFile('music/secure_codes.json'); let adRes=await fetchJSONFile('music/ads.json');
+let sRes=await fetchGitHub('songs.json');
+let aRes=await fetchGitHub('artists.json');
+let cRes=await fetchGitHub('secure_codes.json');
+let adRes=await fetchGitHub('ads.json');
 if(sRes&&Array.isArray(sRes)&&sRes.length>0) songs=sRes; else songs=JSON.parse(localStorage.getItem(KEY_SONGS)||"[]");
 if(aRes&&Array.isArray(aRes)&&aRes.length>0) artists=aRes; else artists=JSON.parse(localStorage.getItem(KEY_ARTISTS)||"[]");
 if(cRes&&Array.isArray(cRes)) secureCodes=cRes; else secureCodes=JSON.parse(localStorage.getItem(KEY_SECURE_CODES)||"[]");
@@ -251,19 +289,19 @@ if(adRes){
 }
 if(lastKnownComments===0) lastKnownComments=songs.reduce((a,s)=>a+(s.comments?s.comments.length:0),0);
 if(lastKnownLikes===0) lastKnownLikes=songs.reduce((a,s)=>a+(s.likes||0),0);
-$("status").textContent=`${songs.length} songs • ${artists.length} artists • ${songs.reduce((a,s)=>a+(s.comments?s.comments.length:0),0)} comments • `;
+$("status").textContent=`${songs.length} songs • ${artists.length} artists • ${songs.reduce((a,s)=>a+(s.comments?s.comments.length:0),0)} comments • Stored in GitHub`;
 saveLocal(); render();
 }
 async function checkRealtime(){
 if(!user) return;
-let cRes=await fetchJSONFile('music/secure_codes.json');
+let cRes=await fetchGitHub('secure_codes.json');
 if(cRes&&Array.isArray(cRes)){
 let myName=user.displayName||user.email;
 let myCodes=cRes.filter(c=>(c.forUser===myName||c.forUser===user.email) && !c.used && Date.now()<c.expires);
 myCodes.forEach(c=>{ if(!seenCodes.includes(c.code)){ seenCodes.push(c.code); localStorage.setItem("byomusic_seen_codes",JSON.stringify(seenCodes)); unreadCount++; updateBell(); beep(); toast(`🔔 NEW CODE for ${c.songTitle||c.songId}: ${c.code}`); setTimeout(()=>openInbox(),800); }});
 secureCodes=cRes; saveLocal();
 }
-let sRes=await fetchJSONFile('music/songs.json');
+let sRes=await fetchGitHub('songs.json');
 if(sRes&&Array.isArray(sRes)&&sRes.length>0){
 let tc=sRes.reduce((a,s)=>a+(s.comments?s.comments.length:0),0); let tl=sRes.reduce((a,s)=>a+(s.likes||0),0);
 if(lastKnownComments>0&&tc>lastKnownComments){unreadCount++; updateBell(); beep(); toast(`💬 New comment! ${tc-lastKnownComments} new`);}
@@ -345,7 +383,10 @@ let myName=user.displayName||user.email;
 if(entry.forUser!==myName && entry.forUser!==user.email){$("payMsg").textContent=`Code locked to ${entry.forUser}, you are ${myName}`; return;}
 if(entry.used){$("payMsg").textContent="Code already used!"; return;}
 if(Date.now()>entry.expires){$("payMsg").textContent="Code expired!"; return;}
-entry.used=true; entry.usedAt=Date.now(); await saveAndSync(); hideModal('payModal'); toast(`✅ Code verified! Downloading ${s.title}`); downloadSong(s.id,true); render();
+entry.used=true; entry.usedAt=Date.now();
+// Try to mark used in GitHub if Admin token exists, else local only
+try{ await saveToGitHub("secure_codes.json", secureCodes); }catch(e){}
+await saveAndSync(); hideModal('payModal'); toast(`✅ Code verified! Downloading ${s.title}`); downloadSong(s.id,true); render();
 };
 window.openSong=id=>{
 let s=songs.find(x=>x.id===id); if(!s) return;
