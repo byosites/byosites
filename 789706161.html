@@ -416,4 +416,4 @@ $("clearCodesBtn").onclick=async()=>{secureCodes=secureCodes.filter(c=>!c.used &
 $("clearReferralsBtn").onclick=async()=>{ if(!confirm("Delete ALL referrals?")) return; referrals=[]; await uploadJSON_GH('music/referrals.json',referrals,getToken()); loadAll(); };
 </script>
 </body>
- </html>
+</html>
