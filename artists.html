@@ -6,12 +6,11 @@
 <meta name="theme-color" content="#08090d">
 <title>Artist Login - BYOMUSIC</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-<!-- GOOGLE ADSENSE - REPLACE WITH YOUR REAL ID -->
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXX" crossorigin="anonymous"></script>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7880131696089557" crossorigin="anonymous"></script>
 <style>
 :root{--gold:#ffcf33;--bg:#07080d;--glass:rgba(255,255,255,.075);--line:rgba(255,255,255,.13);--muted:#9da3b1}
 *{box-sizing:border-box}
-body{margin:0;background:radial-gradient(ellipse at 15% 0%,#282044 0,transparent 38%),radial-gradient(ellipse at 90% 25%,#142b38 0,transparent 35%),var(--bg);color:#fff;font-family:Inter,system-ui,Arial;padding:16px;padding-bottom:230px;min-height:100vh}
+body{margin:0;background:radial-gradient(ellipse at 15% 0%,#282044 0,transparent 38%),radial-gradient(ellipse at 90% 25%,#142b38 0,transparent 35%),var(--bg);color:#fff;font-family:Inter,system-ui,Arial;padding:16px;padding-bottom:120px;min-height:100vh}
 button,input,textarea{font:inherit}
 button{cursor:pointer}
 .wrap{max-width:780px;margin:auto}
@@ -31,14 +30,14 @@ textarea{min-height:80px}
 .refBox{background:linear-gradient(135deg,#2a1a00,#1a2a00);border:1px solid var(--gold);padding:14px;border-radius:14px;text-align:center;margin:12px 0}
 .badge{font-size:10px;padding:4px 7px;border-radius:6px;background:#333}
 .badge-live{background:#17653f}.badge-sus{background:#842c35}.badge-free{background:#17653f}.badge-paid{background:#ff8800;color:#000;font-weight:900}.badge-code{background:#00aaff}
-.player{position:fixed;bottom:72px;left:0;right:0;background:rgba(10,12,18,.9);border-top:1px solid var(--line);backdrop-filter:blur(26px);padding:10px 14px;display:none;z-index:30}
+.player{position:fixed;bottom:0;left:0;right:0;background:rgba(10,12,18,.95);border-top:1px solid var(--line);backdrop-filter:blur(26px);padding:10px 14px;display:none;z-index:30}
 .playerhead{display:flex;align-items:center;gap:10px}
 .controls{display:flex;justify-content:center;gap:10px;margin-top:6px}
 .controls button{border:1px solid var(--line);background:#242631;color:#fff;border-radius:50%;width:36px;height:36px}
 .controls .main{width:44px;height:44px;background:var(--gold);color:#111;border:0;font-size:16px}
 .progress{display:flex;gap:8px;align-items:center;font-size:10px;color:var(--muted)}
 .progress input{flex:1;accent-color:var(--gold)}
-.toast{position:fixed;bottom:235px;left:50%;transform:translateX(-50%);background:#20232d;border:1px solid var(--line);padding:11px 16px;border-radius:12px;display:none;z-index:80;font-size:12px}
+.toast{position:fixed;bottom:140px;left:50%;transform:translateX(-50%);background:#20232d;border:1px solid var(--line);padding:11px 16px;border-radius:12px;display:none;z-index:80;font-size:12px}
 .modal{position:fixed;inset:0;background:#000b;z-index:50;display:none;place-items:center;padding:14px}
 .modal.show{display:grid}
 .modalbox{width:min(620px,100%);max-height:90vh;overflow:auto}
@@ -66,9 +65,8 @@ textarea{min-height:80px}
 <h2>Welcome <span id="artistName" style="color:var(--gold)"></span></h2>
 <button class="btn red" onclick="logout()">Logout</button>
 </div>
-<p class="muted"><span class="liveDot"></span>Online • <span id="syncStatus"></span></p>
+<p class="muted"><span class="liveDot"></span>Online • Stored in GitHub • <span id="syncStatus"></span></p>
 
-<!-- SHOP AD - TOP - Admin controls this from Admin > Ads -->
 <div id="shopAdBox" style="margin:10px 0;display:none">
   <a id="shopAdLink" href="#" style="display:block;text-align:center;background:#ffcf33;color:#111;padding:12px;border-radius:14px;font-weight:900;font-size:13px;text-decoration:none">📢 ADVERTISE HERE - $10/week - Tap to Book</a>
 </div>
@@ -80,7 +78,6 @@ textarea{min-height:80px}
 <a id="waShareCode" href="#" class="btn green" style="text-decoration:none">Share via WhatsApp</a>
 </div>
 
-<!-- REFERRAL BOX - NEW -->
 <div class="refBox">
 <div style="font-size:12px;color:var(--gold);font-weight:900">🔥 MY REFERRAL CODE - Letha Umngane, Faka Mahhala!</div>
 <b id="myRefCode" style="font-size:26px;letter-spacing:2px;color:#fff">BYO-...</b><br>
@@ -116,7 +113,7 @@ textarea{min-height:80px}
 <textarea id="editBio" placeholder="Edit biography..."></textarea>
 <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px"><input id="editLoc" placeholder="Location"><input id="editGenre" placeholder="Genre"></div>
 <input id="bioApproval" placeholder="Enter your Approval Code to save">
-<button class="btn gold" style="width:100%" onclick="saveMyBio()">Save Bio - Sync</button>
+<button class="btn gold" style="width:100%" onclick="saveMyBio()">Save Bio - Sync to GitHub</button>
 <p id="bioMsg" style="font-size:11px;color:var(--gold)"></p>
 </div>
 </div>
@@ -132,9 +129,8 @@ textarea{min-height:80px}
 <button class="btn" style="margin-top:8px;width:100%" onclick="loadData()">Refresh Data</button>
 </div>
 
-<!-- MID GOOGLE AD -->
 <div style="margin:18px 0;text-align:center">
-  <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-XXXXXXXXXXXXXXXX" data-ad-format="auto" data-full-width-responsive="true"></ins>
+  <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-7880131696089557" data-ad-format="auto" data-full-width-responsive="true"></ins>
   <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
 </div>
 
@@ -148,36 +144,72 @@ textarea{min-height:80px}
 <audio id="audio"></audio>
 </div>
 
-<!-- GOOGLE BOTTOM AD -->
-<div style="position:fixed;bottom:0;left:0;right:0;z-index:40;background:#000;text-align:center;padding:4px 0 0;border-top:1px solid #222">
-  <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-XXXXXXXXXXXXXXXX" data-ad-format="auto" data-full-width-responsive="true"></ins>
-  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-  <div style="font-size:9px;color:#555">Advertisement • BYOMUSIC</div>
-</div>
-
 <div id="songModal" class="modal" onclick="if(event.target===this)hideModal('songModal')"><div class="modalbox glass"><button class="btn" style="float:right" onclick="hideModal('songModal')">✕</button><div id="songDetail"></div></div></div>
 <div id="toast" class="toast"></div>
 
 <script>
-const KEY_SONGS="byomusic_songs_v2_final", KEY_ARTISTS="byomusic_artists_secure", KEY_TOKEN="byomusic_gh_token";
+const KEY_SONGS="byomusic_songs_v2_final", KEY_ARTISTS="byomusic_artists_secure";
 let currentArtist=null, songs=[], artists=[], referrals=[], shopAds=[], queue=[], qi=-1, currentSongId=null;
 const $=id=>document.getElementById(id);
 const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
-const asset=p=>!p?"":/^https?:\/\//i.test(p)?p:`https://byosites.github.io/byosites/${String(p).replace(/^\/+/,"")}`;
+const asset=p=>{ if(!p) return ""; if(/^https?:\/\//i.test(p)) return p; if(p.startsWith("/")) return p; return p.replace(/^\/+/,""); };
 const fmt=n=>{n=Number(n)||0;return Math.floor(n/60)+":"+String(Math.floor(n%60)).padStart(2,"0");};
 function toast(m){$("toast").textContent=m; $("toast").style.display="block"; setTimeout(()=>$("toast").style.display="none",3500);}
 function hideModal(id){$(id).classList.remove("show");}
 function showModal(id){$(id).classList.add("show");}
-async function fetchJSONFile(path){try{const r=await fetch(`https://byosites.github.io/byosites/${path}?t=${Date.now()}`); if(!r.ok) return null; return await r.json();}catch(e){return null;}}
+// ===== GITHUB STORAGE - GITHUB STORES DATA, NETLIFY SHOWS PAGES =====
+const GH_USER="byosites";
+const GH_REPO="-BYOMusic";
+const GH_BRANCH="main";
+const GH_RAW=`https://raw.githubusercontent.com/${GH_USER}/${GH_REPO}/${GH_BRANCH}`;
+const GH_API=`https://api.github.com/repos/${GH_USER}/${GH_REPO}/contents`;
+const TYPE_TO_FILE={ songs:"songs.json", artists:"artists.json", referrals:"referrals.json", ads:"ads.json", secure_codes:"secure_codes.json" };
+async function fetchGitHub(type){
+  try{
+    let file=TYPE_TO_FILE[type]||type+".json";
+    const r=await fetch(`${GH_RAW}/data/${file}?t=${Date.now()}`);
+    if(!r.ok) return null;
+    const txt=await r.text();
+    if(!txt.trim()) return null;
+    return JSON.parse(txt);
+  }catch(e){ console.log("GitHub read",type,e.message); return null; }
+}
+async function fetchJSONFile(path){
+  let type = path.replace("music/","").replace("data/","").replace(".json","");
+  return await fetchGitHub(type);
+}
+// Artist page is public - no GitHub Token here for security.
+// Save tries GitHub only if Admin token happens to be on this phone (Admin testing), otherwise local + WhatsApp to Admin.
+async function saveToGitHub(type, data){
+  try{
+    let token=localStorage.getItem("byo_github_token");
+    if(!token) return false;
+    let file=TYPE_TO_FILE[type]||type+".json";
+    let path=`data/${file}`;
+    let get=await fetch(`${GH_API}/${path}`,{ headers:{ Authorization:`Bearer ${token}` } });
+    let sha=null;
+    if(get.ok){ let j=await get.json(); sha=j.sha; }
+    let content=btoa(unescape(encodeURIComponent(JSON.stringify(data,null,2))));
+    let body={ message:`Update ${file} via Artist`, content, branch:GH_BRANCH };
+    if(sha) body.sha=sha;
+    let put=await fetch(`${GH_API}/${path}`,{ method:"PUT", headers:{ Authorization:`Bearer ${token}`, "Content-Type":"application/json" }, body:JSON.stringify(body) });
+    return put.ok;
+  }catch(e){ return false; }
+}
+async function uploadJSON(path, obj){
+  let type = path.replace("music/","").replace("data/","").replace(".json","");
+  const ok = await saveToGitHub(type, obj);
+  if(!ok) throw new Error("Not pushed to GitHub - saved locally. Send new bio to Admin on WhatsApp to publish.");
+}
 async function loadData(){
-$("syncStatus").innerText="Loading...";
-let sData=await fetchJSONFile('music/songs.json'); let aData=await fetchJSONFile('music/artists.json'); let rData=await fetchJSONFile('music/referrals.json'); let adData=await fetchJSONFile('music/ads.json');
+$("syncStatus").innerText="Loading from GitHub...";
+let sData=await fetchGitHub('songs'); let aData=await fetchGitHub('artists'); let rData=await fetchGitHub('referrals'); let adData=await fetchGitHub('ads');
 if(sData&&Array.isArray(sData)) songs=sData; else songs=JSON.parse(localStorage.getItem(KEY_SONGS)||"[]");
 if(aData&&Array.isArray(aData)) artists=aData; else artists=JSON.parse(localStorage.getItem(KEY_ARTISTS)||"[]");
 if(rData&&Array.isArray(rData)) referrals=rData;
 if(adData&&adData.shopAds) shopAds=adData.shopAds; else if(adData&&Array.isArray(adData)) shopAds=adData;
 localStorage.setItem(KEY_SONGS,JSON.stringify(songs)); localStorage.setItem(KEY_ARTISTS,JSON.stringify(artists));
-$("syncStatus").innerText=`${songs.length} songs synced • ${artists.length} artists • LIVE`;
+$("syncStatus").innerText=`${songs.length} songs synced • ${artists.length} artists • LIVE • GitHub`;
 if(currentArtist){ let fresh=artists.find(a=>a.name.toLowerCase()===currentArtist.name.toLowerCase()); if(fresh){currentArtist=fresh; localStorage.setItem("byomusic_current_artist",JSON.stringify(fresh));}}
 if(currentArtist) { renderMySongs(); renderReferralStats(); renderShopAd(); }
 }
@@ -198,7 +230,6 @@ function renderShopAd(){
 function getMyRefCode(){
   if(!currentArtist) return "BYO-XXXX";
   if(currentArtist.refCode) return currentArtist.refCode;
-  // Generate stable code from name + approval code
   let base = currentArtist.name.replace(/[^A-Za-z0-9]/g,'').toUpperCase().slice(0,6) || "BYO";
   let suffix = (currentArtist.approvalCode||"").replace(/[^A-Za-z0-9]/g,'').slice(-4) || Math.floor(1000+Math.random()*9000);
   return "BYO-"+base+"-"+suffix;
@@ -207,7 +238,6 @@ function renderReferralStats(){
   let code=getMyRefCode();
   $("myRefCode").textContent=code;
   let mine=referrals.filter(r=>r.code===code);
-  // Also match if artist used old format without suffix
   if(mine.length===0){
     let short = code.split("-").slice(0,2).join("-");
     mine=referrals.filter(r=>r.code===code || r.code===short);
@@ -220,27 +250,18 @@ function renderReferralStats(){
 }
 function shareReferral(){
   let code=getMyRefCode();
-  let link=location.origin+location.pathname.replace("artist","index")+"?ref="+code;
+  let link=location.origin+"/index.html?ref="+code;
   let msg=`Sawubona! Faka ingoma yakho ku-BYOMUSIC ngo-$3. Sebenzisa i-code yami ${code} sobabili sizathola i-bonus! Link: ${link} \n\nHello! Upload your song on BYOMUSIC for $3. Use my code ${code} and we both get a bonus!`;
   window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`,"_blank");
 }
 function copyRefCode(){
   let code=getMyRefCode();
-  let link=location.origin+location.pathname.replace("artist","index")+"?ref="+code;
+  let link=location.origin+"/index.html?ref="+code;
   navigator.clipboard.writeText(link).then(()=>toast("Copied link: "+link));
-}
-async function getSHA(p,token){try{const r=await fetch(`https://api.github.com/repos/byosites/byosites/contents/${p}`,{headers:{Authorization:`token ${token}`}}); if(!r.ok) return null; const j=await r.json(); return j.sha;}catch(e){return null;}}
-async function uploadJSON(path,obj,token){
-const content=btoa(unescape(encodeURIComponent(JSON.stringify(obj,null,2))));
-const url=`https://api.github.com/repos/byosites/byosites/contents/${path}`;
-const sha=await getSHA(path,token);
-const body={message:`artist update ${path}`,content}; if(sha) body.sha=sha;
-const r=await fetch(url,{method:"PUT",headers:{Authorization:`token ${token}`,"Content-Type":"application/json"},body:JSON.stringify(body)});
-if(!r.ok) throw new Error(await r.text());
 }
 function login(){
 let name=$("loginName").value.trim(), pass=$("loginPass").value.trim();
-$("loginMsg").innerText="Checking...";
+$("loginMsg").innerText="Checking GitHub...";
 loadData().then(()=>{
 let found=artists.find(a=>a.name.toLowerCase()===name.toLowerCase() && a.pass===pass);
 if(!found){$("loginMsg").innerText="Wrong name/password. Contact admin 78 970 6161"; $("loginMsg").style.color="#ff5555"; return;}
@@ -264,12 +285,12 @@ function copyCode(){navigator.clipboard.writeText(currentArtist.approvalCode); t
 function editMyBio(){$("bioEditBox").style.display="block"; $("editBio").value=currentArtist.bio||""; $("editLoc").value=currentArtist.loc||""; $("editGenre").value=currentArtist.genre||"";}
 async function saveMyBio(){
 let code=$("bioApproval").value.trim(); if(code!==currentArtist.approvalCode){alert("Wrong approval code!"); return;}
-$("bioMsg").innerText="Saving...";
+$("bioMsg").innerText="Saving to GitHub...";
 let idx=artists.findIndex(a=>a.name.toLowerCase()===currentArtist.name.toLowerCase());
 if(idx>=0){
 artists[idx].bio=$("editBio").value; artists[idx].loc=$("editLoc").value; artists[idx].genre=$("editGenre").value;
 localStorage.setItem(KEY_ARTISTS,JSON.stringify(artists)); currentArtist=artists[idx]; localStorage.setItem("byomusic_current_artist",JSON.stringify(currentArtist));
-let token=localStorage.getItem(KEY_TOKEN); if(token){try{await uploadJSON('music/artists.json',artists,token); $("bioMsg").innerText="✅ Bio synced to all devices";}catch(e){$("bioMsg").innerText="Saved locally (Admin will sync): "+e.message;}} else {$("bioMsg").innerText="Saved locally - Admin will sync on next login";}
+try{await uploadJSON('data/artists.json',artists); $("bioMsg").innerText="✅ Bio synced to GitHub";}catch(e){$("bioMsg").innerText="Saved locally: "+e.message;}
 showDashboard(); $("bioEditBox").style.display="none";
 }
 }
@@ -312,13 +333,13 @@ let code=prompt(`Enter Approval Code ${currentArtist.approvalCode} to edit:`); i
 let s=songs.find(x=>x.id===id); let newTitle=prompt("New Title (leave blank keep):",s.title); let newPrice=prompt("New Price USD:",s.price); let newLyrics=prompt("Edit Lyrics (leave blank keep):",s.lyrics||"");
 if(newTitle) s.title=newTitle; if(newPrice) s.price=newPrice; if(newLyrics!==null && newLyrics!=="") s.lyrics=newLyrics;
 localStorage.setItem(KEY_SONGS,JSON.stringify(songs));
-let token=localStorage.getItem(KEY_TOKEN); if(token){try{await uploadJSON('music/songs.json',songs,token); toast("✅ Updated & synced");}catch(e){toast("Saved locally: "+e.message);}} else {toast("✅ Saved locally - will sync when admin logs in");}
+try{await uploadJSON('data/songs.json',songs); toast("✅ Updated & synced to GitHub");}catch(e){toast("Saved locally: "+e.message);}
 renderMySongs();
 }
 function logout(){localStorage.removeItem("byomusic_current_artist"); currentArtist=null; $("dashboard").style.display="none"; $("loginBox").style.display="block";}
 loadData();
 let saved=localStorage.getItem("byomusic_current_artist"); if(saved){currentArtist=JSON.parse(saved); showDashboard();}
-setInterval(()=>{loadData();},3000);
+setInterval(()=>{loadData();},30000);
 </script>
 </body>
 </html>
