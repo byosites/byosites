@@ -1,19 +1,18 @@
 [
   {
+    "id": "artist_1794397062473",
     "name": "Yami",
-    "pass": "1111",
-    "wa": "+263780212606",
-    "loc": "Sizinda",
-    "bio": "King of hiphop",
-    "genre": "Hiphop ",
-    "year": "2026",
+    "bio": "Guhg8",
+    "wa": "0989",
+    "loc": "Gygg",
+    "genre": "Amapiano",
     "fb": "",
     "ig": "",
     "yt": "",
     "tik": "",
-    "photo": "music/artist-1793709005415-IMG-20260626-WA0000.jpg",
-    "approvalCode": "337205",
-    "createdAt": "11/3/2026",
-    "suspended": false
+    "photo": "music/artists/1794397045934_20261105_090244.heic",
+    "suspended": false,
+    "referredBy": "",
+    "createdAt": 1794397062474
   }
 ]
