@@ -12,26 +12,20 @@
 :root{--gold:#ffcf33;--gold2:#ff9a00;--bg:#07080d;--glass:rgba(255,255,255,.08);--line:rgba(255,255,255,.18);--muted:#aab0c0;--spring:cubic-bezier(.22,1.4,.36,1)}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html{scroll-behavior:smooth}
-body{margin:0;color:#fff;font-family:Inter,system-ui,-apple-system,Arial;padding-bottom:110px;min-height:100vh;overflow-x:hidden;
-background:#07080d}
-/* iOS wallpaper blobs - glass needs something to refract */
-body::before{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;
-background:radial-gradient(600px 420px at 12% -5%,rgba(124,58,237,.55),transparent 60%),radial-gradient(550px 420px at 92% 18%,rgba(0,150,255,.42),transparent 60%),radial-gradient(700px 500px at 50% 110%,rgba(255,207,51,.28),transparent 60%),radial-gradient(ellipse at 15% 0%,#282044 0,transparent 38%),radial-gradient(ellipse at 90% 25%,#142b38 0,transparent 35%),#07080d;
-animation:blobDrift 18s ease-in-out infinite alternate}
+body{margin:0;color:#fff;font-family:Inter,system-ui,-apple-system,Arial;padding-bottom:110px;min-height:100vh;overflow-x:hidden;background:#07080d}
+body::before{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;background:radial-gradient(600px 420px at 12% -5%,rgba(124,58,237,.55),transparent 60%),radial-gradient(550px 420px at 92% 18%,rgba(0,150,255,.42),transparent 60%),radial-gradient(700px 500px at 50% 110%,rgba(255,207,51,.28),transparent 60%),radial-gradient(ellipse at 15% 0%,#282044 0,transparent 38%),radial-gradient(ellipse at 90% 25%,#142b38 0,transparent 35%),#07080d;animation:blobDrift 18s ease-in-out infinite alternate}
 @keyframes blobDrift{0%{filter:hue-rotate(0deg) brightness(1)}100%{filter:hue-rotate(18deg) brightness(1.12)}}
 header,main,footer,section{position:relative;z-index:1}
 button,input,textarea{font:inherit}
 button{cursor:pointer;transition:transform .18s var(--spring),box-shadow .18s,background .18s}
 button:active{transform:scale(.94)}
-/* ===== iOS LIQUID GLASS BASE ===== */
 .liquid{background:linear-gradient(135deg,rgba(255,255,255,.22),rgba(255,255,255,.06) 42%,rgba(255,255,255,.10));background-color:rgba(20,22,36,.48);backdrop-filter:blur(24px) saturate(180%) brightness(1.12);-webkit-backdrop-filter:blur(24px) saturate(180%) brightness(1.12);border:1px solid rgba(255,255,255,.32);border-top:1px solid rgba(255,255,255,.60);box-shadow:0 18px 42px rgba(0,0,0,.38),inset 0 1px 0 rgba(255,255,255,.50),inset 0 -1px 0 rgba(255,255,255,.08);position:relative;overflow:hidden}
 .liquid::before{content:"";position:absolute;inset:0;pointer-events:none;border-radius:inherit;background:radial-gradient(420px 90px at 18% -10%,rgba(255,255,255,.45),transparent 55%),radial-gradient(380px 90px at 88% 0%,rgba(255,207,51,.22),transparent 55%)}
-/* Header - floating iOS pill */
 header{position:sticky;top:10px;z-index:20;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin:0 10px;padding:11px 14px;border-radius:22px;background:linear-gradient(135deg,rgba(255,255,255,.20),rgba(255,255,255,.05));background-color:rgba(12,14,24,.55);backdrop-filter:blur(26px) saturate(180%);-webkit-backdrop-filter:blur(26px) saturate(180%);border:1px solid rgba(255,255,255,.35);border-top:1px solid rgba(255,255,255,.65);box-shadow:0 14px 34px rgba(0,0,0,.42),inset 0 1px 0 rgba(255,255,255,.55)}
 .logo{font-weight:950;font-size:20px;letter-spacing:.5px;text-shadow:0 2px 12px rgba(0,0,0,.4)}
 .logo i{background:linear-gradient(145deg,#ffe066,#ffcf33 55%,#ff9a00);color:#111;padding:9px;border-radius:12px;margin-right:7px;box-shadow:0 8px 18px rgba(255,207,51,.45),inset 0 1px 0 rgba(255,255,255,.8)}
 .actions{display:flex;gap:7px;align-items:center;flex-wrap:wrap}
-.btn{border:1px solid rgba(255,255,255,.32);border-top:1px solid rgba(255,255,255,.55);border-radius:14px;padding:9px 13px;background:linear-gradient(145deg,rgba(255,255,255,.20),rgba(255,255,255,.05));background-color:rgba(255,255,255,.06);backdrop-filter:blur(14px);color:#fff;font-weight:750;font-size:12px;box-shadow:inset 0 1px 0 rgba(255,255,255,.40),0 6px 16px rgba(0,0,0,.18)}
+.btn{border:1px solid rgba(255,255,255,.32);border-top:1px solid rgba(255,255,255,.55);border-radius:14px;padding:9px 13px;background:linear-gradient(145deg,rgba(255,255,255,.20),rgba(255,255,255,.05));background-color:rgba(255,255,255,.06);backdrop-filter:blur(14px);color:#fff;font-weight:750;font-size:12px;box-shadow:inset 0 1px 0 rgba(255,255,255,.40),0 6px 16px rgba(0,0,0,.18);text-decoration:none;display:inline-block}
 .btn.gold{background:linear-gradient(145deg,#ffe066,#ffcf33 55%,#ff9a00);color:#111;border-color:rgba(255,255,255,.7);box-shadow:0 10px 22px rgba(255,207,51,.42),inset 0 1px 0 rgba(255,255,255,.85)}
 .btn.green{background:linear-gradient(145deg,#2ec27a,#168b54);border-color:rgba(255,255,255,.35)}
 .btn.red{background:linear-gradient(145deg,#e05565,#a52b39);border-color:rgba(255,255,255,.35)}
@@ -41,18 +35,15 @@ header{position:sticky;top:10px;z-index:20;display:flex;justify-content:space-be
 .hero h1{font-size:clamp(36px,8vw,58px);margin:0;font-weight:950;letter-spacing:-2px;text-shadow:0 10px 34px rgba(0,0,0,.55)}
 .hero h1 span{color:var(--gold);text-shadow:0 0 28px rgba(255,207,51,.55)}
 .muted{color:var(--muted)}
-/* Search - liquid pill */
 .search{display:flex;gap:8px;padding:7px 8px 7px 14px;background:linear-gradient(135deg,rgba(255,255,255,.20),rgba(255,255,255,.05));background-color:rgba(18,20,32,.55);backdrop-filter:blur(22px) saturate(170%);border:1px solid rgba(255,255,255,.32);border-top:1px solid rgba(255,255,255,.60);border-radius:999px;box-shadow:0 14px 30px rgba(0,0,0,.32),inset 0 1px 0 rgba(255,255,255,.50);margin:0 auto 15px;max-width:760px;transition:box-shadow .25s}
 .search:focus-within{box-shadow:0 0 0 2px rgba(255,207,51,.65),0 14px 30px rgba(0,0,0,.32)}
 .search input{background:transparent;border:0;outline:0;color:white;flex:1;min-width:0}
-/* Tabs - liquid pills */
 .tabs{display:flex;gap:8px;overflow:auto;padding:6px 2px 14px;scrollbar-width:none}
 .tabs::-webkit-scrollbar{display:none}
 .tab{white-space:nowrap;border:1px solid rgba(255,255,255,.30);border-top:1px solid rgba(255,255,255,.55);border-radius:999px;padding:10px 16px;background:linear-gradient(145deg,rgba(255,255,255,.18),rgba(255,255,255,.05));background-color:rgba(20,22,36,.45);backdrop-filter:blur(16px);color:#e8eaf0;font-size:12px;font-weight:700;box-shadow:inset 0 1px 0 rgba(255,255,255,.35);transition:transform .2s var(--spring)}
 .tab:active{transform:scale(.94)}
 .tab.active{background:linear-gradient(145deg,#ffe066,#ffcf33 55%,#ff9a00);color:#111;border-color:rgba(255,255,255,.7);font-weight:900;box-shadow:0 10px 22px rgba(255,207,51,.42),inset 0 1px 0 rgba(255,255,255,.85)}
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(245px,1fr));gap:16px}
-/* Cards - liquid glass */
 .glass{background:linear-gradient(145deg,rgba(255,255,255,.16),rgba(255,255,255,.045) 55%,rgba(255,207,51,.07));background-color:rgba(20,22,36,.52);border:1px solid rgba(255,255,255,.30);border-top:1px solid rgba(255,255,255,.55);border-radius:26px;box-shadow:0 16px 38px rgba(0,0,0,.38),inset 0 1px 0 rgba(255,255,255,.45);backdrop-filter:blur(22px) saturate(160%);-webkit-backdrop-filter:blur(22px) saturate(160%);overflow:hidden;position:relative;transition:transform .25s var(--spring),box-shadow .25s}
 .glass:active{transform:scale(.97)}
 .song img,.artist img{width:100%;height:190px;object-fit:cover;background:#151821}
@@ -65,7 +56,6 @@ header{position:sticky;top:10px;z-index:20;display:flex;justify-content:space-be
 .free{background:linear-gradient(145deg,#2ec27a,#17653f)}
 .paid{background:linear-gradient(145deg,#e05565,#842e37)}
 .empty{text-align:center;padding:45px 10px;color:var(--muted);grid-column:1/-1}
-/* ===== LIQUID GLASS PLAYER v10.3 ===== */
 .player{position:fixed;bottom:12px;left:12px;right:12px;z-index:30;display:none;overflow:hidden;border-radius:28px 28px 22px 22px;background:linear-gradient(135deg,rgba(255,255,255,.24),rgba(255,255,255,.06) 38%,rgba(255,207,51,.16) 62%,rgba(255,255,255,.08));background-color:rgba(18,20,32,.58);backdrop-filter:blur(30px) saturate(190%) brightness(1.15);-webkit-backdrop-filter:blur(30px) saturate(190%) brightness(1.15);border:1px solid rgba(255,255,255,.40);border-top:1px solid rgba(255,255,255,.70);box-shadow:0 24px 54px rgba(0,0,0,.55),inset 0 1px 0 rgba(255,255,255,.60),inset 0 -1px 0 rgba(255,255,255,.12);padding:0 max(14px,calc((100% - 1120px)/2)) 12px;transition:height .38s var(--spring),border-radius .38s,left .38s,right .38s,bottom .38s;touch-action:none}
 .player::before{content:"";position:absolute;inset:0;pointer-events:none;border-radius:inherit;background:radial-gradient(600px 120px at 20% -10%,rgba(255,255,255,.55),transparent 55%),radial-gradient(500px 140px at 85% 0%,rgba(255,207,51,.35),transparent 55%)}
 .player::after{content:"";position:absolute;top:0;left:-30%;width:45%;height:100%;pointer-events:none;background:linear-gradient(100deg,transparent,rgba(255,255,255,.30),transparent);transform:skewX(-18deg);animation:liquidShine 4.5s ease-in-out infinite}
@@ -97,7 +87,6 @@ header{position:sticky;top:10px;z-index:20;display:flex;justify-content:space-be
 #playerExtra{display:none;position:relative;z-index:2}
 .player[data-size="full"] #playerExtra{display:block;max-height:180px;overflow:auto;margin-top:8px}
 .playerSizeBtn{border:1px solid rgba(255,255,255,.42);background:linear-gradient(145deg,rgba(255,255,255,.28),rgba(255,255,255,.07));color:white;border-radius:12px;padding:7px 10px;font-size:12px;backdrop-filter:blur(12px);box-shadow:inset 0 1px 0 rgba(255,255,255,.45)}
-/* Modals - iOS sheet */
 .modal{position:fixed;inset:0;background:rgba(0,0,0,.45);backdrop-filter:blur(6px);z-index:50;display:none;place-items:end center;padding:0}
 .modal.show{display:grid;animation:fadeIn .25s}
 @keyframes fadeIn{from{opacity:0}to{opacity:1}}
@@ -132,16 +121,15 @@ textarea{min-height:90px;resize:vertical}
 <button class="btn" id="inboxBtn" hidden onclick="openInbox()">🔔 Inbox <span id="unread"></span></button>
 <button class="btn" id="authBtn" onclick="openAuth()">Sign in / up</button>
 <button class="btn" id="outBtn" hidden onclick="signOutUser()">Logout</button>
-<a href="#aboutPublic" class="btn" style="text-decoration:none">About</a>
-</div>
+<a href="#aboutPublic" class="btn">About</a></div>
 </header>
 <main class="wrap">
 <section id="homePage" class="page">
 <div class="hero">
 <h1>BYO<span>MUSIC</span></h1>
 <p class="muted">Zimbabwean music. One place. Worldwide.</p>
-<p id="status" class="muted" style="font-size:11px">Connecting to GitHub live library…</p>
-<p style="font-size:11px;color:#25D366"><span class="liveDot"></span>Online • Stored in GitHub</p>
+<p id="status" class="muted" style="font-size:11px">Connecting…</p>
+<div class="row" style="justify-content:center;margin-top:14px">
 </div>
 <div class="search"><i class="fa fa-search muted"></i><input id="search" placeholder="Search songs, artists or lyrics" oninput="render()"><button class="btn gold" onclick="document.getElementById('search').value='';render()">Clear</button></div>
 <nav class="tabs">
@@ -149,36 +137,39 @@ textarea{min-height:90px;resize:vertical}
 <button class="tab" data-filter="top" onclick="setFilter('top',this)">🔥 Top rated</button>
 <button class="tab" data-filter="free" onclick="setFilter('free',this)">Free</button>
 <button class="tab" data-filter="paid" onclick="setFilter('paid',this)">Paid</button>
+<button class="tab" onclick="location.href='artist.html'" style="background:linear-gradient(145deg,#ffe066,#ffcf33 55%,#ff9a00);color:#111;border-color:rgba(255,255,255,.7);font-weight:900">🎤 Artist Portal ↗</button>
 <button class="tab" data-filter="artists" onclick="setFilter('artists',this)">Artists</button>
 </nav>
+<div class="glass" style="padding:14px 16px;margin:0 0 14px;display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;border-color:rgba(255,207,51,.55)">
+
+
 <div id="grid" class="grid"><div class="empty">Loading music…</div></div>
 </section>
 </main>
 <footer class="footer-ads">
-  <div id="shopAd" style="margin:12px 0;">
-    <a id="shopAdLink" href="https://wa.me/263789706161?text=I%20want%20to%20advertise%20on%20BYOMUSIC" style="display:block;background:linear-gradient(135deg,rgba(255,255,255,.22),rgba(255,207,51,.35));background-color:rgba(255,207,51,.18);backdrop-filter:blur(18px);border:1px solid rgba(255,255,255,.40);border-top:1px solid rgba(255,255,255,.65);color:#fff;text-align:center;padding:14px;border-radius:22px;font-weight:900;font-size:13px;text-decoration:none;box-shadow:0 14px 30px rgba(0,0,0,.30),inset 0 1px 0 rgba(255,255,255,.55)">📢 ADVERTISE HERE - Your Shop Here - $10/week - Tap to Book</a>
-  </div>
-  <div class="glass" style="padding:16px;text-align:center;border:1px solid rgba(255,207,51,.45)">
-    <b style="color:var(--gold)">🔥 Letha Umngane, Faka Mahhala! / Bring a Friend, Get FREE Upload!</b><br>
-    <span class="muted" style="font-size:12px">Your Code: <b id="myRefCode" style="color:#fff">BYO-GUEST</b> • Share it, when 1 friend pays you get 1 FREE upload</span><br>
-    <button class="btn gold" style="margin-top:8px" onclick="shareReferral()">📤 Share My Code on WhatsApp</button>
-    <button class="btn" style="margin-top:8px" onclick="copyRefLink()">🔗 Copy Link</button>
-  </div>
-  <div style="margin:20px 0;text-align:center">
-    <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-7880131696089557" data-ad-slot="auto" data-ad-format="auto" data-full-width-responsive="true"></ins>
-  </div>
+<div id="shopAd" style="margin:12px 0;">
+<a id="shopAdLink" href="https://wa.me/263789706161?text=I%20want%20to%20advertise%20on%20BYOMUSIC" style="display:block;background:linear-gradient(135deg,rgba(255,255,255,.22),rgba(255,207,51,.35));background-color:rgba(255,207,51,.18);backdrop-filter:blur(18px);border:1px solid rgba(255,255,255,.40);border-top:1px solid rgba(255,255,255,.65);color:#fff;text-align:center;padding:14px;border-radius:22px;font-weight:900;font-size:13px;text-decoration:none;box-shadow:0 14px 30px rgba(0,0,0,.30),inset 0 1px 0 rgba(255,255,255,.55)">📢 ADVERTISE HERE - Your Shop Here - $10/week - Tap to Book</a>
+</div>
+<div class="glass" style="padding:16px;text-align:center;border:1px solid rgba(255,207,51,.45)">
+<b style="color:var(--gold)">🔥 Letha Umngane, Faka Mahhala! / Bring a Friend, Get FREE Upload!</b><br>
+<span class="muted" style="font-size:12px">Your Code: <b id="myRefCode" style="color:#fff">BYO-GUEST</b> • Share it, when 1 friend pays you get 1 FREE upload</span><br>
+<button class="btn gold" style="margin-top:8px" onclick="shareReferral()">📤 Share My Code on WhatsApp</button>
+<button class="btn" style="margin-top:8px" onclick="copyRefLink()">🔗 Copy Link</button>
+<br>
+<div style="margin:20px 0;text-align:center">
+<ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-7880131696089557" data-ad-slot="auto" data-ad-format="auto" data-full-width-responsive="true"></ins>
+</div>
 </footer>
 <section id="aboutPublic" class="about-public">
 <div class="glass" style="padding:24px;text-align:center">
 <img id="aboutPic" src="music/profile.png" style="width:110px;height:110px;object-fit:cover;border-radius:50%;border:3px solid var(--gold);box-shadow:0 0 0 4px rgba(255,207,51,.25),0 16px 34px rgba(0,0,0,.45)" alt="Philip Mbewe - Founder of BYOMUSIC">
 <h2>Philip Mbewe</h2>
-<p style="color:var(--gold)">Founder & Developer · Bulawayo, Zimbabwe</p>
+<p style="color:var(--gold)">Founder &amp; Developer · Bulawayo, Zimbabwe</p>
 <p class="muted">BYOMUSIC supports Zimbabwean music through discovery, listening and artist-focused distribution.</p>
-<p class="muted">© 2026 BYOMUSIC • v10.3 - Full iOS Liquid Glass • No Secrets • No Code Expiry</p>
-<p class="muted" style="font-size:11px">WhatsApp: 78 970 6161 • Bulawayo, Zimbabwe</p>
+<p class="muted">© 2026 BYOMUSIC</p>
+<p class="muted" style="font-size:11px">WhatsApp: +263789706161 • Bulawayo, Zimbabwe</p>
 </div>
 </section>
-<!-- ===== LIQUID GLASS PLAYER ===== -->
 <div id="player" class="player" data-size="normal">
 <div id="playerDrag" title="Drag to resize player"><span></span></div>
 <div class="playerhead"><img id="pImg" src="" alt=""><div class="info"><b id="pTitle">—</b><small id="pArtist">—</small></div>
@@ -188,14 +179,14 @@ textarea{min-height:90px;resize:vertical}
 </div>
 <div class="controls"><button onclick="previous()">⏮</button><button class="main" id="playBtn" onclick="togglePlay()">▶</button><button onclick="next()">⏭</button><button class="extraBtn" onclick="toggleShuffle()" id="shuffleBtn">🔀</button><button class="extraBtn" onclick="toggleRepeat()" id="repeatBtn">🔁</button></div>
 <div class="progress"><span id="elapsed">0:00</span><input id="seek" type="range" min="0" max="1000" value="0" oninput="seekAudio(this.value)"><span id="duration">0:00</span></div>
-<div id="playerExtra"><div style="display:flex;justify-content:space-between;align-items:center"><b style="font-size:13px">Up Next</b><button class="btn" onclick="cyclePlayerSize()">— Minimize</button></div><div id="playerQueueMini"></div><p class="muted" style="font-size:11px">Drag the ━━━ bar at top to resize • Tap ⛶ to expand • Music keeps playing</p></div>
+<div id="playerExtra"><div style="display:flex;justify-content:space-between;align-items:center"><b style="font-size:13px">Up Next</b><button class="btn" onclick="cyclePlayerSize()">— Minimize</button></div><div id="playerQueueMini">
 <audio id="audio" preload="metadata"></audio>
 </div>
 <div id="authModal" class="modal" onclick="if(event.target===this)hideModal('authModal')"><div class="modalbox glass"><button class="btn close" onclick="hideModal('authModal')">✕</button><h2>BYOMUSIC Account</h2><p class="muted">Enjoy the music</p><div class="row"><button class="btn gold" onclick="authMode('signup')">Create account</button><button class="btn" onclick="authMode('signin')">Sign in</button></div><div id="authFields"></div><p class="muted" style="font-size:11px">Referred by: <span id="referredByDisplay" style="color:var(--gold)">None</span></p><p id="authError" style="color:#ff7777;font-size:12px"></p></div></div>
 <div id="songModal" class="modal" onclick="if(event.target===this)hideModal('songModal')"><div class="modalbox glass"><button class="btn close" onclick="hideModal('songModal')">✕</button><div id="songDetail"></div></div></div>
-<div id="inboxModal" class="modal" onclick="if(event.target===this)hideModal('inboxModal')"><div class="modalbox glass"><button class="btn close" onclick="hideModal('inboxModal')">✕</button><h2>My inbox - Realtime</h2><p class="muted" style="font-size:11px">Codes never expire - use anytime until used</p><div id="inboxList"></div><button class="btn" style="width:100%" onclick="markAllRead()">Mark All Read</button></div></div>
+<div id="inboxModal" class="modal" onclick="if(event.target===this)hideModal('inboxModal')"><div class="modalbox glass"><button class="btn close" onclick="hideModal('inboxModal')">✕</button><h2</h2><p class="muted" style="font-size:11px"><div id="inboxList"></div><button class="btn" style="width:100%" onclick="markAllRead()">Mark All Read</button></div></div>
 <div id="queueModal" class="modal" onclick="if(event.target===this)hideModal('queueModal')"><div class="modalbox glass"><button class="btn close" onclick="hideModal('queueModal')">✕</button><h2>Up next - Playlist</h2><div id="queueList"></div></div></div>
-<div id="payModal" class="modal" onclick="if(event.target===this)hideModal('payModal')"><div class="modalbox glass"><button class="btn close" onclick="hideModal('payModal')">✕</button><h2>🔒 Secure Code - No Expiry</h2><div style="background:rgba(0,120,255,.15);border:1px dashed rgba(0,170,255,.7);padding:12px;border-radius:16px;text-align:center"><b id="paySongTitle"></b><br><span class="muted">Price: <span id="payPrice" style="color:var(--gold)"></span></span><br><span class="muted">Account: <b id="payAccount" style="color:var(--gold)"></b></span><br><span class="muted" style="color:#25D366">✅ Code never expires - use anytime</span></div><input id="payCodeInput" placeholder="Enter code e.g. BYO-..."><button class="btn gold" style="width:100%" onclick="checkPayCode()">Unlock & Download</button><a id="payWaLink" href="#" class="btn green" style="width:100%;text-align:center;display:block;margin-top:8px;text-decoration:none">WhatsApp Request Code</a><p id="payMsg" style="color:#ff7777;font-size:12px"></p></div></div>
+<div id="payModal" class="modal" onclick="if(event.target===this)hideModal('payModal')"><div class="modalbox glass"><button class="btn close" onclick="hideModal('payModal')">✕</button><h2>🔒 Secure Code - No Expiry</h2><div style="background:rgba(0,120,255,.15);border:1px dashed rgba(0,170,255,.7);padding:12px;border-radius:16px;text-align:center"><b id="paySongTitle"></b><br><span class="muted">Price: <span id="payPrice" style="color:var(--gold)"></span></span><br><span class="muted">Account: <b id="payAccount" style="color:var(--gold)"></b></span><br><span class="muted" style="color:#25D366">✅ Code never expires - use anytime</span></div><input id="payCodeInput" placeholder="Enter code e.g. BYO-..."><button class="btn gold" style="width:100%" onclick="checkPayCode()">Unlock &amp; Download</button><a id="payWaLink" href="#" class="btn green" style="width:100%;text-align:center;display:block;margin-top:8px;text-decoration:none">WhatsApp Request Code</a><p id="payMsg" style="color:#ff7777;font-size:12px"></p></div></div>
 <div id="toast" class="toast"></div>
 <script type="module">
 import {initializeApp} from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
@@ -424,4 +415,4 @@ function copyRefLink(){ let link = getRefLink(); if(navigator.clipboard){ naviga
 document.addEventListener("DOMContentLoaded", ()=>{ let urlRef = new URLSearchParams(window.location.search).get("ref"); if(urlRef){ localStorage.setItem("byo_referred_by", urlRef); } getRefCode(); });
 </script>
 </body>
-</html> 
+</html>
