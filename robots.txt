@@ -1,3 +1,3 @@
 User-agent: *
 Allow: /
-Sitemap: https://byosites.byomusic.workers.dev/sitemap.xml
+Sitemap: https://byomusic.pages.dev/sitemap.xml
