@@ -2,49 +2,64 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#08090d">
 <title>Artist Login - BYOMUSIC</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7880131696089557" crossorigin="anonymous"></script>
 <style>
-:root{--gold:#ffcf33;--bg:#07080d;--glass:rgba(255,255,255,.075);--line:rgba(255,255,255,.13);--muted:#9da3b1}
-*{box-sizing:border-box}
-body{margin:0;background:radial-gradient(ellipse at 15% 0%,#282044 0,transparent 38%),radial-gradient(ellipse at 90% 25%,#142b38 0,transparent 35%),var(--bg);color:#fff;font-family:Inter,system-ui,Arial;padding:16px;padding-bottom:120px;min-height:100vh}
+:root{--gold:#ffcf33;--gold2:#ff9a00;--bg:#07080d;--glass:rgba(255,255,255,.08);--line:rgba(255,255,255,.20);--muted:#aab0c0;--spring:cubic-bezier(.22,1.4,.36,1)}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{margin:0;color:#fff;font-family:Inter,system-ui,-apple-system,Arial;padding:16px;padding-bottom:120px;min-height:100vh;background:#07080d;overflow-x:hidden}
+body::before{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;background:radial-gradient(600px 420px at 12% -5%,rgba(124,58,237,.55),transparent 60%),radial-gradient(550px 420px at 92% 18%,rgba(0,150,255,.42),transparent 60%),radial-gradient(700px 500px at 50% 110%,rgba(255,207,51,.28),transparent 60%),radial-gradient(ellipse at 15% 0%,#282044 0,transparent 38%),radial-gradient(ellipse at 90% 25%,#142b38 0,transparent 35%),#07080d;animation:blobDrift 18s ease-in-out infinite alternate}
+@keyframes blobDrift{0%{filter:hue-rotate(0deg)}100%{filter:hue-rotate(18deg) brightness(1.12)}}
+.wrap{max-width:780px;margin:auto;position:relative;z-index:1}
 button,input,textarea{font:inherit}
-button{cursor:pointer}
-.wrap{max-width:780px;margin:auto}
-input,textarea{width:100%;padding:12px;border:1px solid var(--line);border-radius:12px;background:#080a10;color:white;margin:6px 0;outline:none}
-textarea{min-height:80px}
-.btn{padding:11px 14px;border:1px solid var(--line);border-radius:12px;background:var(--glass);color:#fff;font-weight:750;font-size:12px}
-.btn.gold{background:var(--gold);color:#111;border-color:var(--gold)}
-.btn.green{background:#168b54;border-color:#168b54}
-.btn.red{background:#a52b39;border-color:#a52b39}
-.glass{background:linear-gradient(145deg,rgba(255,255,255,.105),rgba(255,255,255,.035));border:1px solid var(--line);border-radius:20px;box-shadow:0 12px 35px #0005;backdrop-filter:blur(22px);overflow:hidden;padding:16px}
-.lock{max-width:440px;margin:50px auto;text-align:center}
-.lock h2{color:var(--gold)}
+button{cursor:pointer;transition:transform .18s var(--spring)}
+button:active{transform:scale(.94)}
+input,textarea{width:100%;padding:13px 14px;border:1px solid rgba(255,255,255,.28);border-top:1px solid rgba(255,255,255,.50);border-radius:16px;background:rgba(255,255,255,.08);backdrop-filter:blur(12px);color:white;margin:6px 0;outline:none;box-shadow:inset 0 1px 0 rgba(255,255,255,.25)}
+input:focus,textarea:focus{border-color:rgba(255,207,51,.7);box-shadow:0 0 0 2px rgba(255,207,51,.25)}
+textarea{min-height:80px;resize:vertical}
+.btn{padding:11px 14px;border:1px solid rgba(255,255,255,.32);border-top:1px solid rgba(255,255,255,.55);border-radius:14px;background:linear-gradient(145deg,rgba(255,255,255,.20),rgba(255,255,255,.05));background-color:rgba(255,255,255,.06);backdrop-filter:blur(14px);color:#fff;font-weight:750;font-size:12px;box-shadow:inset 0 1px 0 rgba(255,255,255,.40)}
+.btn.gold{background:linear-gradient(145deg,#ffe066,#ffcf33 55%,#ff9a00);color:#111;border-color:rgba(255,255,255,.7);box-shadow:0 10px 22px rgba(255,207,51,.42),inset 0 1px 0 rgba(255,255,255,.85)}
+.btn.green{background:linear-gradient(145deg,#2ec27a,#168b54)}
+.btn.red{background:linear-gradient(145deg,#e05565,#a52b39)}
+.glass{background:linear-gradient(145deg,rgba(255,255,255,.16),rgba(255,255,255,.045) 55%,rgba(255,207,51,.07));background-color:rgba(20,22,36,.52);border:1px solid rgba(255,255,255,.30);border-top:1px solid rgba(255,255,255,.55);border-radius:26px;box-shadow:0 16px 38px rgba(0,0,0,.38),inset 0 1px 0 rgba(255,255,255,.45);backdrop-filter:blur(22px) saturate(160%);overflow:hidden;padding:16px;position:relative}
+.glass::before{content:"";position:absolute;inset:0;pointer-events:none;border-radius:inherit;background:radial-gradient(420px 90px at 18% -10%,rgba(255,255,255,.35),transparent 55%)}
+.lock{max-width:440px;margin:50px auto;text-align:center;border-radius:28px}
+.lock::after{content:"";display:block;width:52px;height:5px;border-radius:99px;background:rgba(255,255,255,.55);margin:0 auto 14px}
+.lock h2{color:var(--gold);text-shadow:0 0 22px rgba(255,207,51,.35)}
 .muted{color:var(--muted);font-size:12px}
-.stat{background:#10131b;padding:13px;border:1px solid var(--line);border-radius:12px;text-align:center}
-.stat b{display:block;color:var(--gold);font-size:20px}
-.codeBox{background:#001a33;border:1px dashed #00aaff;padding:12px;border-radius:14px;text-align:center;margin:12px 0}
-.refBox{background:linear-gradient(135deg,#2a1a00,#1a2a00);border:1px solid var(--gold);padding:14px;border-radius:14px;text-align:center;margin:12px 0}
-.badge{font-size:10px;padding:4px 7px;border-radius:6px;background:#333}
-.badge-live{background:#17653f}.badge-sus{background:#842c35}.badge-free{background:#17653f}.badge-paid{background:#ff8800;color:#000;font-weight:900}.badge-code{background:#00aaff}
-.player{position:fixed;bottom:0;left:0;right:0;background:rgba(10,12,18,.95);border-top:1px solid var(--line);backdrop-filter:blur(26px);padding:10px 14px;display:none;z-index:30}
+.stat{background:linear-gradient(145deg,rgba(255,255,255,.16),rgba(255,255,255,.045));background-color:rgba(20,22,36,.52);padding:13px;border:1px solid rgba(255,255,255,.30);border-top:1px solid rgba(255,255,255,.55);border-radius:18px;text-align:center;backdrop-filter:blur(16px);box-shadow:0 10px 24px rgba(0,0,0,.28),inset 0 1px 0 rgba(255,255,255,.45)}
+.stat b{display:block;color:var(--gold);font-size:20px;text-shadow:0 0 16px rgba(255,207,51,.35)}
+.codeBox{background:linear-gradient(145deg,rgba(0,120,255,.22),rgba(0,40,90,.35));border:1px solid rgba(0,170,255,.45);border-top:1px solid rgba(255,255,255,.55);padding:14px;border-radius:22px;text-align:center;margin:12px 0;backdrop-filter:blur(16px)}
+.refBox{background:linear-gradient(145deg,rgba(255,207,51,.20),rgba(255,154,0,.08));border:1px solid rgba(255,207,51,.55);border-top:1px solid rgba(255,255,255,.60);padding:16px;border-radius:22px;text-align:center;margin:12px 0;backdrop-filter:blur(16px);box-shadow:0 14px 30px rgba(255,207,51,.12),inset 0 1px 0 rgba(255,255,255,.50)}
+.badge{font-size:10px;padding:5px 9px;border-radius:999px;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.22)}
+.badge-live{background:linear-gradient(145deg,#2ec27a,#17653f)}.badge-sus{background:linear-gradient(145deg,#e05565,#842c35)}.badge-free{background:linear-gradient(145deg,#2ec27a,#17653f)}.badge-paid{background:linear-gradient(145deg,#ffe066,#ff8800);color:#000;font-weight:900}.badge-code{background:linear-gradient(145deg,#2ea5ff,#00aaff)}
+/* Liquid Player - resizable */
+.player{position:fixed;bottom:12px;left:12px;right:12px;background:linear-gradient(135deg,rgba(255,255,255,.24),rgba(255,255,255,.06) 38%,rgba(255,207,51,.16) 62%,rgba(255,255,255,.08));background-color:rgba(18,20,32,.58);backdrop-filter:blur(30px) saturate(190%);border:1px solid rgba(255,255,255,.40);border-top:1px solid rgba(255,255,255,.70);border-radius:28px;padding:0 14px 12px;display:none;z-index:30;box-shadow:0 24px 54px rgba(0,0,0,.55),inset 0 1px 0 rgba(255,255,255,.60);transition:height .38s var(--spring),border-radius .38s;overflow:hidden;touch-action:none}
+.player[data-size="mini"]{height:68px;border-radius:999px;padding-bottom:0}
+.player[data-size="normal"]{height:168px}
+.player[data-size="full"]{height:min(80vh,600px);border-radius:32px}
+.player[data-size="custom"]{height:var(--ph,168px)}
+#playerDrag{height:24px;display:flex;align-items:center;justify-content:center;cursor:grab;touch-action:none}
+#playerDrag span{width:58px;height:6px;border-radius:99px;background:linear-gradient(90deg,rgba(255,255,255,.25),rgba(255,255,255,.90),rgba(255,255,255,.25));display:block}
 .playerhead{display:flex;align-items:center;gap:10px}
 .controls{display:flex;justify-content:center;gap:10px;margin-top:6px}
-.controls button{border:1px solid var(--line);background:#242631;color:#fff;border-radius:50%;width:36px;height:36px}
-.controls .main{width:44px;height:44px;background:var(--gold);color:#111;border:0;font-size:16px}
+.controls button{border:1px solid rgba(255,255,255,.38);background:linear-gradient(145deg,rgba(255,255,255,.24),rgba(255,255,255,.06));color:#fff;border-radius:50%;width:38px;height:38px;backdrop-filter:blur(12px);box-shadow:inset 0 1px 0 rgba(255,255,255,.45)}
+.controls .main{width:48px;height:48px;background:linear-gradient(145deg,#ffe066,#ffcf33 55%,#ff9a00);color:#111;border:1px solid rgba(255,255,255,.75);font-size:18px;box-shadow:0 10px 24px rgba(255,207,51,.48)}
 .progress{display:flex;gap:8px;align-items:center;font-size:10px;color:var(--muted)}
-.progress input{flex:1;accent-color:var(--gold)}
-.toast{position:fixed;bottom:140px;left:50%;transform:translateX(-50%);background:#20232d;border:1px solid var(--line);padding:11px 16px;border-radius:12px;display:none;z-index:80;font-size:12px}
-.modal{position:fixed;inset:0;background:#000b;z-index:50;display:none;place-items:center;padding:14px}
+.progress input{flex:1;accent-color:var(--gold);height:6px}
+.toast{position:fixed;bottom:150px;left:50%;transform:translateX(-50%);background:linear-gradient(145deg,rgba(255,255,255,.24),rgba(255,255,255,.07));background-color:rgba(22,24,38,.72);backdrop-filter:blur(22px);border:1px solid rgba(255,255,255,.38);border-top:1px solid rgba(255,255,255,.65);padding:12px 18px;border-radius:999px;display:none;z-index:80;font-size:12px;font-weight:700;box-shadow:0 16px 36px rgba(0,0,0,.45)}
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.45);backdrop-filter:blur(6px);z-index:50;display:none;place-items:end center}
 .modal.show{display:grid}
-.modalbox{width:min(620px,100%);max-height:90vh;overflow:auto}
-.liveDot{width:8px;height:8px;background:#25D366;border-radius:50%;display:inline-block;animation:pulse 1.5s infinite}
+.modalbox{width:min(620px,100%);max-height:88vh;overflow:auto;padding:18px 20px 26px;border-radius:28px 28px 0 0;background:linear-gradient(145deg,rgba(255,255,255,.20),rgba(255,255,255,.06));background-color:rgba(22,24,38,.78);backdrop-filter:blur(30px) saturate(180%);border:1px solid rgba(255,255,255,.38);border-bottom:0;box-shadow:0 -18px 50px rgba(0,0,0,.5);animation:sheetUp .38s var(--spring)}
+.modalbox::before{content:"";display:block;width:52px;height:5px;border-radius:99px;background:rgba(255,255,255,.55);margin:2px auto 14px}
+@keyframes sheetUp{from{transform:translateY(60px);opacity:0}to{transform:translateY(0);opacity:1}}
+.liveDot{width:8px;height:8px;background:#25D366;border-radius:50%;display:inline-block;animation:pulse 1.5s infinite;box-shadow:0 0 12px #25D366}
 @keyframes pulse{0%{opacity:1}50%{opacity:.3}100%{opacity:1}}
-.lyrics{white-space:pre-wrap;line-height:1.7;color:#ddd;background:#080a10;padding:14px;border-radius:12px;max-height:240px;overflow:auto}
-.comment{padding:10px;background:#0b0d14;border:1px solid var(--line);border-radius:12px;margin:7px 0;font-size:12px}
+.lyrics{white-space:pre-wrap;line-height:1.7;color:#e8eaf0;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.18);padding:14px;border-radius:16px;max-height:240px;overflow:auto}
+.comment{padding:11px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.18);border-radius:16px;margin:7px 0;font-size:12px}
 </style>
 </head>
 <body>
@@ -59,25 +74,18 @@ textarea{min-height:80px}
 <p class="muted">No account? WhatsApp Admin: <a href="https://wa.me/263789706161?text=Hi%20I%20need%20artist%20account" style="color:#25D366">78 970 6161</a></p>
 <a href="index.html" class="btn" style="display:inline-block;text-decoration:none;margin-top:8px">← Back to BYOMUSIC</a>
 </div>
-
 <div id="dashboard" style="display:none">
 <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px">
 <h2>Welcome <span id="artistName" style="color:var(--gold)"></span></h2>
 <button class="btn red" onclick="logout()">Logout</button>
 </div>
-<p class="muted"><span class="liveDot"></span>Online • Stored in GitHub • <span id="syncStatus"></span></p>
-
-<div id="shopAdBox" style="margin:10px 0;display:none">
-  <a id="shopAdLink" href="#" style="display:block;text-align:center;background:#ffcf33;color:#111;padding:12px;border-radius:14px;font-weight:900;font-size:13px;text-decoration:none">📢 ADVERTISE HERE - $10/week - Tap to Book</a>
-</div>
-
+<p class="muted"><span class="liveDot"></span>Online<span id="syncStatus"></span></p>
 <div class="codeBox">
 <div style="font-size:11px;color:#00aaff">YOUR APPROVAL CODE - Keep safe</div>
 <b id="myCode" style="font-size:26px;letter-spacing:4px;color:var(--gold)">------</b><br>
 <button class="btn" onclick="copyCode()">Copy Code</button>
 <a id="waShareCode" href="#" class="btn green" style="text-decoration:none">Share via WhatsApp</a>
 </div>
-
 <div class="refBox">
 <div style="font-size:12px;color:var(--gold);font-weight:900">🔥 MY REFERRAL CODE - Letha Umngane, Faka Mahhala!</div>
 <b id="myRefCode" style="font-size:26px;letter-spacing:2px;color:#fff">BYO-...</b><br>
@@ -94,17 +102,15 @@ textarea{min-height:80px}
 </div>
 <p class="muted" style="font-size:11px;margin-top:8px">1 friend = 1 FREE upload • 3 friends = TOP of App 1 Week • 5 friends = 1 Month FREE Pro</p>
 </div>
-
 <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:12px 0">
 <div class="stat"><b id="totalSongs">0</b><small>Songs</small></div>
 <div class="stat"><b id="totalPlays">0</b><small>Plays</small></div>
-<div class="stat"><b id="totalLikes">0</b><small>Likes</small></div>
+<div class="stat"><b id="totalLikes">0</b><small>Likes (Firestore)</small></div>
 <div class="stat"><b id="avgRating">0</b><small>Rating</small></div>
 </div>
-
 <div class="glass">
 <h3 style="color:var(--gold);margin-top:0">My Biography</h3>
-<img id="myPhoto" src="" style="width:80px;height:80px;border-radius:12px;object-fit:cover;display:none;margin-bottom:8px">
+<img id="myPhoto" src="" style="width:80px;height:80px;border-radius:14px;object-fit:cover;display:none;margin-bottom:8px">
 <p id="myBioText" style="font-size:13px;color:#ccc;line-height:1.5"></p>
 <p class="muted"><span id="myLoc"></span> • <span id="myGenre"></span> • Since <span id="myYear"></span></p>
 <div id="mySocial" style="font-size:12px"></div>
@@ -117,166 +123,124 @@ textarea{min-height:80px}
 <p id="bioMsg" style="font-size:11px;color:var(--gold)"></p>
 </div>
 </div>
-
 <h3>My Music <span id="syncStatus2" style="font-size:11px;color:#666"></span></h3>
 <p class="muted">Play test, edit title/price/lyrics with approval code. Full upload via Admin.</p>
 <div id="mySongs"></div>
-
 <div class="glass" style="margin-top:20px">
 <h3>Request New Upload</h3>
 <p class="muted">Send MP3 + cover to Admin. Your code will lock it.</p>
 <a href="https://wa.me/263789706161?text=Hi%20Admin%20upload%20my%20song" class="btn green" style="display:block;text-align:center;text-decoration:none">WhatsApp Admin 78 970 6161</a>
 <button class="btn" style="margin-top:8px;width:100%" onclick="loadData()">Refresh Data</button>
 </div>
-
+<footer style="margin-top:22px">
+<div id="shopAdBox" style="margin:10px 0;display:none">
+  <a id="shopAdLink" href="#" style="display:block;text-align:center;background:linear-gradient(135deg,rgba(255,255,255,.22),rgba(255,207,51,.35));background-color:rgba(255,207,51,.18);backdrop-filter:blur(18px);border:1px solid rgba(255,255,255,.40);color:#fff;padding:14px;border-radius:22px;font-weight:900;font-size:13px;text-decoration:none">📢 ADVERTISE HERE - $10/week - Tap to Book</a>
+</div>
 <div style="margin:18px 0;text-align:center">
   <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-7880131696089557" data-ad-format="auto" data-full-width-responsive="true"></ins>
-  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
 </div>
-
+<p class="muted" style="text-align:center;font-size:11px">© 2026 BYOMUSIC • v10.3 - Liquid Glass Artist • Ads at Bottom</p>
+</footer>
 </div>
 </div>
-
-<div id="player" class="player">
-<div class="playerhead"><img id="pImg" width="48" height="48" style="border-radius:10px;object-fit:cover"><div style="flex:1"><b id="pTitle">—</b><small id="pArtist" style="color:var(--muted)">—</small></div><button class="btn" onclick="openSongDetail(currentSongId)">🎤 Lyrics</button></div>
+<div id="player" class="player" data-size="normal">
+<div id="playerDrag"><span></span></div>
+<div class="playerhead"><img id="pImg" width="48" height="48" style="border-radius:12px;object-fit:cover"><div style="flex:1"><b id="pTitle">—</b><br><small id="pArtist" style="color:var(--muted)">—</small></div><button class="btn" onclick="cyclePlayerSize()" id="sizeBtn">⛶ Full</button><button class="btn" onclick="openSongDetail(currentSongId)">🎤 Lyrics</button></div>
 <div class="controls"><button onclick="prevSong()">⏮</button><button class="main" id="playBtn" onclick="togglePlay()">▶</button><button onclick="nextSong()">⏭</button></div>
 <div class="progress"><span id="elapsed">0:00</span><input id="seek" type="range" min="0" max="1000" value="0" oninput="seekAudio(this.value)"><span id="duration">0:00</span></div>
 <audio id="audio"></audio>
 </div>
-
 <div id="songModal" class="modal" onclick="if(event.target===this)hideModal('songModal')"><div class="modalbox glass"><button class="btn" style="float:right" onclick="hideModal('songModal')">✕</button><div id="songDetail"></div></div></div>
 <div id="toast" class="toast"></div>
-
+<script type="module">
+import {initializeApp} from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
+import {getFirestore,collection,getDocs} from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
+const firebaseConfig={apiKey:"AIzaSyBeJwgHaGbUJNvki5Uu5iTrHvybwkGeBcw",authDomain:"byomusic-cf50c.firebaseapp.com",projectId:"byomusic-cf50c",storageBucket:"byomusic-cf50c.firebasestorage.app",messagingSenderId:"988323942811",appId:"1:988323942811:web:7315895722f8eea7a8d13e"};
+const fbApp=initializeApp(firebaseConfig); const db=getFirestore(fbApp);
+window.__db=db; window.__getDocs=getDocs; window.__collection=collection;
+</script>
 <script>
 const KEY_SONGS="byomusic_songs_v2_final", KEY_ARTISTS="byomusic_artists_secure";
 let currentArtist=null, songs=[], artists=[], referrals=[], shopAds=[], queue=[], qi=-1, currentSongId=null;
+let likeCounts={}, commentCounts={}, ratingAvgs={}, songCommentsCache={};
 const $=id=>document.getElementById(id);
 const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const asset=p=>{ if(!p) return ""; if(/^https?:\/\//i.test(p)) return p; if(p.startsWith("/")) return p; return p.replace(/^\/+/,""); };
+const ghAsset=p=>{ if(!p) return ""; if(/^https?:\/\//i.test(p)) return p; return `https://raw.githubusercontent.com/byosites/-BYOMusic/main/${String(p).replace(/^\/+/,"")}`; };
+window.imgFallback=function(el){ if(el.dataset.ghTried){ el.src='music/profile.png'; return; } el.dataset.ghTried="1"; let src=el.getAttribute("src")||""; if(src && !src.startsWith("http") && src.startsWith("music/")){ el.src=ghAsset(src); } else { el.src='music/profile.png'; } };
 const fmt=n=>{n=Number(n)||0;return Math.floor(n/60)+":"+String(Math.floor(n%60)).padStart(2,"0");};
 function toast(m){$("toast").textContent=m; $("toast").style.display="block"; setTimeout(()=>$("toast").style.display="none",3500);}
 function hideModal(id){$(id).classList.remove("show");}
 function showModal(id){$(id).classList.add("show");}
-// ===== GITHUB STORAGE - GITHUB STORES DATA, NETLIFY SHOWS PAGES =====
-const GH_USER="byosites";
-const GH_REPO="-BYOMusic";
-const GH_BRANCH="main";
+const GH_USER="byosites"; const GH_REPO="-BYOMusic"; const GH_BRANCH="main";
 const GH_RAW=`https://raw.githubusercontent.com/${GH_USER}/${GH_REPO}/${GH_BRANCH}`;
 const GH_API=`https://api.github.com/repos/${GH_USER}/${GH_REPO}/contents`;
-const TYPE_TO_FILE={ songs:"songs.json", artists:"artists.json", referrals:"referrals.json", ads:"ads.json", secure_codes:"secure_codes.json" };
+const TYPE_TO_FILE={ songs:"songs.json", artists:"artists.json", referrals:"referrals.json", ads:"ads.json" };
 async function fetchGitHub(type){
-  try{
-    let file=TYPE_TO_FILE[type]||type+".json";
-    const r=await fetch(`${GH_RAW}/data/${file}?t=${Date.now()}`);
-    if(!r.ok) return null;
-    const txt=await r.text();
-    if(!txt.trim()) return null;
-    return JSON.parse(txt);
-  }catch(e){ console.log("GitHub read",type,e.message); return null; }
+  let file=TYPE_TO_FILE[type]||type+".json";
+  try{ const r=await fetch(`${GH_RAW}/data/${file}?t=${Date.now()}`, {cache:"no-store"}); if(r.ok){ const txt=await r.text(); if(txt.trim()) return JSON.parse(txt); } }catch(e){ console.log("raw fail",type,e.message); }
+  try{ const r=await fetch(`https://api.github.com/repos/${GH_USER}/${GH_REPO}/contents/data/${file}?ref=${GH_BRANCH}&t=${Date.now()}`, {headers:{Accept:"application/vnd.github.raw"}}); if(r.ok){ const txt=await r.text(); if(txt.trim()) return JSON.parse(txt); } }catch(e){ console.log("api fail",file,e.message); }
+  return null;
 }
-async function fetchJSONFile(path){
-  let type = path.replace("music/","").replace("data/","").replace(".json","");
-  return await fetchGitHub(type);
-}
-// Artist page is public - no GitHub Token here for security.
-// Save tries GitHub only if Admin token happens to be on this phone (Admin testing), otherwise local + WhatsApp to Admin.
 async function saveToGitHub(type, data){
   try{
-    let token=localStorage.getItem("byo_github_token");
-    if(!token) return false;
-    let file=TYPE_TO_FILE[type]||type+".json";
-    let path=`data/${file}`;
-    let get=await fetch(`${GH_API}/${path}`,{ headers:{ Authorization:`Bearer ${token}` } });
-    let sha=null;
-    if(get.ok){ let j=await get.json(); sha=j.sha; }
-    let content=btoa(unescape(encodeURIComponent(JSON.stringify(data,null,2))));
-    let body={ message:`Update ${file} via Artist`, content, branch:GH_BRANCH };
-    if(sha) body.sha=sha;
-    let put=await fetch(`${GH_API}/${path}`,{ method:"PUT", headers:{ Authorization:`Bearer ${token}`, "Content-Type":"application/json" }, body:JSON.stringify(body) });
-    return put.ok;
+    let token=localStorage.getItem("byo_github_token"); if(!token) return false;
+    let file=TYPE_TO_FILE[type]||type+".json"; let path=`data/${file}`;
+    let get=await fetch(`${GH_API}/${path}`,{ headers:{ Authorization:`Bearer ${token}` } }); let sha=null; if(get.ok){ let j=await get.json(); sha=j.sha; }
+    let content=btoa(unescape(encodeURIComponent(JSON.stringify(data,null,2)))); let body={ message:`Update ${file} via Artist v10.3`, content, branch:GH_BRANCH }; if(sha) body.sha=sha;
+    let put=await fetch(`${GH_API}/${path}`,{ method:"PUT", headers:{ Authorization:`Bearer ${token}`, "Content-Type":"application/json" }, body:JSON.stringify(body) }); return put.ok;
   }catch(e){ return false; }
 }
-async function uploadJSON(path, obj){
-  let type = path.replace("music/","").replace("data/","").replace(".json","");
-  const ok = await saveToGitHub(type, obj);
-  if(!ok) throw new Error("Not pushed to GitHub - saved locally. Send new bio to Admin on WhatsApp to publish.");
+async function uploadJSON(path, obj){ let type = path.replace("music/","").replace("data/","").replace(".json",""); const ok = await saveToGitHub(type, obj); if(!ok) throw new Error("Not pushed to GitHub - saved locally. Send new bio to Admin on WhatsApp to publish."); }
+async function loadInteractions(){
+  try{
+    if(!window.__db) return;
+    let likesSnap=await window.__getDocs(window.__collection(window.__db,"likes")); likeCounts={}; likesSnap.forEach(d=>{ let v=d.data(); if(v.songId) likeCounts[v.songId]=(likeCounts[v.songId]||0)+1; });
+    let commentsSnap=await window.__getDocs(window.__collection(window.__db,"comments")); commentCounts={}; songCommentsCache={}; commentsSnap.forEach(d=>{ let v=d.data(); if(!v.songId) return; commentCounts[v.songId]=(commentCounts[v.songId]||0)+1; if(!songCommentsCache[v.songId]) songCommentsCache[v.songId]=[]; songCommentsCache[v.songId].push({id:d.id,...v}); });
+    Object.keys(songCommentsCache).forEach(k=>songCommentsCache[k].sort((a,b)=>(b.createdAt||0)-(a.createdAt||0)));
+    let ratingsSnap=await window.__getDocs(window.__collection(window.__db,"ratings")); let sums={}, counts={}; ratingsSnap.forEach(d=>{ let v=d.data(); if(!v.songId) return; sums[v.songId]=(sums[v.songId]||0)+Number(v.rating||0); counts[v.songId]=(counts[v.songId]||0)+1; });
+    ratingAvgs={}; Object.keys(sums).forEach(k=>ratingAvgs[k]=sums[k]/counts[k]);
+    if(currentArtist) renderMySongs();
+  }catch(e){ console.log("artist interactions",e.message); }
 }
 async function loadData(){
-$("syncStatus").innerText="Loading from GitHub...";
+$("syncStatus").innerText=" Loading from GitHub + Firestore...";
 let sData=await fetchGitHub('songs'); let aData=await fetchGitHub('artists'); let rData=await fetchGitHub('referrals'); let adData=await fetchGitHub('ads');
-if(sData&&Array.isArray(sData)) songs=sData; else songs=JSON.parse(localStorage.getItem(KEY_SONGS)||"[]");
-if(aData&&Array.isArray(aData)) artists=aData; else artists=JSON.parse(localStorage.getItem(KEY_ARTISTS)||"[]");
+if(sData&&Array.isArray(sData)) songs=sData; else if(songs.length===0) songs=JSON.parse(localStorage.getItem(KEY_SONGS)||"[]");
+if(aData&&Array.isArray(aData)) artists=aData; else if(artists.length===0) artists=JSON.parse(localStorage.getItem(KEY_ARTISTS)||"[]");
 if(rData&&Array.isArray(rData)) referrals=rData;
 if(adData&&adData.shopAds) shopAds=adData.shopAds; else if(adData&&Array.isArray(adData)) shopAds=adData;
 localStorage.setItem(KEY_SONGS,JSON.stringify(songs)); localStorage.setItem(KEY_ARTISTS,JSON.stringify(artists));
-$("syncStatus").innerText=`${songs.length} songs synced • ${artists.length} artists • LIVE • GitHub`;
+await loadInteractions();
+$("syncStatus").innerText=` ${songs.length} songs synced • ${artists.length} artists • LIVE • GitHub + Firestore`;
 if(currentArtist){ let fresh=artists.find(a=>a.name.toLowerCase()===currentArtist.name.toLowerCase()); if(fresh){currentArtist=fresh; localStorage.setItem("byomusic_current_artist",JSON.stringify(fresh));}}
 if(currentArtist) { renderMySongs(); renderReferralStats(); renderShopAd(); }
+try{ (window.adsbygoogle = window.adsbygoogle || []).push({}); }catch(e){}
 }
 function renderShopAd(){
-  let box=$("shopAdBox"); if(!box) return;
-  box.style.display="block";
-  let active=shopAds.filter(a=>!a.expires || Date.now()<a.expires)[0];
-  let link=$("shopAdLink");
-  if(active){
-    link.textContent="📢 "+active.name+" - Tap to Visit";
-    link.href=active.link||"https://wa.me/263789706161";
-    if(active.image) { link.innerHTML=`<img src="${asset(active.image)}" style="width:100%;max-height:90px;object-fit:cover;border-radius:10px"><br>📢 ${esc(active.name)} - Tap`; }
-  } else {
-    link.textContent="📢 ADVERTISE HERE - $10/week - Tap to Book";
-    link.href="https://wa.me/263789706161?text=I%20want%20to%20advertise%20on%20BYOMUSIC";
-  }
+  let box=$("shopAdBox"); if(!box) return; box.style.display="block";
+  let active=shopAds.filter(a=>!a.expires || Date.now()<a.expires)[0]; let link=$("shopAdLink");
+  if(active){ link.textContent="📢 "+active.name+" - Tap to Visit"; link.href=active.link||"https://wa.me/263789706161"; if(active.image) { link.innerHTML=`<img src="${asset(active.image)}" onerror="imgFallback(this)" style="width:100%;max-height:90px;object-fit:cover;border-radius:10px"><br>📢 ${esc(active.name)} - Tap`; } }
+  else { link.textContent="📢 ADVERTISE HERE - $10/week - Tap to Book"; link.href="https://wa.me/263789706161?text=I%20want%20to%20advertise%20on%20BYOMUSIC"; }
 }
-function getMyRefCode(){
-  if(!currentArtist) return "BYO-XXXX";
-  if(currentArtist.refCode) return currentArtist.refCode;
-  let base = currentArtist.name.replace(/[^A-Za-z0-9]/g,'').toUpperCase().slice(0,6) || "BYO";
-  let suffix = (currentArtist.approvalCode||"").replace(/[^A-Za-z0-9]/g,'').slice(-4) || Math.floor(1000+Math.random()*9000);
-  return "BYO-"+base+"-"+suffix;
-}
+function getMyRefCode(){ if(!currentArtist) return "BYO-XXXX"; if(currentArtist.refCode) return currentArtist.refCode; let base = currentArtist.name.replace(/[^A-Za-z0-9]/g,'').toUpperCase().slice(0,6) || "BYO"; let suffix = (currentArtist.approvalCode||"").replace(/[^A-Za-z0-9]/g,'').slice(-4) || Math.floor(1000+Math.random()*9000); return "BYO-"+base+"-"+suffix; }
 function renderReferralStats(){
-  let code=getMyRefCode();
-  $("myRefCode").textContent=code;
-  let mine=referrals.filter(r=>r.code===code);
-  if(mine.length===0){
-    let short = code.split("-").slice(0,2).join("-");
-    mine=referrals.filter(r=>r.code===code || r.code===short);
-  }
-  $("refCount").textContent=mine.length;
-  let reward = mine.length>=5?"👑 KING - 1 Month FREE Pro":mine.length>=3?"⭐ STAR - TOP 1 Week":mine.length>=1?"🎁 1 FREE Upload":"No reward yet";
-  $("refReward").textContent=reward;
-  $("refNext").textContent=mine.length===0?"1 to FREE":mine.length<3?(3-mine.length)+" to STAR":mine.length<5?(5-mine.length)+" to KING":"MAX!";
-  $("refFriendsList").innerHTML=mine.length?("Friends you brought: "+mine.map(m=>esc(m.newUser)).join(" • ")):"No friends yet - share your code!";
+  let code=getMyRefCode(); $("myRefCode").textContent=code;
+  let mine=referrals.filter(r=>r.code===code); if(mine.length===0){ let short = code.split("-").slice(0,2).join("-"); mine=referrals.filter(r=>r.code===code || r.code===short); }
+  $("refCount").textContent=mine.length; let reward = mine.length>=5?"👑 KING - 1 Month FREE Pro":mine.length>=3?"⭐ STAR - TOP 1 Week":mine.length>=1?"🎁 1 FREE Upload":"No reward yet"; $("refReward").textContent=reward; $("refNext").textContent=mine.length===0?"1 to FREE":mine.length<3?(3-mine.length)+" to STAR":mine.length<5?(5-mine.length)+" to KING":"MAX!"; $("refFriendsList").innerHTML=mine.length?("Friends you brought: "+mine.map(m=>esc(m.newUser)).join(" • ")):"No friends yet - share your code!";
 }
-function shareReferral(){
-  let code=getMyRefCode();
-  let link=location.origin+"/index.html?ref="+code;
-  let msg=`Sawubona! Faka ingoma yakho ku-BYOMUSIC ngo-$3. Sebenzisa i-code yami ${code} sobabili sizathola i-bonus! Link: ${link} \n\nHello! Upload your song on BYOMUSIC for $3. Use my code ${code} and we both get a bonus!`;
-  window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`,"_blank");
-}
-function copyRefCode(){
-  let code=getMyRefCode();
-  let link=location.origin+"/index.html?ref="+code;
-  navigator.clipboard.writeText(link).then(()=>toast("Copied link: "+link));
-}
+function shareReferral(){ let code=getMyRefCode(); let link=location.origin+"/index.html?ref="+code; let msg=`Sawubona! Faka ingoma yakho ku-BYOMUSIC ngo-$3. Sebenzisa i-code yami ${code} sobabili sizathola i-bonus! Link: ${link} \n\nHello! Upload your song on BYOMUSIC for $3. Use my code ${code} and we both get a bonus!`; window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`,"_blank"); }
+function copyRefCode(){ let code=getMyRefCode(); let link=location.origin+"/index.html?ref="+code; navigator.clipboard.writeText(link).then(()=>toast("Copied link: "+link)); }
 function login(){
-let name=$("loginName").value.trim(), pass=$("loginPass").value.trim();
+let name=$("loginName").value.trim(), pass=$("loginPass").value.trim(); if(!name||!pass){ $("loginMsg").innerText="Enter Name + Password"; return; }
 $("loginMsg").innerText="Checking GitHub...";
-loadData().then(()=>{
-let found=artists.find(a=>a.name.toLowerCase()===name.toLowerCase() && a.pass===pass);
-if(!found){$("loginMsg").innerText="Wrong name/password. Contact admin 78 970 6161"; $("loginMsg").style.color="#ff5555"; return;}
-if(found.suspended){$("loginMsg").innerText="Account SUSPENDED by admin"; $("loginMsg").style.color="#ff5555"; return;}
-currentArtist=found; localStorage.setItem("byomusic_current_artist",JSON.stringify(found)); showDashboard(); toast("Welcome "+found.name);
-});
+loadData().then(()=>{ let found=artists.find(a=>a.name.toLowerCase()===name.toLowerCase() && String(a.pass)===String(pass)); if(!found){$("loginMsg").innerText="Wrong name/password. Contact admin 78 970 6161"; $("loginMsg").style.color="#ff5555"; return;} if(found.suspended){$("loginMsg").innerText="Account SUSPENDED by admin"; $("loginMsg").style.color="#ff5555"; return;} currentArtist=found; localStorage.setItem("byomusic_current_artist",JSON.stringify(found)); showDashboard(); toast("Welcome "+found.name); });
 }
 function showDashboard(){
 if(!currentArtist){let s=localStorage.getItem("byomusic_current_artist"); if(s) currentArtist=JSON.parse(s); else return;}
 $("loginBox").style.display="none"; $("dashboard").style.display="block";
-$("artistName").innerText=currentArtist.name;
-$("myCode").innerText=currentArtist.approvalCode||"NO CODE";
-$("myBioText").innerText=currentArtist.bio||"No bio yet";
-$("myLoc").innerText=currentArtist.loc||""; $("myGenre").innerText=currentArtist.genre||""; $("myYear").innerText=currentArtist.year||"";
-if(currentArtist.photo){$("myPhoto").style.display="block"; $("myPhoto").src=asset(currentArtist.photo);}
+$("artistName").innerText=currentArtist.name; $("myCode").innerText=currentArtist.approvalCode||"NO CODE"; $("myBioText").innerText=currentArtist.bio||"No bio yet"; $("myLoc").innerText=currentArtist.loc||""; $("myGenre").innerText=currentArtist.genre||""; $("myYear").innerText=currentArtist.year||"";
+if(currentArtist.photo){$("myPhoto").style.display="block"; $("myPhoto").src=asset(currentArtist.photo); $("myPhoto").onerror=()=>{ $("myPhoto").src=ghAsset(currentArtist.photo); $("myPhoto").onerror=null; };} else { $("myPhoto").style.display="none"; }
 let social=[]; if(currentArtist.fb) social.push(`<a href="${currentArtist.fb}" style="color:#00aaff">FB</a>`); if(currentArtist.ig) social.push(`<a href="${currentArtist.ig}" style="color:#00aaff">IG</a>`); if(currentArtist.yt) social.push(`<a href="${currentArtist.yt}" style="color:#00aaff">YT</a>`); if(currentArtist.tik) social.push(`<a href="${currentArtist.tik}" style="color:#00aaff">TikTok</a>`); $("mySocial").innerHTML=social.join(" • ");
 $("waShareCode").href=`https://wa.me/?text=My%20BYOMUSIC%20Approval%20Code%20is%20${currentArtist.approvalCode}%20for%20artist%20${currentArtist.name}`;
 renderMySongs(); renderReferralStats(); renderShopAd();
@@ -285,56 +249,42 @@ function copyCode(){navigator.clipboard.writeText(currentArtist.approvalCode); t
 function editMyBio(){$("bioEditBox").style.display="block"; $("editBio").value=currentArtist.bio||""; $("editLoc").value=currentArtist.loc||""; $("editGenre").value=currentArtist.genre||"";}
 async function saveMyBio(){
 let code=$("bioApproval").value.trim(); if(code!==currentArtist.approvalCode){alert("Wrong approval code!"); return;}
-$("bioMsg").innerText="Saving to GitHub...";
-let idx=artists.findIndex(a=>a.name.toLowerCase()===currentArtist.name.toLowerCase());
-if(idx>=0){
-artists[idx].bio=$("editBio").value; artists[idx].loc=$("editLoc").value; artists[idx].genre=$("editGenre").value;
-localStorage.setItem(KEY_ARTISTS,JSON.stringify(artists)); currentArtist=artists[idx]; localStorage.setItem("byomusic_current_artist",JSON.stringify(currentArtist));
-try{await uploadJSON('data/artists.json',artists); $("bioMsg").innerText="✅ Bio synced to GitHub";}catch(e){$("bioMsg").innerText="Saved locally: "+e.message;}
-showDashboard(); $("bioEditBox").style.display="none";
+$("bioMsg").innerText="Saving to GitHub..."; let idx=artists.findIndex(a=>a.name.toLowerCase()===currentArtist.name.toLowerCase());
+if(idx>=0){ artists[idx].bio=$("editBio").value; artists[idx].loc=$("editLoc").value; artists[idx].genre=$("editGenre").value; localStorage.setItem(KEY_ARTISTS,JSON.stringify(artists)); currentArtist=artists[idx]; localStorage.setItem("byomusic_current_artist",JSON.stringify(currentArtist)); try{await uploadJSON('data/artists.json',artists); $("bioMsg").innerText="✅ Bio synced to GitHub";}catch(e){$("bioMsg").innerText="Saved locally: "+e.message;} showDashboard(); $("bioEditBox").style.display="none"; }
 }
-}
-function getAvg(s){if(!s.ratings) return 0; let v=Object.values(s.ratings); if(!v.length) return 0; return v.reduce((a,b)=>a+b,0)/v.length;}
+function getAvg(s){ let v=ratingAvgs[s.id]; if(v!=null) return v; if(!s.ratings) return 0; let a=Object.values(s.ratings); if(!a.length) return 0; return a.reduce((x,y)=>x+y,0)/a.length; }
+function likeCount(s){ return likeCounts[s.id] ?? (Number(s.likes)||0); }
+function commentCount(s){ return commentCounts[s.id] ?? (s.comments?s.comments.length:0); }
 function renderMySongs(){
 let mine=songs.filter(s=>s.artist.toLowerCase()===currentArtist.name.toLowerCase());
-$("totalSongs").innerText=mine.length;
-$("totalPlays").innerText=mine.reduce((a,b)=>a+(b.plays||0),0);
-$("totalLikes").innerText=mine.reduce((a,b)=>a+(b.likes||0),0);
-$("avgRating").innerText=mine.length?(mine.reduce((a,b)=>a+getAvg(b),0)/mine.length).toFixed(1):0;
-$("mySongs").innerHTML=mine.map(s=>`<div class="glass" style="display:flex;gap:10px;align-items:center;margin:8px 0"><img src="${asset(s.img||s.cover)}" width="55" height="55" style="border-radius:8px;object-fit:cover" onerror="this.src='music/profile.png'"><div style="flex:1"><b>${esc(s.title)}</b> <span class="badge badge-code">${s.approvalCode||currentArtist.approvalCode}</span> ${s.suspended?'<span class="badge badge-sus">SUSPENDED</span>':s.sell||s.paid?'<span class="badge badge-paid">$'+s.price+'</span>':'<span class="badge badge-free">FREE</span>'}<br><span style="font-size:11px;color:var(--muted)">${esc(s.genre)} • ★ ${getAvg(s).toFixed(1)} • ❤ ${s.likes||0} • 💬 ${s.comments?s.comments.length:0} • Plays: ${s.plays||0}</span><br><span style="font-size:11px;color:#666">${s.lyrics?'🎤 '+esc(s.lyrics.substring(0,50)):''}</span></div><div style="display:flex;flex-direction:column;gap:6px"><button class="btn gold" onclick="playMySong('${s.id}')">▶ Play</button><button class="btn" onclick="openSongDetail('${s.id}')">Lyrics</button><button class="btn" onclick="editMySong('${s.id}')">Edit</button></div></div>`).join('')||"<p class='muted'>No songs yet - send MP3 via WhatsApp to admin</p>";
+$("totalSongs").innerText=mine.length; $("totalPlays").innerText=mine.reduce((a,b)=>a+(b.plays||0),0); $("totalLikes").innerText=mine.reduce((a,b)=>a+likeCount(b),0); $("avgRating").innerText=mine.length?(mine.reduce((a,b)=>a+getAvg(b),0)/mine.length).toFixed(1):0;
+$("mySongs").innerHTML=mine.map(s=>{ let eid=encodeURIComponent(s.id); return `<div class="glass" style="display:flex;gap:10px;align-items:center;margin:8px 0"><img src="${asset(s.img||s.cover)}" width="55" height="55" style="border-radius:10px;object-fit:cover" onerror="imgFallback(this)"><div style="flex:1"><b>${esc(s.title)}</b> <span class="badge badge-code">${esc(s.approvalCode||currentArtist.approvalCode)}</span> ${s.suspended?'<span class="badge badge-sus">SUSPENDED</span>':s.sell||s.paid?'<span class="badge badge-paid">$'+esc(s.price)+'</span>':'<span class="badge badge-free">FREE</span>'}<br><span style="font-size:11px;color:var(--muted)">${esc(s.genre)} • ★ ${getAvg(s).toFixed(1)} • ❤ ${likeCount(s)} • 💬 ${commentCount(s)} • Plays: ${s.plays||0}</span><br><span style="font-size:11px;color:#888">${s.lyrics?'🎤 '+esc(s.lyrics.substring(0,50)):''}</span></div><div style="display:flex;flex-direction:column;gap:6px"><button class="btn gold" onclick="playMySong('${eid}')">▶ Play</button><button class="btn" onclick="openSongDetail('${eid}')">Lyrics</button><button class="btn" onclick="editMySong('${eid}')">Edit</button></div></div>`; }).join('')||"<p class='muted'>No songs yet - send MP3 via WhatsApp to admin</p>";
 }
-function playMySong(id){
-let s=songs.find(x=>x.id===id); if(!s) return;
-if(s.artist.toLowerCase()!==currentArtist.name.toLowerCase()){alert("Not your song!"); return;}
+// Resizable player
+function applyPlayerSize(size, customH){ let p=$("player"); if(!p) return; if(size==="custom" && customH){ p.style.setProperty("--ph", customH+"px"); p.dataset.size="custom"; } else { p.dataset.size=size; } let btn=$("sizeBtn"); if(btn) btn.textContent = p.dataset.size==="mini" ? "⛶ Expand" : p.dataset.size==="full" ? "— Mini" : "⛶ Full"; localStorage.setItem("byo_artist_player_size", p.dataset.size); if(customH) localStorage.setItem("byo_artist_player_h", customH); }
+window.cyclePlayerSize=()=>{ let p=$("player"); let cur=p.dataset.size||"normal"; if(cur==="mini") applyPlayerSize("normal"); else if(cur==="normal") applyPlayerSize("full"); else applyPlayerSize("mini"); };
+(function initResize(){ let drag=$("playerDrag"); if(!drag) return; let dragging=false, startY=0, startH=0; function getY(e){ return e.touches?e.touches[0].clientY:e.clientY; } function onStart(e){ dragging=true; startY=getY(e); startH=$("player").getBoundingClientRect().height; $("player").style.transition="none"; e.preventDefault(); } function onMove(e){ if(!dragging) return; let nh=Math.max(68,Math.min(window.innerHeight*0.8,startH+(startY-getY(e)))); let p=$("player"); p.style.setProperty("--ph",nh+"px"); p.dataset.size="custom"; } function onEnd(e){ if(!dragging) return; dragging=false; let p=$("player"); p.style.transition=""; let h=p.getBoundingClientRect().height; if(h<90) applyPlayerSize("mini"); else if(h>window.innerHeight*0.6) applyPlayerSize("full"); else applyPlayerSize("custom",Math.round(h)); } drag.addEventListener("touchstart",onStart,{passive:false}); drag.addEventListener("touchmove",onMove,{passive:false}); drag.addEventListener("touchend",onEnd); drag.addEventListener("mousedown",onStart); window.addEventListener("mousemove",onMove); window.addEventListener("mouseup",onEnd); })();
+function playMySong(_id){
+let id=decodeURIComponent(_id); let s=songs.find(x=>x.id===id); if(!s) return; if(s.artist.toLowerCase()!==currentArtist.name.toLowerCase()){alert("Not your song!"); return;}
 queue=songs.filter(x=>x.artist.toLowerCase()===currentArtist.name.toLowerCase()); qi=queue.findIndex(x=>x.id===id); currentSongId=id;
-$("player").style.display="block"; $("pImg").src=asset(s.img||s.cover); $("pTitle").innerText=s.title; $("pArtist").innerText=s.artist;
-const audio=$("audio"); audio.src=asset(s.audio||s.audioUrl); audio.play().then(()=>$("playBtn").innerText="Ⅱ").catch(e=>toast("Play error: "+e.message));
+$("player").style.display="block"; let saved=localStorage.getItem("byo_artist_player_size")||"normal"; if(saved==="custom") applyPlayerSize("custom",parseInt(localStorage.getItem("byo_artist_player_h")||"168",10)); else applyPlayerSize(saved);
+$("pImg").src=asset(s.img||s.cover); $("pImg").onerror=()=>{ $("pImg").src=ghAsset(s.img||s.cover); $("pImg").onerror=null; }; $("pTitle").innerText=s.title; $("pArtist").innerText=s.artist;
+const audio=$("audio"); audio.onerror=()=>{ let gh=ghAsset(s.audio||s.audioUrl); if(audio.src!==gh){ audio.src=gh; audio.play().catch(()=>toast("Play error - file not found")); } }; audio.src=asset(s.audio||s.audioUrl); audio.play().then(()=>$("playBtn").innerText="Ⅱ").catch(()=>{ let gh=ghAsset(s.audio||s.audioUrl); if(audio.src!==gh){ audio.src=gh; audio.play().then(()=>$("playBtn").innerText="Ⅱ").catch(()=>toast("Play error - file not found")); } else toast("Play error - file not found"); });
 }
 function togglePlay(){let a=$("audio"); if(!a.src) return; if(a.paused){a.play(); $("playBtn").innerText="Ⅱ";}else{a.pause(); $("playBtn").innerText="▶";}}
-function nextSong(){if(!queue.length) return; qi=(qi+1)%queue.length; playMySong(queue[qi].id);}
-function prevSong(){if(!queue.length) return; qi=(qi-1+queue.length)%queue.length; playMySong(queue[qi].id);}
+function nextSong(){if(!queue.length) return; qi=(qi+1)%queue.length; playMySong(encodeURIComponent(queue[qi].id));}
+function prevSong(){if(!queue.length) return; qi=(qi-1+queue.length)%queue.length; playMySong(encodeURIComponent(queue[qi].id));}
 function seekAudio(v){let a=$("audio"); if(a.duration) a.currentTime=a.duration*Number(v)/1000;}
 $("audio").addEventListener("timeupdate",()=>{let a=$("audio"); $("elapsed").textContent=fmt(a.currentTime); $("duration").textContent=fmt(a.duration); $("seek").value=a.duration?Math.round(a.currentTime/a.duration*1000):0;});
 $("audio").addEventListener("ended",()=>nextSong());
-function openSongDetail(id){
-let s=songs.find(x=>x.id===id); if(!s) return;
-let comments=s.comments||[];
-$("songDetail").innerHTML=`
-<img src="${asset(s.img||s.cover)}" style="width:100%;height:180px;object-fit:cover;border-radius:12px">
-<h2>${esc(s.title)}</h2><p style="color:var(--gold)">${esc(s.artist)}</p>
-<p class="muted">★ ${getAvg(s).toFixed(1)} • ❤ ${s.likes||0} • 💬 ${comments.length} • ▶ ${s.plays||0}</p>
-<h3>Lyrics</h3><div class="lyrics">${esc(s.lyrics||"No lyrics yet")}</div>
-<h3>Comments</h3>${comments.map(c=>`<div class="comment"><b>${esc(c.user||c.userName)}</b><br>${esc(c.text)}</div>`).join('')||"<p class='muted'>No comments</p>"}
-<button class="btn gold" style="width:100%;margin-top:10px" onclick="playMySong('${s.id}');hideModal('songModal')">▶ Play</button>`;
+function openSongDetail(_id){
+let id=decodeURIComponent(_id); let s=songs.find(x=>x.id===id); if(!s) return; let comments=songCommentsCache[id]||s.comments||[]; let eid=encodeURIComponent(s.id);
+$("songDetail").innerHTML=`<img src="${asset(s.img||s.cover)}" onerror="imgFallback(this)" style="width:100%;height:180px;object-fit:cover;border-radius:14px"><h2>${esc(s.title)}</h2><p style="color:var(--gold)">${esc(s.artist)}</p><p class="muted">★ ${getAvg(s).toFixed(1)} • ❤ ${likeCount(s)} • 💬 ${commentCount(s)} • ▶ ${s.plays||0}</p><h3>Lyrics</h3><div class="lyrics">${esc(s.lyrics||"No lyrics yet")}</div><h3>Comments (Firestore)</h3>${comments.map(c=>`<div class="comment"><b>${esc(c.user||c.userName)}</b><br>${esc(c.text)}</div>`).join('')||"<p class='muted'>No comments</p>"}<button class="btn gold" style="width:100%;margin-top:10px" onclick="playMySong('${eid}');hideModal('songModal')">▶ Play</button>`;
 showModal("songModal");
 }
-async function editMySong(id){
-let code=prompt(`Enter Approval Code ${currentArtist.approvalCode} to edit:`); if(code!==currentArtist.approvalCode){alert("Wrong code"); return;}
-let s=songs.find(x=>x.id===id); let newTitle=prompt("New Title (leave blank keep):",s.title); let newPrice=prompt("New Price USD:",s.price); let newLyrics=prompt("Edit Lyrics (leave blank keep):",s.lyrics||"");
-if(newTitle) s.title=newTitle; if(newPrice) s.price=newPrice; if(newLyrics!==null && newLyrics!=="") s.lyrics=newLyrics;
-localStorage.setItem(KEY_SONGS,JSON.stringify(songs));
-try{await uploadJSON('data/songs.json',songs); toast("✅ Updated & synced to GitHub");}catch(e){toast("Saved locally: "+e.message);}
-renderMySongs();
+async function editMySong(_id){
+let id=decodeURIComponent(_id); let code=prompt(`Enter Approval Code ${currentArtist.approvalCode} to edit:`); if(code!==currentArtist.approvalCode){alert("Wrong code"); return;}
+let s=songs.find(x=>x.id===id); let newTitle=prompt("New Title (leave blank keep):",s.title); let newPrice=prompt("New Price USD:",s.price); let newLyrics=prompt("Edit Lyrics (leave blank keep):",s.lyrics||""); if(newTitle) s.title=newTitle; if(newPrice) s.price=newPrice; if(newLyrics!==null && newLyrics!=="") s.lyrics=newLyrics; localStorage.setItem(KEY_SONGS,JSON.stringify(songs)); try{await uploadJSON('data/songs.json',songs); toast("✅ Updated & synced to GitHub");}catch(e){toast("Saved locally: "+e.message);} renderMySongs();
 }
 function logout(){localStorage.removeItem("byomusic_current_artist"); currentArtist=null; $("dashboard").style.display="none"; $("loginBox").style.display="block";}
 loadData();
