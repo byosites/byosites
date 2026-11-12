@@ -5,6 +5,13 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#08090d">
 <title>BYOMUSIC</title>
+<meta name="description" content="BYOMUSIC - Zimbabwean music. One place. Worldwide.">
+<meta name="keywords" content="BYOMUSIC, Zimbabwe music, Bulawayo music, Zim dancehall, Amapiano Zimbabwe">
+<meta name="robots" content="index, follow">
+<meta property="og:title" content="BYOMUSIC - Zimbabwean Music">
+<meta property="og:description" content="Zimbabwean music. One place. Worldwide.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://byosites.byomusic.workers.dev/">
 <link rel="icon" href="music/profile.png">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7880131696089557" crossorigin="anonymous"></script>
@@ -273,7 +280,7 @@ if(sRes&&Array.isArray(sRes)) songs=sRes; else if(songs.length===0) songs=JSON.p
 if(aRes&&Array.isArray(aRes)) artists=aRes; else if(artists.length===0) artists=JSON.parse(localStorage.getItem(KEY_ARTISTS)||"[]");
 if(adRes){ let shopAds = adRes.shopAds || (Array.isArray(adRes)?adRes:[]); let active = shopAds.filter(a=>!a.expires || Date.now()<a.expires)[0]; let link=document.getElementById("shopAdLink"); if(active && link){ if(active.image){ link.innerHTML=`<img src="${asset(active.image)}" onerror="imgFallback(this)" style="width:100%;max-height:100px;object-fit:cover;border-radius:10px"><br>📢 ${esc(active.name)} - Tap`; link.href=active.link||"https://wa.me/263789706161"; } else { link.textContent="📢 "+active.name+" - Tap to Visit"; link.href=active.link||"https://wa.me/263789706161"; link.style.background="linear-gradient(90deg,#ffcf33,#ff9a00)"; } } }
 await loadCodesFromFirestore(); await loadInteractions();
-$("status").textContent=`${songs.length} songs • ${artists.length} artists • Firestore likes/comments`;
+$("status").textContent=`${songs.length} songs • ${artists.length} artists`;
 if(!songs.length && !sRes){$("status").textContent="Couldn't load the library, retrying…";setTimeout(loadSyncedData,10000);}
 localStorage.setItem(KEY_SONGS,JSON.stringify(songs)); localStorage.setItem(KEY_ARTISTS,JSON.stringify(artists)); render();
 }
