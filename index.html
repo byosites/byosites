@@ -107,7 +107,7 @@ textarea{min-height:90px;resize:vertical}
 <h1>BYO<span>MUSIC</span></h1>
 <p class="muted">Zimbabwean music. One place. Worldwide.</p>
 <p id="status" class="muted" style="font-size:11px">Connecting to GitHub live library…</p>
-<p style="font-size:11px;color:#25D366"><span class="liveDot"></span>Online • Stored in GitHub</p>
+<p style="font-size:11px;color:#25D366"><span class="liveDot"></span>Online/p>
 </div>
 <div class="search">
 <i class="fa fa-search muted"></i>
@@ -135,7 +135,7 @@ textarea{min-height:90px;resize:vertical}
 <h2>Philip Mbewe</h2>
 <p style="color:var(--gold)">Founder & Developer · Bulawayo, Zimbabwe</p>
 <p class="muted">BYOMUSIC supports Zimbabwean music through discovery, listening and artist-focused distribution.</p>
-<p class="muted">© 2026 BYOMUSIC • v9.0 - GitHub Stored • Data in GitHub JSON</p>
+<p class="muted">© 2026 BYOMUSIC</p>
 </div>
 </section>
 </main>
@@ -172,7 +172,7 @@ textarea{min-height:90px;resize:vertical}
 <div class="modalbox glass"><button class="btn close" onclick="hideModal('songModal')">✕</button><div id="songDetail"></div></div>
 </div>
 <div id="inboxModal" class="modal" onclick="if(event.target===this)hideModal('inboxModal')">
-<div class="modalbox glass"><button class="btn close" onclick="hideModal('inboxModal')">✕</button><h2>My inbox - Realtime</h2><p class="muted" style="font-size:11px">Codes arrive in 3 sec - no need to refresh</p><div id="inboxList"></div><button class="btn" style="width:100%" onclick="markAllRead()">Mark All Read</button></div>
+<div class="modalbox glass"><button class="btn close" onclick="hideModal('inboxModal')">✕</button><h2>My inbox - Realtime</h2><p class="muted" style="font-size:11px">Codes arrive in about 20 sec - no need to refresh</p><div id="inboxList"></div><button class="btn" style="width:100%" onclick="markAllRead()">Mark All Read</button></div>
 </div>
 <div id="queueModal" class="modal" onclick="if(event.target===this)hideModal('queueModal')">
 <div class="modalbox glass"><button class="btn close" onclick="hideModal('queueModal')">✕</button><h2>Up next - Playlist</h2><div id="queueList"></div></div>
@@ -197,17 +197,23 @@ const firebaseConfig = {
 const app=initializeApp(firebaseConfig);
 const auth=getAuth(app);
 const $=id=>document.getElementById(id);
-// ===== GITHUB STORAGE - GITHUB STORES DATA, NETLIFY SHOWS PAGES =====
+// ===== GITHUB STORAGE - FIXED v9.2 =====
 const GH_USER = "byosites";
 const GH_REPO = "-BYOMusic";
 const GH_BRANCH = "main";
-const GH_RAW = `https://raw.githubusercontent.com/${GH_USER}/${GH_REPO}/${GH_BRANCH}/data`;
+const GH_RAW = `https://raw.githubusercontent.com/${GH_USER}/${GH_REPO}/${GH_BRANCH}`;
+const GH_RAW_DATA = GH_RAW + "/data";
 const KEY_SONGS="byomusic_songs_v2_final", KEY_ARTISTS="byomusic_artists_secure", KEY_USERS="byomusic_users_v5", KEY_SECURE_CODES="byomusic_secure_codes_v54";
 let user=null, songs=[], artists=[], secureCodes=[], inbox=[];
 let filter="all", current=null, queue=[], qi=-1, repeat=false, isShuffle=false;
 let unreadCount=0, seenCodes=JSON.parse(localStorage.getItem("byomusic_seen_codes")||"[]"), lastKnownComments=0, lastKnownLikes=0, currentPaySong=null, countdownInterval=null;
+// FIX 1: asset() - if local file 404s, browser will fallback via onerror to GitHub raw. For audio we use ghAsset().
+// For images we return local first (fast via Netlify), onerror handler swaps to raw.
 const asset=p=>{ if(!p) return ""; if(/^https?:\/\//i.test(p)) return p; if(p.startsWith("/")) return p; return p.replace(/^\/+/,""); };
+const ghAsset=p=>{ if(!p) return ""; if(/^https?:\/\//i.test(p)) return p; return GH_RAW + "/" + String(p).replace(/^\/+/,""); };
 const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+// FIX for img onerror: if Netlify hasn't deployed cover yet, try GitHub raw
+window.imgFallback=function(el){ if(el.dataset.ghTried) { el.src='music/profile.png'; return; } el.dataset.ghTried="1"; let src=el.getAttribute("src")||""; if(src && !src.startsWith("http") && src.startsWith("music/")){ el.src = ghAsset(src); } else { el.src='music/profile.png'; } };
 const fmt=n=>{n=Number(n); if(!Number.isFinite(n)||n<0) return "0:00"; return Math.floor(n/60)+":"+String(Math.floor(n%60)).padStart(2,"0")};
 function toast(m){$("toast").textContent=m;$("toast").style.display="block";setTimeout(()=>$("toast").style.display="none",4000);}
 function beep(){try{new Audio("https://actions.google.com/sounds/v1/alarms/beep_short.ogg").play();}catch(e){}}
@@ -235,22 +241,30 @@ $("hello").textContent=u?`Hi, ${u.displayName||u.email}`:"";
 $("authBtn").hidden=!!u; $("outBtn").hidden=!u; $("inboxBtn").hidden=!u;
 updateBell(); render();
 });
-// ===== GITHUB: READ - PUBLIC, NO TOKEN NEEDED =====
+// FIX 2: fetchGitHub - NO jsDelivr (stale cache). Use raw with full Date.now() + GitHub API fallback
 async function fetchGitHub(file){
+  // Try 1: raw with cache-buster
   try{
-    const r=await fetch(`${GH_RAW}/${file}?t=${Date.now()}`);
-    if(!r.ok) return null;
-    const txt=await r.text();
-    if(!txt.trim()) return null;
-    return JSON.parse(txt);
-  }catch(e){ console.log("GitHub read",file,e.message); return null; }
+    const r=await fetch(`${GH_RAW_DATA}/${file}?t=${Date.now()}`, {cache:"no-store"});
+    if(r.ok){
+      const txt=await r.text();
+      if(txt.trim()) return JSON.parse(txt);
+    }
+  }catch(e){ console.log("raw fail",file,e.message); }
+  // Try 2: GitHub API contents (returns base64, bypasses raw CDN cache)
+  try{
+    const r=await fetch(`https://api.github.com/repos/${GH_USER}/${GH_REPO}/contents/data/${file}?ref=${GH_BRANCH}&t=${Date.now()}`, {headers:{Accept:"application/vnd.github.raw"}});
+    if(r.ok){
+      const txt=await r.text();
+      if(txt.trim()) return JSON.parse(txt);
+    }
+  }catch(e){ console.log("api fail",file,e.message); }
+  return null;
 }
-// ===== GITHUB: SAVE - ONLY IF ADMIN TOKEN EXISTS (Admin page sets it) =====
 async function saveToGitHub(file, data){
   try{
     let token = localStorage.getItem("byo_github_token");
     if(!token) return false;
-    // Get SHA
     let get = await fetch(`https://api.github.com/repos/${GH_USER}/${GH_REPO}/contents/data/${file}`, { headers:{ Authorization:`Bearer ${token}` } });
     if(!get.ok) return false;
     let j = await get.json();
@@ -264,36 +278,63 @@ async function saveToGitHub(file, data){
   }catch(e){ console.log("GitHub save",e.message); return false; }
 }
 function saveLocal(){localStorage.setItem(KEY_SONGS,JSON.stringify(songs)); localStorage.setItem(KEY_ARTISTS,JSON.stringify(artists)); localStorage.setItem(KEY_SECURE_CODES,JSON.stringify(secureCodes));}
+// FIX 3: saveAndSync - re-fetch before save so we don't overwrite other people's likes/comments
 async function saveAndSync(){
   saveLocal();
-  // Likes/comments/ratings: if this browser is Admin (has token), push to GitHub. Otherwise local only.
-  // Admin page will also push. This keeps public page fast and safe.
-  try{ await saveToGitHub("songs.json", songs); }catch(e){}
+  let token = localStorage.getItem("byo_github_token");
+  if(!token) return; // public visitor: local only, Admin will sync
+  try{
+    let fresh = await fetchGitHub("songs.json");
+    if(fresh && Array.isArray(fresh)){
+      // Merge: keep fresh likes/comments for songs we didn't just change, keep our local changes for the song we edited
+      let byId={}; fresh.forEach(s=>byId[s.id]=s);
+      songs.forEach(s=>{
+        if(byId[s.id]){
+          // If fresh has more comments/likes, keep fresh counts unless our local is newer (we just added one)
+          // Simple safe merge: if local comments length > fresh, keep local, else keep fresh comments but keep our song fields
+          if((s.comments||[]).length < (byId[s.id].comments||[]).length){
+            s.comments = byId[s.id].comments;
+            s.likes = byId[s.id].likes;
+            s.likedBy = byId[s.id].likedBy;
+            s.ratings = byId[s.id].ratings;
+          }
+        }
+      });
+      // Add any new songs from fresh that we don't have
+      fresh.forEach(fs=>{ if(!songs.find(x=>x.id===fs.id)) songs.push(fs); });
+    }
+    await saveToGitHub("songs.json", songs);
+  }catch(e){ console.log("saveAndSync merge",e.message); }
 }
 async function loadSyncedData(){
 let sRes=await fetchGitHub('songs.json');
 let aRes=await fetchGitHub('artists.json');
 let cRes=await fetchGitHub('secure_codes.json');
 let adRes=await fetchGitHub('ads.json');
-if(sRes&&Array.isArray(sRes)&&sRes.length>0) songs=sRes; else songs=JSON.parse(localStorage.getItem(KEY_SONGS)||"[]");
-if(aRes&&Array.isArray(aRes)&&aRes.length>0) artists=aRes; else artists=JSON.parse(localStorage.getItem(KEY_ARTISTS)||"[]");
-if(cRes&&Array.isArray(cRes)) secureCodes=cRes; else secureCodes=JSON.parse(localStorage.getItem(KEY_SECURE_CODES)||"[]");
+// FIX: if GitHub returns [] it means empty library - trust it, don't fallback to stale localStorage
+if(sRes&&Array.isArray(sRes)) songs=sRes;
+else if(songs.length===0) songs=JSON.parse(localStorage.getItem(KEY_SONGS)||"[]");
+if(aRes&&Array.isArray(aRes)) artists=aRes;
+else if(artists.length===0) artists=JSON.parse(localStorage.getItem(KEY_ARTISTS)||"[]");
+if(cRes&&Array.isArray(cRes)) secureCodes=cRes;
+else if(secureCodes.length===0) secureCodes=JSON.parse(localStorage.getItem(KEY_SECURE_CODES)||"[]");
 if(adRes){
   let shopAds = adRes.shopAds || (Array.isArray(adRes)?adRes:[]);
   let active = shopAds.filter(a=>!a.expires || Date.now()<a.expires)[0];
   let link=document.getElementById("shopAdLink");
   if(active && link){
-    if(active.image){ link.innerHTML=`<img src="${asset(active.image)}" style="width:100%;max-height:100px;object-fit:cover;border-radius:10px"><br>📢 ${esc(active.name)} - Tap`; link.href=active.link||"https://wa.me/263789706161"; }
+    if(active.image){ link.innerHTML=`<img src="${asset(active.image)}" onerror="imgFallback(this)" style="width:100%;max-height:100px;object-fit:cover;border-radius:10px"><br>📢 ${esc(active.name)} - Tap`; link.href=active.link||"https://wa.me/263789706161"; }
     else { link.textContent="📢 "+active.name+" - Tap to Visit"; link.href=active.link||"https://wa.me/263789706161"; link.style.background="linear-gradient(90deg,#ffcf33,#ff9a00)"; }
   }
 }
 if(lastKnownComments===0) lastKnownComments=songs.reduce((a,s)=>a+(s.comments?s.comments.length:0),0);
 if(lastKnownLikes===0) lastKnownLikes=songs.reduce((a,s)=>a+(s.likes||0),0);
-$("status").textContent=`${songs.length} songs • ${artists.length} artists • ${songs.reduce((a,s)=>a+(s.comments?s.comments.length:0),0)} comments • Stored in GitHub`;
+$("status").textContent=`${songs.length} songs • ${artists.length} artists • ${songs.reduce((a,s)=>a+(s.comments?s.comments.length:0),0)} comments`;
+if(!songs.length && !sRes){$("status").textContent="Couldn't load the library, retrying…";setTimeout(loadSyncedData,10000);}
 saveLocal(); render();
 }
 async function checkRealtime(){
-if(!user) return;
+if(!user||document.hidden) return;
 let cRes=await fetchGitHub('secure_codes.json');
 if(cRes&&Array.isArray(cRes)){
 let myName=user.displayName||user.email;
@@ -330,31 +371,42 @@ let q=$("search").value.trim().toLowerCase();
 let list=filter==="artists"?artists.filter(a=>!a.suspended):songs.filter(s=>!s.suspended);
 if(filter==="free")list=list.filter(s=>!s.sell&&!s.paid);
 if(filter==="paid")list=list.filter(s=>s.sell||s.paid);
-if(filter==="top")list.sort((a,b)=>avg(b)-avg(a));
+if(filter==="top")list=[...list].sort((a,b)=>avg(b)-avg(a));
 if(q)list=list.filter(x=>`${x.title||x.name||""} ${x.artist||""} ${x.genre||""} ${x.lyrics||""} ${x.bio||""}`.toLowerCase().includes(q));
 $("grid").innerHTML=list.length?list.map(x=>filter==="artists"?artistCard(x):songCard(x)).join(""):`<div class="empty">No results found.</div>`;
 };
 function songCard(s){
 let paid=!!(s.sell||s.paid);
-return `<article class="glass song"><img src="${esc(asset(s.cover||s.img))}" onerror="this.src='music/profile.png'" alt=""><div class="cardbody"><div class="row"><span class="pill ${paid?"paid":"free"}">${paid?"PAID":"FREE"}</span><span class="muted" style="font-size:11px">★ ${avg(s).toFixed(1)} · ❤ ${Number(s.likes)||0}</span></div><h3>${esc(s.title)}</h3><div class="meta">${esc(s.artist||"Unknown")} · ${esc(s.genre||"Music")}</div><p class="muted" style="font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${s.lyrics?'🎤 '+esc(s.lyrics.substring(0,50)):''}</p><div class="row"><button class="btn gold" onclick="playSong('${esc(s.id)}')">▶ Play</button><button class="btn" onclick="openSong('${esc(s.id)}')">Details</button>${!paid?`<button class="btn green" onclick="downloadSong('${esc(s.id)}')">Download</button>`:`<button class="btn" onclick="requestPaid('${esc(s.id)}')">Get access</button>`}</div></div></article>`;
+let safeId=encodeURIComponent(s.id);
+return `<article class="glass song"><img src="${esc(asset(s.cover||s.img))}" onerror="imgFallback(this)" alt=""><div class="cardbody"><div class="row"><span class="pill ${paid?"paid":"free"}">${paid?"PAID":"FREE"}</span><span class="muted" style="font-size:11px">★ ${avg(s).toFixed(1)} · ❤ ${Number(s.likes)||0}</span></div><h3>${esc(s.title)}</h3><div class="meta">${esc(s.artist||"Unknown")} · ${esc(s.genre||"Music")}</div><p class="muted" style="font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${s.lyrics?'🎤 '+esc(s.lyrics.substring(0,50)):''}</p><div class="row"><button class="btn gold" onclick="playSong('${safeId}')">▶ Play</button><button class="btn" onclick="openSong('${safeId}')">Details</button>${!paid?`<button class="btn green" onclick="downloadSong('${safeId}')">Download</button>`:`<button class="btn" onclick="requestPaid('${safeId}')">Get access</button>`}</div></div></article>`;
 }
-function artistCard(a){return `<article class="glass artist" onclick="artistDetails('${esc(a.id)}')"><img src="${esc(asset(a.photo))}" onerror="this.src='music/profile.png'" alt=""><div class="cardbody"><h3>${esc(a.name)}</h3><div class="meta">${esc(a.bio||"Artist")}</div></div></article>`;}
+function artistCard(a){return `<article class="glass artist" onclick="artistDetails('${encodeURIComponent(a.id)}')"><img src="${esc(asset(a.photo))}" onerror="imgFallback(this)" alt=""><div class="cardbody"><h3>${esc(a.name)}</h3><div class="meta">${esc(a.bio||"Artist")}</div></div></article>`;}
 window.showAbout=()=>{document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));$("aboutPage").classList.add("active");};
 window.showHome=()=>{document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));$("homePage").classList.add("active");};
-window.artistDetails=id=>{let a=artists.find(x=>x.id===id); if(!a) return; toast(`${a.name}: ${a.bio||"Artist"}`); $("search").value=a.name; render(); showHome();};
-window.playSong=id=>{let list=songs.filter(s=>!s.suspended); queue=list; qi=queue.findIndex(s=>s.id===id); playCurrent();};
+window.artistDetails=id=>{id=decodeURIComponent(id); let a=artists.find(x=>x.id===id); if(!a) return; toast(`${a.name}: ${a.bio||"Artist"}`); $("search").value=a.name; render(); showHome();};
+// FIX: decode ID - IDs are now encodeURIComponent in onclick
+window.playSong=_id=>{let id=decodeURIComponent(_id); let list=songs.filter(s=>!s.suspended); queue=list; qi=queue.findIndex(s=>s.id===id); playCurrent();};
 function playCurrent(){
   let s=queue[qi]; if(!s) return; current=s;
   $("player").style.display="block";
   $("pImg").src=asset(s.cover||s.img)||"music/profile.png";
+  $("pImg").onerror=()=>{ $("pImg").src=ghAsset(s.cover||s.img); $("pImg").onerror=null; };
   $("pTitle").textContent=s.title||"Unknown";
   $("pArtist").textContent=s.artist||"";
   let src=asset(s.audio||s.audioUrl);
   if(!src){ toast("Could not play audio - check file"); return; }
-  let a=$("audio"); a.src=src;
-  a.play().then(()=>$("playBtn").textContent="Ⅱ").catch(()=>toast("Could not play audio - check file"));
+  let a=$("audio");
+  // FIX 1: if local file fails (Netlify not deployed yet), try GitHub raw automatically
+  a.onerror=()=>{ let gh=ghAsset(s.audio||s.audioUrl); if(a.src!==gh){ a.src=gh; a.play().catch(()=>toast("Could not play audio - check file")); } };
+  a.src=src;
+  a.play().then(()=>$("playBtn").textContent="Ⅱ").catch(()=>{
+    // Try GitHub raw on play fail
+    let gh=ghAsset(s.audio||s.audioUrl);
+    if(a.src!==gh){ a.src=gh; a.play().then(()=>$("playBtn").textContent="Ⅱ").catch(()=>toast("Could not play audio - check file")); }
+    else toast("Could not play audio - check file");
+  });
 }
-window.openCurrentLyrics=()=>{ if(!current){ toast("Play a song first"); return; } openSong(current.id); };
+window.openCurrentLyrics=()=>{ if(!current){ toast("Play a song first"); return; } openSong(encodeURIComponent(current.id)); };
 window.togglePlay=()=>{let a=$("audio"); if(!a.src) return; if(a.paused){a.play(); $("playBtn").textContent="Ⅱ";}else{a.pause(); $("playBtn").textContent="▶";}};
 window.next=()=>{if(!queue.length) return; if(isShuffle) qi=Math.floor(Math.random()*queue.length); else qi=(qi+1)%queue.length; playCurrent();};
 window.previous=()=>{if(!queue.length) return; qi=(qi-1+queue.length)%queue.length; playCurrent();};
@@ -363,9 +415,11 @@ window.toggleShuffle=()=>{isShuffle=!isShuffle; $("shuffleBtn").style.color=isSh
 $("audio").addEventListener("ended",()=>{if(repeat){$("audio").currentTime=0; $("audio").play();}else{next();}});
 $("audio").addEventListener("timeupdate",()=>{let a=$("audio"); $("elapsed").textContent=fmt(a.currentTime); $("duration").textContent=fmt(a.duration); $("seek").value=a.duration?Math.round(a.currentTime/a.duration*1000):0;});
 window.seekAudio=v=>{let a=$("audio"); if(a.duration) a.currentTime=a.duration*Number(v)/1000;};
-window.openQueue=()=>{$("queueList").innerHTML=queue.map((s,i)=>`<div class="inboxitem" onclick="qi=${i};playCurrent();hideModal('queueModal')">${esc(s.title)} · ${esc(s.artist)}</div>`).join(""); modal("queueModal");};
-window.downloadSong=(id,force=false)=>{let s=songs.find(x=>x.id===id); if(!s) return; if((s.sell||s.paid)&&!force){toast("Paid track - request access"); return;} let src=asset(s.audio||s.audioUrl); if(!src){toast("No audio file");return;} let a=document.createElement("a"); a.href=src; a.download=`${s.artist||"Artist"} - ${s.title}.mp3`; a.target="_blank"; document.body.append(a); a.click(); a.remove();};
-window.requestPaid=id=>{
+window.openQueue=()=>{$("queueList").innerHTML=queue.map((s,i)=>`<div class="inboxitem" onclick="playQueueIndex(${i})">${esc(s.title)} · ${esc(s.artist)}</div>`).join(""); modal("queueModal");};
+window.playQueueIndex=i=>{qi=i;playCurrent();hideModal('queueModal');};
+window.downloadSong=(_id,force=false)=>{let id=decodeURIComponent(_id); let s=songs.find(x=>x.id===id); if(!s) return; if((s.sell||s.paid)&&!force){toast("Paid track - request access"); return;} let src=asset(s.audio||s.audioUrl); if(!src){toast("No audio file");return;} let a=document.createElement("a"); a.href=src; a.download=`${s.artist||"Artist"} - ${s.title}.mp3`; a.target="_blank"; document.body.append(a); a.click(); a.remove();};
+window.requestPaid=_id=>{
+let id=decodeURIComponent(_id);
 let s=songs.find(x=>x.id===id); if(!s) return;
 if(!user){openAuth(); return;}
 currentPaySong=s; $("paySongTitle").textContent=s.title; $("payPrice").textContent="$"+(s.price||""); $("payAccount").textContent=user.displayName||user.email;
@@ -384,45 +438,49 @@ if(entry.forUser!==myName && entry.forUser!==user.email){$("payMsg").textContent
 if(entry.used){$("payMsg").textContent="Code already used!"; return;}
 if(Date.now()>entry.expires){$("payMsg").textContent="Code expired!"; return;}
 entry.used=true; entry.usedAt=Date.now();
-// Try to mark used in GitHub if Admin token exists, else local only
 try{ await saveToGitHub("secure_codes.json", secureCodes); }catch(e){}
-await saveAndSync(); hideModal('payModal'); toast(`✅ Code verified! Downloading ${s.title}`); downloadSong(s.id,true); render();
+await saveAndSync(); hideModal('payModal'); toast(`✅ Code verified! Downloading ${s.title}`); downloadSong(encodeURIComponent(s.id),true); render();
 };
-window.openSong=id=>{
+window.openSong=_id=>{
+let id=decodeURIComponent(_id);
 let s=songs.find(x=>x.id===id); if(!s) return;
 let comments=s.comments||[]; let myRating=user?(s.ratings||{})[user.uid]||0:0;
+let eid=encodeURIComponent(s.id);
 $("songDetail").innerHTML=`
-<img src="${esc(asset(s.cover||s.img))}" style="width:100%;height:190px;object-fit:cover;border-radius:14px" alt="">
+<img src="${esc(asset(s.cover||s.img))}" onerror="imgFallback(this)" style="width:100%;height:190px;object-fit:cover;border-radius:14px" alt="">
 <h2>${esc(s.title)}</h2><p style="color:var(--gold)">${esc(s.artist||"")}</p>
 <p class="muted">${esc(s.bio||"")} · ★ ${avg(s).toFixed(1)} · ❤ ${s.likes||0} · ▶ ${s.plays||0}</p>
-<div class="row"><button class="btn gold" onclick="playSong('${esc(s.id)}')">▶ Play</button>${!(s.sell||s.paid)?`<button class="btn green" onclick="downloadSong('${esc(s.id)}')">Download</button>`:''}<button class="btn" onclick="likeSong('${esc(s.id)}')">❤ Like</button></div>
+<div class="row"><button class="btn gold" onclick="playSong('${eid}')">▶ Play</button>${!(s.sell||s.paid)?`<button class="btn green" onclick="downloadSong('${eid}')">Download</button>`:''}<button class="btn" onclick="likeSong('${eid}')">❤ Like</button></div>
 <h3>Lyrics</h3><div class="lyrics">${esc(s.lyrics||"Lyrics have not been added.")}</div>
-<h3>Rate</h3><div class="row">${[1,2,3,4,5].map(n=>`<span class="stars" onclick="rateSong('${esc(s.id)}',${n})">${n<=myRating?"★":"☆"}</span>`).join("")}</div>
+<h3>Rate</h3><div class="row">${[1,2,3,4,5].map(n=>`<span class="stars" onclick="rateSong('${eid}',${n})">${n<=myRating?"★":"☆"}</span>`).join("")}</div>
 <h3>Comments (${comments.length})</h3>
-<div class="row"><input id="commentText" placeholder="${user?"Write a comment…":"Sign in to comment"}"><button class="btn gold" onclick="commentSong('${esc(s.id)}')">Post</button></div>
+<div class="row"><input id="commentText" placeholder="${user?"Write a comment…":"Sign in to comment"}"><button class="btn gold" onclick="commentSong('${eid}')">Post</button></div>
 <div>${comments.slice().reverse().map(c=>`<div class="comment"><b>${esc(c.user||c.userName||"Listener")}</b><br>${esc(c.text)}</div>`).join("")}</div>`;
 modal("songModal");
 };
-window.likeSong=async id=>{
+window.likeSong=async _id=>{
 if(!user){openAuth(); return;}
+let id=decodeURIComponent(_id);
 let s=songs.find(x=>x.id===id); if(!s) return; if(!s.likedBy) s.likedBy=[]; if(!s.likes) s.likes=0;
 if(s.likedBy.includes(user.uid)){s.likedBy=s.likedBy.filter(x=>x!==user.uid); s.likes=Math.max(0,s.likes-1);} else {s.likedBy.push(user.uid); s.likes++;}
-await saveAndSync(); toast("Like updated"); render(); openSong(id);
+await saveAndSync(); toast("Like updated"); render(); openSong(encodeURIComponent(id));
 };
-window.rateSong=async(id,n)=>{
+window.rateSong=async(_id,n)=>{
 if(!user){openAuth(); return;}
-let s=songs.find(x=>x.id===id); if(!s) return; if(!s.ratings) s.ratings={}; s.ratings[user.uid]=n; await saveAndSync(); toast("Rating saved"); render(); openSong(id);
+let id=decodeURIComponent(_id);
+let s=songs.find(x=>x.id===id); if(!s) return; if(!s.ratings) s.ratings={}; s.ratings[user.uid]=n; await saveAndSync(); toast("Rating saved"); render(); openSong(encodeURIComponent(id));
 };
-window.commentSong=async id=>{
+window.commentSong=async _id=>{
 if(!user){openAuth(); return;}
+let id=decodeURIComponent(_id);
 let val=$("commentText")?.value.trim(); if(!val) return;
 let s=songs.find(x=>x.id===id); if(!s) return; if(!s.comments) s.comments=[];
 s.comments.unshift({uid:user.uid,user:user.displayName||user.email,userName:user.displayName||user.email,text:val,createdAt:Date.now(),time:new Date().toLocaleString()});
-await saveAndSync(); openSong(id); toast("Comment added");
+await saveAndSync(); openSong(encodeURIComponent(id)); toast("Comment added");
 };
 loadSyncedData();
-setInterval(checkRealtime,3000);
-setInterval(loadSyncedData,30000);
+setInterval(checkRealtime,20000);
+setInterval(loadSyncedData,60000);
 try{ (window.adsbygoogle = window.adsbygoogle || []).push({}); }catch(e){}
 </script>
 
