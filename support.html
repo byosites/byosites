@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#08090d">
+<title>BYOMUSIC Support - BYO Helper</title>
+<meta name="description" content="BYOMUSIC Support - Ask BYO Helper about uploads, codes, downloads.">
+<link rel="canonical" href="https://byomusic.pages.dev/support.html">
+<meta property="og:title" content="BYOMUSIC Support">
+<meta property="og:description" content="Ask BYO Helper - Uploads, Codes, Downloads.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://byomusic.pages.dev/support.html">
+<link rel="icon" href="music/profile.png">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+:root{--gold:#ffcf33;--gold2:#ff9a00;--muted:#aab0c0;--spring:cubic-bezier(.22,1.4,.36,1)}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{margin:0;color:#fff;font-family:Inter,system-ui,-apple-system,Arial;min-height:100vh;overflow-x:hidden;background:#07080d;padding-bottom:20px}
+body::before{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;background:radial-gradient(600px 420px at 12% -5%,rgba(124,58,237,.55),transparent 60%),radial-gradient(550px 420px at 92% 18%,rgba(0,150,255,.42),transparent 60%),radial-gradient(700px 500px at 50% 110%,rgba(255,207,51,.28),transparent 60%),#07080d;animation:blobDrift 18s ease-in-out infinite alternate}
+@keyframes blobDrift{0%{filter:hue-rotate(0deg)}100%{filter:hue-rotate(18deg)}}
+header,main{position:relative;z-index:1}
+header{position:sticky;top:10px;z-index:20;display:flex;justify-content:space-between;align-items:center;margin:0 10px;padding:11px 14px;border-radius:22px;background:linear-gradient(135deg,rgba(255,255,255,.20),rgba(255,255,255,.05));background-color:rgba(12,14,24,.55);backdrop-filter:blur(26px) saturate(180%);-webkit-backdrop-filter:blur(26px) saturate(180%);border:1px solid rgba(255,255,255,.35);border-top:1px solid rgba(255,255,255,.65);box-shadow:0 14px 34px rgba(0,0,0,.42),inset 0 1px 0 rgba(255,255,255,.55)}
+.logo{font-weight:950;font-size:18px;letter-spacing:.5px}
+.logo i{background:linear-gradient(145deg,#ffe066,#ffcf33 55%,#ff9a00);color:#111;padding:8px;border-radius:11px;margin-right:6px;box-shadow:0 8px 18px rgba(255,207,51,.45),inset 0 1px 0 rgba(255,255,255,.8)}
+.logo span{color:var(--gold)}
+.btn{border:1px solid rgba(255,255,255,.32);border-top:1px solid rgba(255,255,255,.55);border-radius:14px;padding:9px 13px;background:linear-gradient(145deg,rgba(255,255,255,.20),rgba(255,255,255,.05));background-color:rgba(255,255,255,.06);backdrop-filter:blur(14px);color:#fff;font-weight:750;font-size:12px;text-decoration:none;display:inline-block}
+.btn.gold{background:linear-gradient(145deg,#ffe066,#ffcf33 55%,#ff9a00);color:#111;border-color:rgba(255,255,255,.7);box-shadow:0 10px 22px rgba(255,207,51,.42),inset 0 1px 0 rgba(255,255,255,.85)}
+.wrap{max-width:640px;margin:auto;padding:0 14px}
+.hero{text-align:center;padding:22px 12px 10px}
+.hero h1{font-size:clamp(28px,7vw,38px);margin:0;font-weight:950;letter-spacing:-1px}
+.hero h1 span{color:var(--gold);text-shadow:0 0 28px rgba(255,207,51,.55)}
+.muted{color:var(--muted)}
+.status{display:inline-flex;align-items:center;gap:6px;font-size:11px;background:rgba(255,255,255,.10);border:1px solid rgba(255,255,255,.22);padding:6px 11px;border-radius:999px;margin-top:10px}
+.liveDot{width:8px;height:8px;background:#25D366;border-radius:50%;display:inline-block;animation:pulse 1.5s infinite;box-shadow:0 0 12px #25D366}
+@keyframes pulse{0%{opacity:1}50%{opacity:.3}100%{opacity:1}}
+.liquid{background:linear-gradient(135deg,rgba(255,255,255,.22),rgba(255,255,255,.06) 42%,rgba(255,255,255,.10));background-color:rgba(20,22,36,.48);backdrop-filter:blur(24px) saturate(180%) brightness(1.12);-webkit-backdrop-filter:blur(24px) saturate(180%) brightness(1.12);border:1px solid rgba(255,255,255,.32);border-top:1px solid rgba(255,255,255,.60);box-shadow:0 18px 42px rgba(0,0,0,.38),inset 0 1px 0 rgba(255,255,255,.50),inset 0 -1px 0 rgba(255,255,255,.08);position:relative;overflow:hidden}
+.liquid::before{content:"";position:absolute;inset:0;pointer-events:none;border-radius:inherit;background:radial-gradient(420px 90px at 18% -10%,rgba(255,255,255,.45),transparent 55%),radial-gradient(380px 90px at 88% 0%,rgba(255,207,51,.22),transparent 55%)}
+.chat{border-radius:26px;padding:14px;min-height:380px;max-height:58vh;overflow:auto;scroll-behavior:smooth}
+.msg{padding:11px 14px;border-radius:18px;margin:9px 0;font-size:14px;line-height:1.6;max-width:86%;position:relative;z-index:1;animation:msgIn .3s var(--spring)}
+@keyframes msgIn{from{transform:translateY(10px);opacity:0}to{transform:translateY(0);opacity:1}}
+.msg.bot{background:linear-gradient(145deg,rgba(255,255,255,.18),rgba(255,255,255,.06));background-color:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.28);border-top:1px solid rgba(255,255,255,.50);backdrop-filter:blur(16px);box-shadow:inset 0 1px 0 rgba(255,255,255,.35)}
+.msg.me{background:linear-gradient(145deg,#ffe066,#ffcf33 55%,#ff9a00);color:#111;margin-left:auto;font-weight:650;box-shadow:0 10px 22px rgba(255,207,51,.35),inset 0 1px 0 rgba(255,255,255,.85);border:1px solid rgba(255,255,255,.7)}
+.msg small{opacity:.65;font-size:11px;display:block;margin-top:4px}
+.avatar{width:28px;height:28px;border-radius:50%;background:linear-gradient(145deg,#ffe066,#ff9a00);color:#111;display:inline-flex;align-items:center;justify-content:center;font-size:14px;margin-right:6px;vertical-align:middle}
+.quick{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0}
+.quick button{white-space:nowrap;border:1px solid rgba(255,255,255,.30);border-top:1px solid rgba(255,255,255,.55);border-radius:999px;padding:10px 14px;background:linear-gradient(145deg,rgba(255,255,255,.18),rgba(255,255,255,.05));background-color:rgba(20,22,36,.45);backdrop-filter:blur(16px);color:#e8eaf0;font-size:12px;font-weight:700;box-shadow:inset 0 1px 0 rgba(255,255,255,.35);transition:transform .2s var(--spring)}
+.quick button:active{transform:scale(.94)}
+.quick button.gold{background:linear-gradient(145deg,#ffe066,#ffcf33 55%,#ff9a00);color:#111;border-color:rgba(255,255,255,.7)}
+.inputBar{display:flex;gap:8px;padding:7px 7px 7px 14px;background:linear-gradient(135deg,rgba(255,255,255,.20),rgba(255,255,255,.05));background-color:rgba(18,20,32,.55);backdrop-filter:blur(22px) saturate(170%);border:1px solid rgba(255,255,255,.32);border-top:1px solid rgba(255,255,255,.60);border-radius:999px;box-shadow:0 14px 30px rgba(0,0,0,.32),inset 0 1px 0 rgba(255,255,255,.50);margin-top:10px}
+.inputBar input{background:transparent;border:0;outline:0;color:white;flex:1;min-width:0;font-size:14px}
+.inputBar input::placeholder{color:#aab0c0}
+.send{border:0;background:linear-gradient(145deg,#ffe066,#ffcf33 55%,#ff9a00);color:#111;width:44px;height:44px;border-radius:50%;font-size:16px;font-weight:900;box-shadow:0 8px 18px rgba(255,207,51,.45),inset 0 1px 0 rgba(255,255,255,.85)}
+.wa{display:block;text-align:center;margin-top:14px;background:linear-gradient(145deg,#2ec27a,#168b54);border:1px solid rgba(255,255,255,.35);color:#fff;padding:14px;border-radius:20px;text-decoration:none;font-weight:900;font-size:14px;box-shadow:0 12px 26px rgba(0,0,0,.30),inset 0 1px 0 rgba(255,255,255,.4)}
+.typing{display:inline-flex;gap:4px}.typing i{width:6px;height:6px;background:#fff;border-radius:50%;display:block;animation:blink 1s infinite}.typing i:nth-child(2){animation-delay:.2s}.typing i:nth-child(3){animation-delay:.4s}
+@keyframes blink{0%,100%{opacity:.3}50%{opacity:1}}
+</style>
+</head>
+<body>
+<header>
+<div class="logo"><i class="fa-solid fa-music"></i>BYO<span>MUSIC</span></div>
+<div style="display:flex;gap:7px"><a href="artist.html" class="btn">🎤 Artist</a><a href="index.html" class="btn gold">🏠 Home</a></div>
+</header>
+<main class="wrap">
+<div class="hero">
+<h1>BYO <span>Helper</span> 💬</h1>
+<p class="muted" style="font-size:13px">Liquid Glass Support • Ask about uploads, codes, downloads</p>
+<div class="status"><span class="liveDot"></span> Online • Replies instantly • Philip on WhatsApp</div>
+</div>
+
+<div class="liquid chat" id="chat">
+<div class="msg bot"><span class="avatar">🤖</span><b>BYO Helper</b><br>Sawubona! Welcome to BYOMUSIC Support. How can I help you today?<br><br>Tap a quick question below 👇<small>Philip Mbewe • Bulawayo</small></div>
+</div>
+
+<div class="quick">
+<button onclick="ask('How do I upload my song?')">🎤 Upload song?</button>
+<button onclick="ask('How do I buy a song?')">💳 Buy a song?</button>
+<button onclick="ask('My code is not working')">🔒 Code not working</button>
+<button onclick="ask('How do I download?')">⬇️ Download?</button>
+<button class="gold" onclick="ask('Talk to Philip')">👨‍💼 Talk to Philip</button>
+</div>
+
+<div class="inputBar"><input id="q" placeholder="Type your question..." onkeydown="if(event.key==='Enter')send()"><button class="send" onclick="send()">➤</button></div>
+
+<a class="wa" href="https://wa.me/263789706161?text=Hi%20Philip%20I%20need%20help%20with%20BYOMUSIC">💬 Chat on WhatsApp - +263789706161</a>
+<p class="muted" style="font-size:11px;text-align:center;margin-top:10px">Founder: Philip Mbewe • Bulawayo, Zimbabwe • byomusic.pages.dev</p>
+</main>
+
+<script>
+const API_KEY = "PASTE_YOUR_GEMINI_API_KEY_HERE";
+const chat = document.getElementById('chat');
+const input = document.getElementById('q');
+const SYSTEM = `You are BYO Helper for BYOMUSIC, Zimbabwean music platform. Founder Philip Mbewe, Bulawayo. Website https://byomusic.pages.dev/ WhatsApp +263789706161. Upload: $3 via WhatsApp, send song+cover+lyrics. Buy: request code on WhatsApp, pay, get BYO- code, enter code to download, code never expires, locked to one account. Free songs download directly. Artist Portal: https://byomusic.pages.dev/artist.html. Be friendly, short, use Ndebele/English mix when user does. If can't help, tell them to WhatsApp Philip.`;
+function add(t,who){let d=document.createElement('div');d.className='msg '+who;if(who==='bot')d.innerHTML='<span class="avatar">🤖</span>'+t;else d.innerHTML=t;chat.appendChild(d);chat.scrollTop=chat.scrollHeight;return d}
+function ask(t){input.value=t;send()}
+async function send(){
+let q=input.value.trim(); if(!q) return; add(q,'me'); input.value='';
+let thinking=add('<span class="typing"><i></i><i></i><i></i></span>','bot');
+let local = localAnswer(q);
+if(local){ thinking.innerHTML='<span class="avatar">🤖</span>'+local; return; }
+if(!API_KEY || API_KEY.includes('PASTE')){ thinking.innerHTML='<span class="avatar">🤖</span>I can help with uploads, codes and downloads. For human help, tap WhatsApp below - Philip replies fast. 👇'; return; }
+try{
+let r=await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${API_KEY}`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({system_instruction:{parts:[{text:SYSTEM}]},contents:[{parts:[{text:q}]}]})});
+let j=await r.json(); let txt=j.candidates?.[0]?.content?.parts?.[0]?.text||'Sorry, please WhatsApp Philip on +263789706161';
+thinking.innerHTML='<span class="avatar">🤖</span>'+txt.replace(/\n/g,'<br>');
+}catch(e){ thinking.innerHTML='<span class="avatar">🤖</span>Network issue. Please WhatsApp Philip: +263789706161'; }
+}
+function localAnswer(q){
+q=q.toLowerCase();
+if(q.includes('upload')) return 'To upload: <b>1.</b> WhatsApp Philip on +263789706161 <b>2.</b> Send song MP3 + cover + lyrics + $3 <b>3.</b> Your song goes live on byomusic.pages.dev. Want me to open WhatsApp?';
+if(q.includes('buy')||q.includes('get code')) return 'To buy: <b>1.</b> Tap Get Access on the song <b>2.</b> WhatsApp Philip to get your code <b>3.</b> Enter code BYO-XXXX to unlock & download. Code never expires!';
+if(q.includes('not working')||q.includes('invalid')||q.includes('code')) return 'Code not working? Check: <b>1.</b> Are you logged in with the SAME account you bought with? Codes are locked to one account. <b>2.</b> Is the code for THIS song? <b>3.</b> Did you type BYO- correctly? If still stuck, WhatsApp Philip.';
+if(q.includes('download')) return 'Free songs: Tap Download directly. Paid songs: Tap Get Access, get code, enter code, then download.';
+if(q.includes('philip')||q.includes('human')||q.includes('talk')) return 'Philip is here! Tap the green WhatsApp button below - +263789706161. He replies fast.';
+if(q.includes('artist')) return 'Artist Portal: <b>https://byomusic.pages.dev/artist.html</b> - Login and upload/manage your music.';
+return null;
+}
+</script>
+</body>
+</html>
