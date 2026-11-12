@@ -382,7 +382,49 @@ $("audio").addEventListener("timeupdate",()=>{let a=$("audio"); $("elapsed").tex
 window.seekAudio=v=>{let a=$("audio"); if(a.duration) a.currentTime=a.duration*Number(v)/1000;};
 window.openQueue=()=>{$("queueList").innerHTML=queue.map((s,i)=>`<div class="inboxitem" onclick="playQueueIndex(${i})">${esc(s.title)} · ${esc(s.artist)}</div>`).join(""); modal("queueModal");};
 window.playQueueIndex=i=>{qi=i;playCurrent();hideModal('queueModal');};
-window.downloadSong=(_id,force=false)=>{let id=decodeURIComponent(_id); let s=songs.find(x=>x.id===id); if(!s) return; if((s.sell||s.paid)&&!force){toast("Paid track - request access"); return;} let src=asset(s.audio||s.audioUrl); if(!src){toast("No audio file");return;} let a=document.createElement("a"); a.href=src; a.download=`${s.artist||"Artist"} - ${s.title}.mp3`; a.target="_blank"; document.body.append(a); a.click(); a.remove();};
+
+// ===== FIXED DOWNLOAD - THIS IS THE ONLY CHANGE =====
+// Old code used <a target="_blank"> which Android Chrome ignores and just plays.
+// New code: fetch -> blob -> objectURL = forces real .mp3 download.
+window.downloadSong=async (_id,force=false)=>{
+  let id=decodeURIComponent(_id);
+  let s=songs.find(x=>x.id===id);
+  if(!s) return;
+  if((s.sell||s.paid)&&!force){ toast("Paid track - request access"); return; }
+  let src=asset(s.audio||s.audioUrl);
+  if(!src){ toast("No audio file"); return; }
+  toast("Downloading "+(s.title||"song")+"...");
+  // Try local Pages file first, then GitHub raw as fallback
+  let urls=[src];
+  let gh=ghAsset(s.audio||s.audioUrl);
+  if(gh && gh!==src) urls.push(gh);
+  for(let u of urls){
+    try{
+      let res=await fetch(u);
+      if(!res.ok) continue;
+      let blob=await res.blob();
+      // Don't save a 404 HTML page as .mp3.html
+      if(blob.type.includes("text/html") || blob.size < 1000){
+        continue;
+      }
+      let url=URL.createObjectURL(blob);
+      let a=document.createElement("a");
+      a.href=url;
+      a.download=`${s.artist||"Artist"} - ${s.title}.mp3`;
+      // NO target="_blank" - that's what broke it
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      setTimeout(()=>URL.revokeObjectURL(url),3000);
+      toast("Downloaded ✓ Check Downloads folder");
+      return;
+    }catch(e){ continue; }
+  }
+  // Last fallback: open in new tab, user long-presses > Download
+  toast("Tap ⋮ in player > Download, or long-press audio");
+  window.open(src,"_blank");
+};
+
 window.requestPaid=_id=>{ let id=decodeURIComponent(_id); let s=songs.find(x=>x.id===id); if(!s) return; if(!user){openAuth(); return;} currentPaySong=s; $("paySongTitle").textContent=s.title; $("payPrice").textContent="$"+(s.price||""); $("payAccount").textContent=user.displayName||user.email; $("payWaLink").href=`https://wa.me/263789706161?text=Hi%20Admin%20I%20want%20CODE%20for%20${encodeURIComponent(s.title)}%20ID:${s.id}%20Account:${encodeURIComponent(user.displayName||user.email)}%20Ref:${encodeURIComponent(localStorage.getItem("byo_referred_by")||"none")}`; $("payCodeInput").value=""; $("payMsg").textContent=""; modal("payModal"); };
 window.checkPayCode=async()=>{ let code=$("payCodeInput").value.trim(); if(!code){$("payMsg").textContent="Enter code"; return;} if(!user){$("payMsg").textContent="Login required"; return;} let s=currentPaySong; if(!s){$("payMsg").textContent="No song selected";return;} await loadCodesFromFirestore(); let entry=secureCodes.find(c=>c.code===code && c.songId===s.id); if(!entry){$("payMsg").textContent="Invalid code!"; return;} let myName=user.displayName||user.email; if(entry.forUser!==myName && entry.forUser!==user.email){$("payMsg").textContent=`Code locked to ${entry.forUser}, you are ${myName}`; return;} if(entry.used){$("payMsg").textContent="Code already used!"; return;} if(entry.id) await markCodeUsedInFirestore(entry.id); entry.used=true; hideModal('payModal'); toast(`✅ Code verified! Downloading ${s.title}`); downloadSong(encodeURIComponent(s.id),true); render(); };
 window.openSong=_id=>{ let id=decodeURIComponent(_id); let s=songs.find(x=>x.id===id); if(!s) return; let comments=songCommentsCache[id]||s.comments||[]; let myRating=myRatings[id]||(user?(s.ratings||{})[user.uid]||0:0); let eid=encodeURIComponent(s.id); let liked=myLikes.has(id); $("songDetail").innerHTML=`<img src="${esc(asset(s.cover||s.img))}" onerror="imgFallback(this)" style="width:100%;height:190px;object-fit:cover;border-radius:14px" alt=""><h2>${esc(s.title)}</h2><p style="color:var(--gold)">${esc(s.artist||"")}</p><p class="muted">${esc(s.bio||"")} · ★ ${avg(s).toFixed(1)} · ❤ ${likeCount(s)} · 💬 ${commentCount(s)}</p><div class="row"><button class="btn gold" onclick="playSong('${eid}')">▶ Play</button>${!(s.sell||s.paid)?`<button class="btn green" onclick="downloadSong('${eid}')">Download</button>`:''}<button class="btn ${liked?"gold":""}" onclick="likeSong('${eid}')">${liked?"❤️ Liked":"🤍 Like"} (${likeCount(s)})</button></div><h3>Lyrics</h3><div class="lyrics">${esc(s.lyrics||"Lyrics have not been added.")}</div><h3>Rate</h3><div class="row">${[1,2,3,4,5].map(n=>`<span class="stars" onclick="rateSong('${eid}',${n})">${n<=myRating?"★":"☆"}</span>`).join("")}</div><h3>Comments (${commentCount(s)})</h3><div class="row"><input id="commentText" placeholder="${user?"Write a comment…":"Sign in to comment"}"><button class="btn gold" onclick="commentSong('${eid}')">Post</button></div><div>${comments.map(c=>`<div class="comment"><b>${esc(c.user||c.userName||"Listener")}</b> <small>${c.createdAt?new Date(c.createdAt).toLocaleString():""}</small><br>${esc(c.text)}</div>`).join("")||"<p class='muted'>No comments yet - be first!</p>"}</div>`; modal("songModal"); };
