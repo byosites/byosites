@@ -4,292 +4,392 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#08090d">
-<title>Artist Login - BYOMUSIC</title>
+<title>Artist - BYOMUSIC</title>
+<link rel="icon" href="icons/icon-192.png">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="BYOMUSIC Artist">
+<link rel="apple-touch-icon" href="icons/icon-512.png">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7880131696089557" crossorigin="anonymous"></script>
 <style>
 :root{--gold:#ffcf33;--gold2:#ff9a00;--bg:#07080d;--glass:rgba(255,255,255,.08);--line:rgba(255,255,255,.20);--muted:#aab0c0;--spring:cubic-bezier(.22,1.4,.36,1)}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-body{margin:0;color:#fff;font-family:Inter,system-ui,-apple-system,Arial;padding:16px;padding-bottom:120px;min-height:100vh;background:#07080d;overflow-x:hidden}
-body::before{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;background:radial-gradient(600px 420px at 12% -5%,rgba(124,58,237,.55),transparent 60%),radial-gradient(550px 420px at 92% 18%,rgba(0,150,255,.42),transparent 60%),radial-gradient(700px 500px at 50% 110%,rgba(255,207,51,.28),transparent 60%),radial-gradient(ellipse at 15% 0%,#282044 0,transparent 38%),radial-gradient(ellipse at 90% 25%,#142b38 0,transparent 35%),#07080d;animation:blobDrift 18s ease-in-out infinite alternate}
+body{margin:0;color:#fff;font-family:Inter,system-ui,-apple-system,Arial;padding:0 0 180px;min-height:100vh;background:#07080d;overflow-x:hidden}
+body::before{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;background:radial-gradient(600px 420px at 12% -5%,rgba(124,58,237,.55),transparent 60%),radial-gradient(550px 420px at 92% 18%,rgba(0,150,255,.42),transparent 60%),radial-gradient(700px 500px at 50% 110%,rgba(255,207,51,.28),transparent 60%),#07080d;animation:blobDrift 18s ease-in-out infinite alternate}
 @keyframes blobDrift{0%{filter:hue-rotate(0deg)}100%{filter:hue-rotate(18deg) brightness(1.12)}}
-.wrap{max-width:780px;margin:auto;position:relative;z-index:1}
-button,input,textarea{font:inherit}
-button{cursor:pointer;transition:transform .18s var(--spring)}
-button:active{transform:scale(.94)}
-input,textarea{width:100%;padding:13px 14px;border:1px solid rgba(255,255,255,.28);border-top:1px solid rgba(255,255,255,.50);border-radius:16px;background:rgba(255,255,255,.08);backdrop-filter:blur(12px);color:white;margin:6px 0;outline:none;box-shadow:inset 0 1px 0 rgba(255,255,255,.25)}
-input:focus,textarea:focus{border-color:rgba(255,207,51,.7);box-shadow:0 0 0 2px rgba(255,207,51,.25)}
-textarea{min-height:80px;resize:vertical}
-.btn{padding:11px 14px;border:1px solid rgba(255,255,255,.32);border-top:1px solid rgba(255,255,255,.55);border-radius:14px;background:linear-gradient(145deg,rgba(255,255,255,.20),rgba(255,255,255,.05));background-color:rgba(255,255,255,.06);backdrop-filter:blur(14px);color:#fff;font-weight:750;font-size:12px;box-shadow:inset 0 1px 0 rgba(255,255,255,.40)}
+.wrap{max-width:780px;margin:auto;position:relative;z-index:1;padding:12px}
+button,input,textarea,select{font:inherit}button{cursor:pointer;transition:transform .18s var(--spring)}button:active{transform:scale(.94)}
+input,textarea,select{width:100%;padding:13px 14px;border:1px solid rgba(255,255,255,.28);border-top:1px solid rgba(255,255,255,.50);border-radius:16px;background:rgba(255,255,255,.08);backdrop-filter:blur(12px);color:white;margin:6px 0;outline:none}
+input:focus,textarea:focus{border-color:rgba(255,207,51,.7)}textarea{min-height:80px;resize:vertical}select option{background:#15171e}
+.btn{padding:11px 14px;border:1px solid rgba(255,255,255,.32);border-top:1px solid rgba(255,255,255,.55);border-radius:14px;background:linear-gradient(145deg,rgba(255,255,255,.20),rgba(255,255,255,.05));background-color:rgba(255,255,255,.06);backdrop-filter:blur(14px);color:#fff;font-weight:750;font-size:12px}
 .btn.gold{background:linear-gradient(145deg,#ffe066,#ffcf33 55%,#ff9a00);color:#111;border-color:rgba(255,255,255,.7);box-shadow:0 10px 22px rgba(255,207,51,.42),inset 0 1px 0 rgba(255,255,255,.85)}
-.btn.green{background:linear-gradient(145deg,#2ec27a,#168b54)}
-.btn.red{background:linear-gradient(145deg,#e05565,#a52b39)}
+.btn.green{background:linear-gradient(145deg,#2ec27a,#168b54)}.btn.red{background:linear-gradient(145deg,#e05565,#a52b39)}.btn.blue{background:linear-gradient(145deg,#2ea5ff,#008fca)}.full{width:100%}.row{display:flex;gap:7px;flex-wrap:wrap}.row .btn{flex:1}
 .glass{background:linear-gradient(145deg,rgba(255,255,255,.16),rgba(255,255,255,.045) 55%,rgba(255,207,51,.07));background-color:rgba(20,22,36,.52);border:1px solid rgba(255,255,255,.30);border-top:1px solid rgba(255,255,255,.55);border-radius:26px;box-shadow:0 16px 38px rgba(0,0,0,.38),inset 0 1px 0 rgba(255,255,255,.45);backdrop-filter:blur(22px) saturate(160%);overflow:hidden;padding:16px;position:relative}
 .glass::before{content:"";position:absolute;inset:0;pointer-events:none;border-radius:inherit;background:radial-gradient(420px 90px at 18% -10%,rgba(255,255,255,.35),transparent 55%)}
-.lock{max-width:440px;margin:50px auto;text-align:center;border-radius:28px}
-.lock::after{content:"";display:block;width:52px;height:5px;border-radius:99px;background:rgba(255,255,255,.55);margin:0 auto 14px}
-.lock h2{color:var(--gold);text-shadow:0 0 22px rgba(255,207,51,.35)}
-.muted{color:var(--muted);font-size:12px}
-.stat{background:linear-gradient(145deg,rgba(255,255,255,.16),rgba(255,255,255,.045));background-color:rgba(20,22,36,.52);padding:13px;border:1px solid rgba(255,255,255,.30);border-top:1px solid rgba(255,255,255,.55);border-radius:18px;text-align:center;backdrop-filter:blur(16px);box-shadow:0 10px 24px rgba(0,0,0,.28),inset 0 1px 0 rgba(255,255,255,.45)}
-.stat b{display:block;color:var(--gold);font-size:20px;text-shadow:0 0 16px rgba(255,207,51,.35)}
-.codeBox{background:linear-gradient(145deg,rgba(0,120,255,.22),rgba(0,40,90,.35));border:1px solid rgba(0,170,255,.45);border-top:1px solid rgba(255,255,255,.55);padding:14px;border-radius:22px;text-align:center;margin:12px 0;backdrop-filter:blur(16px)}
-.refBox{background:linear-gradient(145deg,rgba(255,207,51,.20),rgba(255,154,0,.08));border:1px solid rgba(255,207,51,.55);border-top:1px solid rgba(255,255,255,.60);padding:16px;border-radius:22px;text-align:center;margin:12px 0;backdrop-filter:blur(16px);box-shadow:0 14px 30px rgba(255,207,51,.12),inset 0 1px 0 rgba(255,255,255,.50)}
+.lock{max-width:440px;margin:50px auto;text-align:center;border-radius:28px}.lock::after{content:"";display:block;width:52px;height:5px;border-radius:99px;background:rgba(255,255,255,.55);margin:0 auto 14px}.lock h2{color:var(--gold)}
+.muted{color:var(--muted);font-size:12px}.label{font-size:11px;color:var(--gold);font-weight:800;display:block;margin-top:9px}
+.stat{background:linear-gradient(145deg,rgba(255,255,255,.16),rgba(255,255,255,.045));background-color:rgba(20,22,36,.52);padding:13px;border:1px solid rgba(255,255,255,.30);border-top:1px solid rgba(255,255,255,.55);border-radius:18px;text-align:center}.stat b{display:block;color:var(--gold);font-size:20px}
+.codeBox{background:linear-gradient(145deg,rgba(0,120,255,.22),rgba(0,40,90,.35));border:1px solid rgba(0,170,255,.45);padding:14px;border-radius:22px;text-align:center;margin:12px 0}
+.refBox{background:linear-gradient(145deg,rgba(255,207,51,.20),rgba(255,154,0,.08));border:1px solid rgba(255,207,51,.55);padding:16px;border-radius:22px;text-align:center;margin:12px 0}
 .badge{font-size:10px;padding:5px 9px;border-radius:999px;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.22)}
 .badge-live{background:linear-gradient(145deg,#2ec27a,#17653f)}.badge-sus{background:linear-gradient(145deg,#e05565,#842c35)}.badge-free{background:linear-gradient(145deg,#2ec27a,#17653f)}.badge-paid{background:linear-gradient(145deg,#ffe066,#ff8800);color:#000;font-weight:900}.badge-code{background:linear-gradient(145deg,#2ea5ff,#00aaff)}
-/* Liquid Player - resizable */
-.player{position:fixed;bottom:12px;left:12px;right:12px;background:linear-gradient(135deg,rgba(255,255,255,.24),rgba(255,255,255,.06) 38%,rgba(255,207,51,.16) 62%,rgba(255,255,255,.08));background-color:rgba(18,20,32,.58);backdrop-filter:blur(30px) saturate(190%);border:1px solid rgba(255,255,255,.40);border-top:1px solid rgba(255,255,255,.70);border-radius:28px;padding:0 14px 12px;display:none;z-index:30;box-shadow:0 24px 54px rgba(0,0,0,.55),inset 0 1px 0 rgba(255,255,255,.60);transition:height .38s var(--spring),border-radius .38s;overflow:hidden;touch-action:none}
-.player[data-size="mini"]{height:68px;border-radius:999px;padding-bottom:0}
-.player[data-size="normal"]{height:168px}
-.player[data-size="full"]{height:min(80vh,600px);border-radius:32px}
-.player[data-size="custom"]{height:var(--ph,168px)}
-#playerDrag{height:24px;display:flex;align-items:center;justify-content:center;cursor:grab;touch-action:none}
-#playerDrag span{width:58px;height:6px;border-radius:99px;background:linear-gradient(90deg,rgba(255,255,255,.25),rgba(255,255,255,.90),rgba(255,255,255,.25));display:block}
-.playerhead{display:flex;align-items:center;gap:10px}
-.controls{display:flex;justify-content:center;gap:10px;margin-top:6px}
-.controls button{border:1px solid rgba(255,255,255,.38);background:linear-gradient(145deg,rgba(255,255,255,.24),rgba(255,255,255,.06));color:#fff;border-radius:50%;width:38px;height:38px;backdrop-filter:blur(12px);box-shadow:inset 0 1px 0 rgba(255,255,255,.45)}
-.controls .main{width:48px;height:48px;background:linear-gradient(145deg,#ffe066,#ffcf33 55%,#ff9a00);color:#111;border:1px solid rgba(255,255,255,.75);font-size:18px;box-shadow:0 10px 24px rgba(255,207,51,.48)}
-.progress{display:flex;gap:8px;align-items:center;font-size:10px;color:var(--muted)}
-.progress input{flex:1;accent-color:var(--gold);height:6px}
-.toast{position:fixed;bottom:150px;left:50%;transform:translateX(-50%);background:linear-gradient(145deg,rgba(255,255,255,.24),rgba(255,255,255,.07));background-color:rgba(22,24,38,.72);backdrop-filter:blur(22px);border:1px solid rgba(255,255,255,.38);border-top:1px solid rgba(255,255,255,.65);padding:12px 18px;border-radius:999px;display:none;z-index:80;font-size:12px;font-weight:700;box-shadow:0 16px 36px rgba(0,0,0,.45)}
-.modal{position:fixed;inset:0;background:rgba(0,0,0,.45);backdrop-filter:blur(6px);z-index:50;display:none;place-items:end center}
-.modal.show{display:grid}
-.modalbox{width:min(620px,100%);max-height:88vh;overflow:auto;padding:18px 20px 26px;border-radius:28px 28px 0 0;background:linear-gradient(145deg,rgba(255,255,255,.20),rgba(255,255,255,.06));background-color:rgba(22,24,38,.78);backdrop-filter:blur(30px) saturate(180%);border:1px solid rgba(255,255,255,.38);border-bottom:0;box-shadow:0 -18px 50px rgba(0,0,0,.5);animation:sheetUp .38s var(--spring)}
-.modalbox::before{content:"";display:block;width:52px;height:5px;border-radius:99px;background:rgba(255,255,255,.55);margin:2px auto 14px}
-@keyframes sheetUp{from{transform:translateY(60px);opacity:0}to{transform:translateY(0);opacity:1}}
-.liveDot{width:8px;height:8px;background:#25D366;border-radius:50%;display:inline-block;animation:pulse 1.5s infinite;box-shadow:0 0 12px #25D366}
-@keyframes pulse{0%{opacity:1}50%{opacity:.3}100%{opacity:1}}
-.lyrics{white-space:pre-wrap;line-height:1.7;color:#e8eaf0;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.18);padding:14px;border-radius:16px;max-height:240px;overflow:auto}
-.comment{padding:11px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.18);border-radius:16px;margin:7px 0;font-size:12px}
+.topbar{position:sticky;top:8px;z-index:20;display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;padding:12px 14px;border-radius:22px;background:linear-gradient(135deg,rgba(255,255,255,.20),rgba(255,255,255,.05));background-color:rgba(12,14,24,.72);backdrop-filter:blur(26px);border:1px solid rgba(255,255,255,.35);border-top:1px solid rgba(255,255,255,.65);box-shadow:0 14px 34px rgba(0,0,0,.42);margin-bottom:12px}
+.tabs{display:flex;gap:8px;overflow:auto;margin:12px 0;padding:2px;scrollbar-width:none}.tabs::-webkit-scrollbar{display:none}.tabs button{white-space:nowrap;border-radius:999px!important}
+.tabs button.active{background:linear-gradient(145deg,#ffe066,#ffcf33 55%,#ff9a00)!important;color:#111!important}
+.page{display:none}.page.active{display:block;animation:fadeUp .3s var(--spring)}@keyframes fadeUp{from{transform:translateY(10px);opacity:0}to{transform:translateY(0);opacity:1}}
+.compress-box{padding:12px;border-radius:14px;background:rgba(255,207,51,.10);border:1px solid rgba(255,207,51,.4);margin:10px 0;font-size:12px}.compress-box b{color:var(--gold)}
+.song-check{display:flex;gap:8px;align-items:center;padding:8px;border-radius:12px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.15);margin:5px 0}.song-check input{width:auto;margin:0}.song-check img{width:36px;height:36px;border-radius:8px;object-fit:cover}
+.req-card{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.18);padding:12px;border-radius:16px;margin:8px 0}
+.req-card.pending{border-color:rgba(255,207,51,.6)}.req-card.approved{border-color:rgba(46,194,122,.6)}.req-card.rejected{border-color:rgba(255,80,80,.6)}
+.player{position:fixed;bottom:12px;left:12px;right:12px;background:linear-gradient(135deg,rgba(255,255,255,.24),rgba(255,255,255,.06) 38%,rgba(255,207,51,.16) 62%,rgba(255,255,255,.08));background-color:rgba(18,20,32,.58);backdrop-filter:blur(30px) saturate(190%);border:1px solid rgba(255,255,255,.40);border-top:1px solid rgba(255,255,255,.70);border-radius:28px;padding:0 14px 12px;display:none;z-index:30;box-shadow:0 24px 54px rgba(0,0,0,.55),inset 0 1px 0 rgba(255,255,255,.60);transition:height .38s var(--spring);overflow:hidden;touch-action:none}
+.player[data-size="mini"]{height:68px;border-radius:999px;padding-bottom:0}.player[data-size="normal"]{height:178px}.player[data-size="full"]{height:min(80vh,600px);border-radius:32px}.player[data-size="custom"]{height:var(--ph,178px)}
+#playerDrag{height:24px;display:flex;align-items:center;justify-content:center;cursor:grab;touch-action:none}#playerDrag span{width:58px;height:6px;border-radius:99px;background:linear-gradient(90deg,rgba(255,255,255,.25),rgba(255,255,255,.90),rgba(255,255,255,.25));display:block}
+.playerhead{display:flex;align-items:center;gap:10px}.controls{display:flex;justify-content:center;gap:10px;margin-top:6px}.controls button{border:1px solid rgba(255,255,255,.38);background:linear-gradient(145deg,rgba(255,255,255,.24),rgba(255,255,255,.06));color:#fff;border-radius:50%;width:38px;height:38px}.controls .main{width:48px;height:48px;background:linear-gradient(145deg,#ffe066,#ffcf33 55%,#ff9a00);color:#111;font-size:18px}
+.progress{display:flex;gap:8px;align-items:center;font-size:10px;color:var(--muted)}.progress input{flex:1;accent-color:var(--gold);height:6px}
+#viz{width:100%;height:36px;border-radius:10px;background:rgba(0,0,0,.35);display:block;margin:6px 0}
+.liquid-sound{display:flex;gap:6px;flex-wrap:wrap;margin:6px 0}.liquid-sound button{padding:6px 10px;border-radius:999px;border:1px solid rgba(255,255,255,.3);background:rgba(255,255,255,.08);color:#fff;font-size:10px;font-weight:800}.liquid-sound button.active{background:var(--gold);color:#111}
+.toast{position:fixed;bottom:150px;left:50%;transform:translateX(-50%);background:linear-gradient(145deg,rgba(255,255,255,.24),rgba(255,255,255,.07));background-color:rgba(22,24,38,.72);backdrop-filter:blur(22px);border:1px solid rgba(255,255,255,.38);padding:12px 18px;border-radius:999px;display:none;z-index:80;font-size:12px;font-weight:700}
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.45);backdrop-filter:blur(6px);z-index:50;display:none;place-items:end center}.modal.show{display:grid}.modalbox{width:min(620px,100%);max-height:88vh;overflow:auto;padding:18px 20px 26px;border-radius:28px 28px 0 0;background:linear-gradient(145deg,rgba(255,255,255,.20),rgba(255,255,255,.06));background-color:rgba(22,24,38,.78);backdrop-filter:blur(30px);border:1px solid rgba(255,255,255,.38);border-bottom:0}
+.liveDot{width:8px;height:8px;background:#25D366;border-radius:50%;display:inline-block;animation:pulse 1.5s infinite}@keyframes pulse{0%{opacity:1}50%{opacity:.3}100%{opacity:1}}
+.lyrics{white-space:pre-wrap;line-height:1.7;color:#e8eaf0;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.18);padding:14px;border-radius:16px;max-height:240px;overflow:auto}.comment{padding:11px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.18);border-radius:16px;margin:7px 0;font-size:12px}
+#pwaBanner{display:none;position:fixed;left:12px;right:12px;bottom:78px;z-index:55;background:rgba(20,22,36,.92);border:1px solid rgba(255,207,51,.5);border-radius:18px;padding:12px 14px;align-items:center;gap:10px}#pwaBanner.show{display:flex}
+@media(max-width:520px){.topbar{flex-direction:column;align-items:flex-start}}
 </style>
 </head>
 <body>
 <div class="wrap">
 <div id="loginBox" class="glass lock">
-<h2>♫ ARTIST LOGIN</h2>
-<p class="muted">Login with Name + Password created by Admin. Your approval code protects your music. No email needed.</p>
-<input id="loginName" placeholder="Artist Name">
-<input id="loginPass" type="password" placeholder="Password">
+<h2>♫ ARTIST LOGIN</h2><p class="muted">v13 • Fixed Login • PWA Install • Liquid Sound • Request Song / Album / Reel</p>
+<input id="loginName" placeholder="Artist Name"><input id="loginPass" type="password" placeholder="Password">
 <button class="btn gold" style="width:100%" onclick="login()">Login to My Dashboard</button>
 <p id="loginMsg" style="font-size:12px;color:#888"></p>
+<button class="btn" id="installBtn" style="display:none;width:100%;margin-top:6px" onclick="installPWA()">⬇ Install Artist App</button>
 <p class="muted">No account? WhatsApp Admin: <a href="https://wa.me/263789706161?text=Hi%20I%20need%20artist%20account" style="color:#25D366">+263789706161</a></p>
 <a href="index.html" class="btn" style="display:inline-block;text-decoration:none;margin-top:8px">← Back to BYOMUSIC</a>
 </div>
+
 <div id="dashboard" style="display:none">
-<div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px">
-<h2>Welcome <span id="artistName" style="color:var(--gold)"></span></h2>
-<button class="btn red" onclick="logout()">Logout</button>
+<div class="topbar"><div><h2 style="margin:0">Welcome <span id="artistName" style="color:var(--gold)"></span></h2><small class="muted"><span class="liveDot"></span> Online <span id="syncStatus"></span></small></div><div class="row"><button class="btn" id="installBtn2" style="display:none" onclick="installPWA()">⬇ Install</button><button class="btn" onclick="loadData()">Refresh</button><button class="btn red" onclick="logout()">Logout</button></div></div>
+
+<div class="codeBox"><div style="font-size:11px;color:#00aaff">YOUR APPROVAL CODE - Keep safe</div><b id="myCode" style="font-size:26px;letter-spacing:4px;color:var(--gold)">------</b><br><button class="btn" onclick="copyCode()">Copy Code</button> <a id="waShareCode" href="#" class="btn green" style="text-decoration:none">Share via WhatsApp</a></div>
+
+<div class="refBox"><div style="font-size:12px;color:var(--gold);font-weight:900">🔥 MY REFERRAL CODE</div><b id="myRefCode" style="font-size:26px;letter-spacing:2px">BYO-...</b><div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:10px 0"><div class="stat"><b id="refCount">0</b><small>Friends</small></div><div class="stat"><b id="refReward">-</b><small>Reward</small></div><div class="stat"><b id="refNext">1 to FREE</b><small>Next Goal</small></div></div><p id="refFriendsList" class="muted" style="font-size:11px"></p><div class="row" style="justify-content:center"><button class="btn gold" onclick="shareReferral()">📤 Share on WhatsApp</button><button class="btn" onclick="copyRefCode()">🔗 Copy Link</button></div><p class="muted" style="font-size:11px">1 friend = 1 FREE upload • 3 = TOP 1 Week • 5 = 1 Month FREE Pro</p></div>
+
+<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:12px 0"><div class="stat"><b id="totalSongs">0</b><small>Songs</small></div><div class="stat"><b id="totalPlays">0</b><small>Plays</small></div><div class="stat"><b id="totalLikes">0</b><small>Likes</small></div><div class="stat"><b id="avgRating">0</b><small>Rating</small></div></div>
+<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px"><div class="stat"><b id="reqPending">0</b><small>Pending Requests</small></div><div class="stat"><b id="reqApproved">0</b><small>Approved</small></div><div class="stat"><b id="savedSpace">0 MB</b><small>Saved by Compress</small></div></div>
+
+<div class="tabs">
+<button class="btn tab active" data-page="home">🏠 Home</button>
+<button class="btn tab" data-page="request">📤 Request Upload</button>
+<button class="btn tab" data-page="myrequests">📋 My Requests</button>
+<button class="btn tab" data-page="reels">🎬 My Reels</button>
+<button class="btn tab" data-page="albums">💿 My Albums</button>
+<button class="btn tab" data-page="profile">👤 Profile</button>
 </div>
-<p class="muted"><span class="liveDot"></span>Online<span id="syncStatus"></span></p>
-<div class="codeBox">
-<div style="font-size:11px;color:#00aaff">YOUR APPROVAL CODE - Keep safe</div>
-<b id="myCode" style="font-size:26px;letter-spacing:4px;color:var(--gold)">------</b><br>
-<button class="btn" onclick="copyCode()">Copy Code</button>
-<a id="waShareCode" href="#" class="btn green" style="text-decoration:none">Share via WhatsApp</a>
-</div>
-<div class="refBox">
-<div style="font-size:12px;color:var(--gold);font-weight:900">🔥 MY REFERRAL CODE - Letha Umngane, Faka Mahhala!</div>
-<b id="myRefCode" style="font-size:26px;letter-spacing:2px;color:#fff">BYO-...</b><br>
-<p class="muted" style="margin:6px 0">Share this code. When your friend uploads, YOU earn:</p>
-<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:10px 0">
-<div class="stat"><b id="refCount">0</b><small>Friends Brought</small></div>
-<div class="stat"><b id="refReward">-</b><small>My Reward</small></div>
-<div class="stat"><b id="refNext">1 to FREE</b><small>Next Goal</small></div>
-</div>
-<p id="refFriendsList" class="muted" style="font-size:11px"></p>
-<div style="display:flex;gap:7px;flex-wrap:wrap;justify-content:center">
-<button class="btn gold" onclick="shareReferral()">📤 Share on WhatsApp</button>
-<button class="btn" onclick="copyRefCode()">🔗 Copy Link</button>
-</div>
-<p class="muted" style="font-size:11px;margin-top:8px">1 friend = 1 FREE upload • 3 friends = TOP of App 1 Week • 5 friends = 1 Month FREE Pro</p>
-</div>
-<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:12px 0">
-<div class="stat"><b id="totalSongs">0</b><small>Songs</small></div>
-<div class="stat"><b id="totalPlays">0</b><small>Plays</small></div>
-<div class="stat"><b id="totalLikes">0</b><small>Likes (Firestore)</small></div>
-<div class="stat"><b id="avgRating">0</b><small>Rating</small></div>
-</div>
+
+<section id="page-home" class="page active">
+<div class="glass"><h3 style="color:var(--gold);margin-top:0">My Biography</h3><img id="myPhoto" src="" style="width:80px;height:80px;border-radius:14px;object-fit:cover;display:none;margin-bottom:8px"><p id="myBioText" style="font-size:13px;color:#ccc;line-height:1.5"></p><p class="muted"><span id="myLoc"></span> • <span id="myGenre"></span></p><div id="mySocial" style="font-size:12px"></div><button class="btn" onclick="editMyBio()">Edit My Bio</button><div id="bioEditBox" style="display:none;margin-top:10px"><textarea id="editBio" placeholder="Edit biography..."></textarea><div style="display:grid;grid-template-columns:1fr 1fr;gap:6px"><input id="editLoc" placeholder="Location"><input id="editGenre" placeholder="Genre"></div><input id="bioApproval" placeholder="Enter your Approval Code to save"><button class="btn gold" style="width:100%" onclick="saveMyBio()">Save Bio</button><p id="bioMsg" style="font-size:11px;color:var(--gold)"></p></div></div>
+<h3>My Music</h3><p class="muted">Play test, edit with approval code.</p><div id="mySongs"></div>
+</section>
+
+<section id="page-request" class="page">
 <div class="glass">
-<h3 style="color:var(--gold);margin-top:0">My Biography</h3>
-<img id="myPhoto" src="" style="width:80px;height:80px;border-radius:14px;object-fit:cover;display:none;margin-bottom:8px">
-<p id="myBioText" style="font-size:13px;color:#ccc;line-height:1.5"></p>
-<p class="muted"><span id="myLoc"></span> • <span id="myGenre"></span> • Since <span id="myYear"></span></p>
-<div id="mySocial" style="font-size:12px"></div>
-<button class="btn" onclick="editMyBio()">Edit My Bio</button>
-<div id="bioEditBox" style="display:none;margin-top:10px">
-<textarea id="editBio" placeholder="Edit biography..."></textarea>
-<div style="display:grid;grid-template-columns:1fr 1fr;gap:6px"><input id="editLoc" placeholder="Location"><input id="editGenre" placeholder="Genre"></div>
-<input id="bioApproval" placeholder="Enter your Approval Code to save">
-<button class="btn gold" style="width:100%" onclick="saveMyBio()">Save Bio</button>
-<p id="bioMsg" style="font-size:11px;color:var(--gold)"></p>
+<h3>📤 Request New Upload - Song / Album / Reel</h3>
+<div class="compress-box">🗜️ <b>Auto Compress ON</b> - Song 9MB → 3MB, Reel 30MB → 7MB, Cover 2.5MB → 180KB. Still plays + downloads. Admin approves in ~1 day.</div>
+<label class="label">What are you requesting?</label>
+<div class="row"><button class="btn gold" id="reqTypeSongBtn" onclick="setReqType('song')">🎵 Song</button><button class="btn" id="reqTypeAlbumBtn" onclick="setReqType('album')">💿 Album</button><button class="btn" id="reqTypeReelBtn" onclick="setReqType('reel')">🎬 Reel</button></div>
+<div id="reqSongForm">
+<label class="label">MP3 / Audio</label><input id="reqSongAudio" type="file" accept="audio/*"><div id="reqSongAudioInfo" class="compress-box" style="display:none"></div><audio id="reqSongPreview" controls style="width:100%;display:none"></audio>
+<label class="label">Cover Image - compressed</label><input id="reqSongCover" type="file" accept="image/*"><div id="reqSongCoverInfo" class="compress-box" style="display:none"></div><img id="reqSongCoverPreview" style="width:100%;max-height:160px;object-fit:cover;border-radius:14px;display:none">
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:6px"><input id="reqSongTitle" placeholder="Song title *"><input id="reqSongGenre" placeholder="Genre e.g. Amapiano"></div>
+<textarea id="reqSongLyrics" placeholder="Lyrics"></textarea><textarea id="reqSongBio" placeholder="Song description"></textarea>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:6px"><input id="reqSongPrice" type="number" placeholder="Price USD (0 = Free)"><input id="reqSongReferral" placeholder="Referral Code used (optional)"></div>
+<label><input type="checkbox" id="reqSongPaid" style="width:auto"> Paid song</label>
 </div>
+<div id="reqAlbumForm" style="display:none">
+<input id="reqAlbumTitle" placeholder="Album title *"><div style="display:grid;grid-template-columns:1fr 1fr;gap:6px"><input id="reqAlbumYear" placeholder="Year e.g. 2026"><input id="reqAlbumPrice" type="number" placeholder="Price USD"></div>
+<label class="label">Album Cover - compressed</label><input id="reqAlbumCover" type="file" accept="image/*"><div id="reqAlbumCoverInfo" class="compress-box" style="display:none"></div><img id="reqAlbumCoverPreview" style="width:100%;max-height:160px;object-fit:cover;border-radius:14px;display:none">
+<textarea id="reqAlbumDesc" placeholder="Album description"></textarea>
+<label class="label">Select Songs for Album (your songs)</label><input id="reqAlbumSongSearch" placeholder="Search your songs…"><div id="reqAlbumPicker" style="max-height:260px;overflow:auto"></div><p class="muted" id="reqAlbumCount">0 songs selected</p>
+<p class="muted">No song yet? Request songs first, then come back to make album. Or tick songs already live.</p>
 </div>
-<h3>My Music <span id="syncStatus2" style="font-size:11px;color:#666"></span></h3>
-<p class="muted">Play test, edit title/price/lyrics with approval code. Full upload via Admin.</p>
-<div id="mySongs"></div>
-<div class="glass" style="margin-top:20px">
-<h3>Request New Upload</h3>
-<p class="muted">Send MP3 + cover to Admin. Your code will lock it.</p>
-<a href="https://wa.me/263789706161?text=Hi%20Admin%20upload%20my%20song" class="btn green" style="display:block;text-align:center;text-decoration:none">WhatsApp Admin 78 970 6161</a>
-<button class="btn" style="margin-top:8px;width:100%" onclick="loadData()">Refresh Data</button>
+<div id="reqReelForm" style="display:none">
+<label class="label">Video File - compressed to 480p</label><input id="reqReelVideo" type="file" accept="video/*"><div id="reqReelVideoInfo" class="compress-box" style="display:none"></div><video id="reqReelPreview" controls style="width:100%;max-height:260px;border-radius:14px;display:none;background:#000"></video><img id="reqReelThumb" style="width:100%;max-height:140px;object-fit:cover;border-radius:14px;display:none;margin-top:6px">
+<input id="reqReelTitle" placeholder="Reel title *"><textarea id="reqReelCaption" placeholder="Caption"></textarea>
+<label><input type="checkbox" id="reqReelFeatured" style="width:auto"> Want Featured on Home</label>
 </div>
-<footer style="margin-top:22px">
-<div id="shopAdBox" style="margin:10px 0;display:none">
-  <a id="shopAdLink" href="#" style="display:block;text-align:center;background:linear-gradient(135deg,rgba(255,255,255,.22),rgba(255,207,51,.35));background-color:rgba(255,207,51,.18);backdrop-filter:blur(18px);border:1px solid rgba(255,255,255,.40);color:#fff;padding:14px;border-radius:22px;font-weight:900;font-size:13px;text-decoration:none">📢 ADVERTISE HERE - $10/week - Tap to Book</a>
+<div style="margin-top:12px"><label class="label">Your Approval Code - to lock request *</label><input id="reqApproval" placeholder="Enter your Approval Code"></div>
+<div class="progress" style="height:10px;background:rgba(255,255,255,.12);border-radius:999px;overflow:hidden;margin:10px 0"><div id="reqProgress" style="height:100%;background:linear-gradient(90deg,#ffe066,#ff9a00);width:0"></div></div>
+<p id="reqMsg" class="muted"></p>
+<button class="btn gold full" id="sendReqBtn" onclick="sendRequest()">Send Request to Admin →</button>
+<button class="btn green full" onclick="sendRequestViaWhatsApp()">Or Send via WhatsApp ↗</button>
 </div>
-<div style="margin:18px 0;text-align:center">
-  <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-7880131696089557" data-ad-format="auto" data-full-width-responsive="true"></ins>
-</div>
+</section>
+
+<section id="page-myrequests" class="page">
+<div class="glass"><h3>📋 My Requests - Status</h3><p class="muted">🟡 Pending = Admin checking • 🟢 Approved = Live on BYOMUSIC • 🔴 Rejected = See reason, fix & resend</p><div id="myRequestsList">Loading requests…</div><button class="btn" onclick="loadMyRequests()">Refresh Requests</button></div>
+</section>
+
+<section id="page-reels" class="page">
+<div class="glass"><h3>🎬 My Reels - Live</h3><div id="myReelsList">Loading…</div></div>
+</section>
+
+<section id="page-albums" class="page">
+<div class="glass"><h3>💿 My Albums - Live</h3><div id="myAlbumsList">Loading…</div></div>
+</section>
+
+<section id="page-profile" class="page">
+<div class="glass"><h3>👤 Profile & Settings</h3><p class="muted">Your artist profile as fans see it.</p><img id="myPhoto2" src="" style="width:90px;height:90px;border-radius:50%;object-fit:cover;display:none;border:2px solid var(--gold)"><p><b>Name:</b> <span id="profileName"></span><br><b>Approval:</b> <span id="profileCode"></span><br><b>Referral:</b> <span id="profileRef"></span><br><b>WhatsApp:</b> <span id="profileWa"></span></p><button class="btn gold" onclick="switchPage('request')">+ Request Upload</button> <button class="btn red" onclick="logout()">Logout</button></div>
+<div id="shopAdBox" style="margin:10px 0;display:none"><a id="shopAdLink" href="#" style="display:block;text-align:center;background:linear-gradient(135deg,rgba(255,255,255,.22),rgba(255,207,51,.35));padding:14px;border-radius:22px;font-weight:900;font-size:13px;text-decoration:none;color:#fff">📢 ADVERTISE HERE</a></div>
+<div style="margin:18px 0;text-align:center"><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-7880131696089557" data-ad-format="auto" data-full-width-responsive="true"></ins></div>
 <p class="muted" style="text-align:center;font-size:11px">© 2026 BYOMUSIC</p>
-</footer>
+</section>
 </div>
 </div>
+
+<div id="pwaBanner"><div style="flex:1"><b>⬇ Install BYOMUSIC Artist App</b><br><span class="muted" style="font-size:11px">Faster, fullscreen, works offline</span></div><button class="btn gold" onclick="installPWA()">Install</button><button class="btn" onclick="dismissPWA()">✕</button></div>
+
 <div id="player" class="player" data-size="normal">
 <div id="playerDrag"><span></span></div>
 <div class="playerhead"><img id="pImg" width="48" height="48" style="border-radius:12px;object-fit:cover"><div style="flex:1"><b id="pTitle">—</b><br><small id="pArtist" style="color:var(--muted)">—</small></div><button class="btn" onclick="cyclePlayerSize()" id="sizeBtn">⛶ Full</button><button class="btn" onclick="openSongDetail(currentSongId)">🎤 Lyrics</button></div>
 <div class="controls"><button onclick="prevSong()">⏮</button><button class="main" id="playBtn" onclick="togglePlay()">▶</button><button onclick="nextSong()">⏭</button></div>
 <div class="progress"><span id="elapsed">0:00</span><input id="seek" type="range" min="0" max="1000" value="0" oninput="seekAudio(this.value)"><span id="duration">0:00</span></div>
+<div id="playerExtra" style="display:none"><canvas id="viz" width="600" height="36"></canvas><div class="liquid-sound" id="liquidBtns"><button class="active" data-sound="fluid" onclick="setLiquidSound('fluid')">🌊 Fluid</button><button data-sound="deep" onclick="setLiquidSound('deep')">🔊 Deep</button><button data-sound="clear" onclick="setLiquidSound('clear')">✨ Clear</button><button data-sound="off" onclick="setLiquidSound('off')">⏸ Normal</button></div></div>
 <audio id="audio"></audio>
 </div>
 <div id="songModal" class="modal" onclick="if(event.target===this)hideModal('songModal')"><div class="modalbox glass"><button class="btn" style="float:right" onclick="hideModal('songModal')">✕</button><div id="songDetail"></div></div></div>
 <div id="toast" class="toast"></div>
+
 <script type="module">
 import {initializeApp} from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
-import {getFirestore,collection,getDocs} from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
+import {getFirestore,collection,getDocs,addDoc,query,where,orderBy} from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
 const firebaseConfig={apiKey:"AIzaSyBeJwgHaGbUJNvki5Uu5iTrHvybwkGeBcw",authDomain:"byomusic-cf50c.firebaseapp.com",projectId:"byomusic-cf50c",storageBucket:"byomusic-cf50c.firebasestorage.app",messagingSenderId:"988323942811",appId:"1:988323942811:web:7315895722f8eea7a8d13e"};
 const fbApp=initializeApp(firebaseConfig); const db=getFirestore(fbApp);
-window.__db=db; window.__getDocs=getDocs; window.__collection=collection;
+window.__db=db; window.__getDocs=getDocs; window.__collection=collection; window.__addDoc=addDoc; window.__query=query; window.__where=where; window.__orderBy=orderBy;
 </script>
 <script>
-const KEY_SONGS="byomusic_songs_v2_final", KEY_ARTISTS="byomusic_artists_secure";
-let currentArtist=null, songs=[], artists=[], referrals=[], shopAds=[], queue=[], qi=-1, currentSongId=null;
-let likeCounts={}, commentCounts={}, ratingAvgs={}, songCommentsCache={};
+const KEY_SONGS="byomusic_songs_v2_final",KEY_ARTISTS="byomusic_artists_secure";
+let currentArtist=null,songs=[],artists=[],reels=[],albums=[],referrals=[],shopAds=[],myRequests=[],queue=[],qi=-1,currentSongId=null,reqType="song",reqAlbumSelected=new Set(),totalSaved=parseInt(localStorage.getItem("byo_artist_saved")||"0",10);
+let likeCounts={},commentCounts={},ratingAvgs={},songCommentsCache={};
 const $=id=>document.getElementById(id);
 const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const asset=p=>{ if(!p) return ""; if(/^https?:\/\//i.test(p)) return p; if(p.startsWith("/")) return p; return p.replace(/^\/+/,""); };
 const ghAsset=p=>{ if(!p) return ""; if(/^https?:\/\//i.test(p)) return p; return `https://raw.githubusercontent.com/byosites/-BYOMusic/main/${String(p).replace(/^\/+/,"")}`; };
-window.imgFallback=function(el){ if(el.dataset.ghTried){ el.src='music/profile.png'; return; } el.dataset.ghTried="1"; let src=el.getAttribute("src")||""; if(src && !src.startsWith("http") && src.startsWith("music/")){ el.src=ghAsset(src); } else { el.src='music/profile.png'; } };
-const fmt=n=>{n=Number(n)||0;return Math.floor(n/60)+":"+String(Math.floor(n%60)).padStart(2,"0");};
-function toast(m){$("toast").textContent=m; $("toast").style.display="block"; setTimeout(()=>$("toast").style.display="none",3500);}
-function hideModal(id){$(id).classList.remove("show");}
-function showModal(id){$(id).classList.add("show");}
-const GH_USER="byosites"; const GH_REPO="-BYOMusic"; const GH_BRANCH="main";
-const GH_RAW=`https://raw.githubusercontent.com/${GH_USER}/${GH_REPO}/${GH_BRANCH}`;
-const GH_API=`https://api.github.com/repos/${GH_USER}/${GH_REPO}/contents`;
-const TYPE_TO_FILE={ songs:"songs.json", artists:"artists.json", referrals:"referrals.json", ads:"ads.json" };
+window.imgFallback=function(el){ if(el.dataset.ghTried){ el.src='music/profile.png'; return; } el.dataset.ghTried="1"; let src=el.getAttribute("src")||""; if(src&&!src.startsWith("http")&&src.startsWith("music/")){ el.src=ghAsset(src); } else { el.src='music/profile.png'; } };
+const fmt=n=>{ n=Number(n)||0; return Math.floor(n/60)+":"+String(Math.floor(n%60)).padStart(2,"0"); };
+const fmtMB=b=>(b/1024/1024).toFixed(1)+" MB";
+function toast(m){ $("toast").textContent=m; $("toast").style.display="block"; setTimeout(()=>$("toast").style.display="none",3500); }
+function hideModal(id){ $(id).classList.remove("show"); } function showModal(id){ $(id).classList.add("show"); }
+function switchPage(p){ document.querySelectorAll(".tab").forEach(b=>b.classList.toggle("active",b.dataset.page===p)); document.querySelectorAll(".page").forEach(el=>el.classList.remove("active")); $("page-"+p).classList.add("active"); window.scrollTo({top:0,behavior:"smooth"}); if(p==="myrequests") loadMyRequests(); if(p==="reels") renderMyReels(); if(p==="albums") renderMyAlbums(); if(p==="request") renderAlbumPicker(); }
+document.querySelectorAll(".tab").forEach(b=>b.onclick=()=>switchPage(b.dataset.page));
+function setReqType(t){ reqType=t; ["Song","Album","Reel"].forEach(k=>{ let btn=$("reqType"+k+"Btn"); if(btn) btn.className="btn "+(k.toLowerCase()===t?"gold":""); }); $("reqSongForm").style.display=t==="song"?"block":"none"; $("reqAlbumForm").style.display=t==="album"?"block":"none"; $("reqReelForm").style.display=t==="reel"?"block":"none"; if(t==="album") renderAlbumPicker(); }
+async function compressImage(file,maxW=720,quality=0.72){
+  if(!file||!file.type.startsWith("image/")) return file; if(file.size<300*1024) return file;
+  try{ let bmp=await createImageBitmap(file); let ratio=Math.min(1,maxW/bmp.width); let w=Math.round(bmp.width*ratio),h=Math.round(bmp.height*ratio); let c=document.createElement("canvas"); c.width=w; c.height=h; c.getContext("2d").drawImage(bmp,0,0,w,h); let blob=await new Promise(r=>c.toBlob(r,"image/jpeg",quality)); if(!blob||blob.size>=file.size) return file; totalSaved+=file.size-blob.size; localStorage.setItem("byo_artist_saved",totalSaved); $("savedSpace").textContent=fmtMB(totalSaved); return new File([blob],file.name.replace(/\.[^.]+$/,"")+".jpg",{type:"image/jpeg"}); }catch(e){ return file; }
+}
+async function makeVideoThumb(file){
+  return new Promise(res=>{ let v=document.createElement("video"); v.muted=true; v.playsInline=true; v.src=URL.createObjectURL(file); v.onloadeddata=()=>{ v.currentTime=Math.min(0.5,v.duration/2||0.5); }; v.onseeked=()=>{ let c=document.createElement("canvas"); c.width=480; c.height=270; c.getContext("2d").drawImage(v,0,0,480,270); c.toBlob(b=>{ res(b?new File([b],"thumb.jpg",{type:"image/jpeg"}):null); URL.revokeObjectURL(v.src); },"image/jpeg",0.72); }; v.onerror=()=>res(null); });
+}
+async function compressVideo(file){
+  if(!file||file.size<8*1024*1024) return file;
+  try{ let v=document.createElement("video"); v.muted=true; v.playsInline=true; v.src=URL.createObjectURL(file); await new Promise((res,rej)=>{ v.onloadedmetadata=res; v.onerror=rej; }); let tw=480,th=Math.round(480*v.videoHeight/v.videoWidth); let c=document.createElement("canvas"); c.width=tw; c.height=th; let ctx=c.getContext("2d"); let stream=c.captureStream(24); let rec=new MediaRecorder(stream,{mimeType:"video/webm;codecs=vp8",videoBitsPerSecond:800000}); let chunks=[]; rec.ondataavailable=e=>{ if(e.data.size) chunks.push(e.data); }; let done=new Promise(r=>rec.onstop=r); v.play(); rec.start(250); function draw(){ if(v.ended) return; ctx.drawImage(v,0,0,tw,th); requestAnimationFrame(draw); } draw(); await new Promise(r=>{ v.onended=r; setTimeout(r,Math.min(v.duration*1000+2000,65000)); }); try{rec.stop();}catch(e){} try{v.pause();}catch(e){} await done; URL.revokeObjectURL(v.src); let blob=new Blob(chunks,{type:"video/webm"}); if(!blob.size||blob.size>=file.size) return file; totalSaved+=file.size-blob.size; localStorage.setItem("byo_artist_saved",totalSaved); return new File([blob],file.name.replace(/\.[^.]+$/,"")+"_480p.webm",{type:"video/webm"}); }catch(e){ return file; }
+}
+async function compressAudio(file){
+  if(!file||file.size<5*1024*1024) return file;
+  try{ let ctx=new (window.AudioContext||window.webkitAudioContext)(); let buf=await file.arrayBuffer(); let ab=await ctx.decodeAudioData(buf); let src=ctx.createBufferSource(); src.buffer=ab; let dest=ctx.createMediaStreamDestination(); let gain=ctx.createGain(); gain.gain.value=0; src.connect(gain); gain.connect(dest); let rec=new MediaRecorder(dest.stream,{mimeType:"audio/webm;codecs=opus",audioBitsPerSecond:128000}); let chunks=[]; rec.ondataavailable=e=>{ if(e.data.size) chunks.push(e.data); }; let done=new Promise(r=>rec.onstop=r); rec.start(250); src.start(); await new Promise(r=>{ src.onended=r; setTimeout(r,ab.duration*1000+1000); }); try{rec.stop();}catch(e){} await done; ctx.close(); let blob=new Blob(chunks,{type:"audio/webm"}); if(!blob.size||blob.size>=file.size) return file; totalSaved+=file.size-blob.size; localStorage.setItem("byo_artist_saved",totalSaved); return new File([blob],file.name.replace(/\.[^.]+$/,"")+"_128k.webm",{type:"audio/webm"}); }catch(e){ return file; }
+}
+let audioCtx=null,liquidGain=null,liquidFilter=null,liquidComp=null,liquidAnalyser=null,liquidSource=null,liquidSound=localStorage.getItem("byo_artist_liquid")||"fluid",crossfade=0.6;
+function initLiquid(){ if(audioCtx) return; try{ audioCtx=new (window.AudioContext||window.webkitAudioContext)(); liquidGain=audioCtx.createGain(); liquidGain.gain.value=1; liquidFilter=audioCtx.createBiquadFilter(); liquidFilter.type="lowpass"; liquidFilter.frequency.value=18000; liquidComp=audioCtx.createDynamicsCompressor(); liquidComp.threshold.value=-18; liquidComp.ratio.value=4; liquidAnalyser=audioCtx.createAnalyser(); liquidAnalyser.fftSize=64; liquidAnalyser.smoothingTimeConstant=0.8; liquidSource=audioCtx.createMediaElementSource($("audio")); liquidSource.connect(liquidFilter); liquidFilter.connect(liquidGain); liquidGain.connect(liquidComp); liquidComp.connect(liquidAnalyser); liquidAnalyser.connect(audioCtx.destination); applyLiquid(); drawViz(); }catch(e){} }
+function applyLiquid(){ if(!liquidFilter||!liquidGain||!audioCtx) return; let t=audioCtx.currentTime; if(liquidSound==="fluid"){ liquidFilter.frequency.setTargetAtTime(18000,t,0.3); liquidGain.gain.setTargetAtTime(1,t,0.3);} if(liquidSound==="deep"){ liquidFilter.frequency.setTargetAtTime(12000,t,0.3); liquidGain.gain.setTargetAtTime(1.08,t,0.3);} if(liquidSound==="clear"){ liquidFilter.frequency.setTargetAtTime(20000,t,0.3); liquidGain.gain.setTargetAtTime(0.98,t,0.3);} if(liquidSound==="off"){ liquidFilter.frequency.setTargetAtTime(22000,t,0.1);} }
+window.setLiquidSound=m=>{ liquidSound=m; localStorage.setItem("byo_artist_liquid",m); document.querySelectorAll("#liquidBtns button").forEach(b=>b.classList.toggle("active",b.dataset.sound===m)); initLiquid(); applyLiquid(); };
+function fadeIn(){ if(!audioCtx||!liquidGain) return; let t=audioCtx.currentTime; liquidGain.gain.cancelScheduledValues(t); liquidGain.gain.setValueAtTime(0.0001,t); liquidGain.gain.exponentialRampToValueAtTime(1,t+crossfade); }
+function fadeOut(){ if(!audioCtx||!liquidGain) return Promise.resolve(); return new Promise(res=>{ let t=audioCtx.currentTime; liquidGain.gain.cancelScheduledValues(t); liquidGain.gain.setValueAtTime(liquidGain.gain.value,t); liquidGain.gain.exponentialRampToValueAtTime(0.0001,t+crossfade); setTimeout(res,crossfade*1000); }); }
+function drawViz(){ let c=$("viz"); if(!c||!liquidAnalyser) return; let ctx=c.getContext("2d"); let data=new Uint8Array(liquidAnalyser.frequencyBinCount); function frame(){ if(!liquidAnalyser) return; requestAnimationFrame(frame); liquidAnalyser.getByteFrequencyData(data); ctx.clearRect(0,0,c.width,c.height); let w=c.width/data.length; for(let i=0;i<data.length;i++){ let h=(data[i]/255)*c.height; ctx.fillStyle="#ffcf33"; ctx.beginPath(); ctx.roundRect(i*w,c.height-h,w*0.7,Math.max(2,h),3); ctx.fill(); } } frame(); }
+const GH_USER="byosites",GH_REPO="-BYOMusic",GH_BRANCH="main",GH_RAW=`https://raw.githubusercontent.com/${GH_USER}/${GH_REPO}/${GH_BRANCH}`,GH_API=`https://api.github.com/repos/${GH_USER}/${GH_REPO}/contents`;
+const TYPE_TO_FILE={songs:"songs.json",artists:"artists.json",referrals:"referrals.json",ads:"ads.json",reels:"reels.json",albums:"albums.json"};
 async function fetchGitHub(type){
   let file=TYPE_TO_FILE[type]||type+".json";
-  try{ const r=await fetch(`${GH_RAW}/data/${file}?t=${Date.now()}`, {cache:"no-store"}); if(r.ok){ const txt=await r.text(); if(txt.trim()) return JSON.parse(txt); } }catch(e){ console.log("raw fail",type,e.message); }
-  try{ const r=await fetch(`https://api.github.com/repos/${GH_USER}/${GH_REPO}/contents/data/${file}?ref=${GH_BRANCH}&t=${Date.now()}`, {headers:{Accept:"application/vnd.github.raw"}}); if(r.ok){ const txt=await r.text(); if(txt.trim()) return JSON.parse(txt); } }catch(e){ console.log("api fail",file,e.message); }
+  let urls=[`${GH_RAW}/data/${file}?t=${Date.now()}`,`https://byomusic.pages.dev/data/${file}?t=${Date.now()}`];
+  for(let u of urls){ try{ const r=await fetch(u,{cache:"no-store"}); if(!r.ok) continue; const txt=await r.text(); if(!txt.trim()||txt.trim().startsWith("<")) continue; return JSON.parse(txt); }catch(e){} }
   return null;
 }
-async function saveToGitHub(type, data){
-  try{
-    let token=localStorage.getItem("byo_token"); if(!token) return false;
-    let file=TYPE_TO_FILE[type]||type+".json"; let path=`data/${file}`;
-    let get=await fetch(`${GH_API}/${path}`,{ headers:{ Authorization:`Bearer ${token}` } }); let sha=null; if(get.ok){ let j=await get.json(); sha=j.sha; }
-    let content=btoa(unescape(encodeURIComponent(JSON.stringify(data,null,2)))); let body={ message:`Update ${file} via Artist v10.3`, content, branch:GH_BRANCH }; if(sha) body.sha=sha;
-    let put=await fetch(`${GH_API}/${path}`,{ method:"PUT", headers:{ Authorization:`Bearer ${token}`, "Content-Type":"application/json" }, body:JSON.stringify(body) }); return put.ok;
-  }catch(e){ return false; }
+async function saveToGitHub(type,data){ try{ let token=localStorage.getItem("byo_token"); if(!token) return false; let file=TYPE_TO_FILE[type]||type+".json"; let path=`data/${file}`; let get=await fetch(`${GH_API}/${path}`,{headers:{Authorization:`Bearer ${token}`}}); let sha=null; if(get.ok){ let j=await get.json(); sha=j.sha; } let content=btoa(unescape(encodeURIComponent(JSON.stringify(data,null,2)))); let body={message:`Update ${file} via Artist v13`,content,branch:GH_BRANCH}; if(sha) body.sha=sha; let put=await fetch(`${GH_API}/${path}`,{method:"PUT",headers:{Authorization:`Bearer ${token}`,"Content-Type":"application/json"},body:JSON.stringify(body)}); return put.ok; }catch(e){ return false; } }
+async function uploadJSON(path,obj){ let type=path.replace("data/","").replace(".json",""); const ok=await saveToGitHub(type,obj); if(!ok) throw new Error("Not pushed - saved locally. Send bio to Admin on WhatsApp."); }
+async function fileToBase64(file){ return new Promise((res,rej)=>{ let fr=new FileReader(); fr.onload=()=>res(fr.result); fr.onerror=rej; fr.readAsDataURL(file); }); }
+async function tryUploadToGitHub(file,path){
+  let token=localStorage.getItem("byo_token"); if(!token) return null;
+  try{ if(file.size>25*1024*1024) return null; let b64=await new Promise((res,rej)=>{ let fr=new FileReader(); fr.onload=()=>res(fr.result.split(",")[1]); fr.onerror=rej; fr.readAsDataURL(file); }); let get=await fetch(`${GH_API}/${path}`,{headers:{Authorization:`Bearer ${token}`}}); let sha=null; if(get.ok){ let j=await get.json(); sha=j.sha; } let body={message:`Artist request ${path}`,content:b64,branch:GH_BRANCH}; if(sha) body.sha=sha; let put=await fetch(`${GH_API}/${path}`,{method:"PUT",headers:{Authorization:`Bearer ${token}`,"Content-Type":"application/json"},body:JSON.stringify(body)}); if(!put.ok) return null; return path; }catch(e){ return null; }
 }
-async function uploadJSON(path, obj){ let type = path.replace("music/","").replace("data/","").replace(".json",""); const ok = await saveToGitHub(type, obj); if(!ok) throw new Error("Not pushed - saved locally. Send new bio to Admin on WhatsApp to publish."); }
 async function loadInteractions(){
-  try{
-    if(!window.__db) return;
-    let likesSnap=await window.__getDocs(window.__collection(window.__db,"likes")); likeCounts={}; likesSnap.forEach(d=>{ let v=d.data(); if(v.songId) likeCounts[v.songId]=(likeCounts[v.songId]||0)+1; });
-    let commentsSnap=await window.__getDocs(window.__collection(window.__db,"comments")); commentCounts={}; songCommentsCache={}; commentsSnap.forEach(d=>{ let v=d.data(); if(!v.songId) return; commentCounts[v.songId]=(commentCounts[v.songId]||0)+1; if(!songCommentsCache[v.songId]) songCommentsCache[v.songId]=[]; songCommentsCache[v.songId].push({id:d.id,...v}); });
-    Object.keys(songCommentsCache).forEach(k=>songCommentsCache[k].sort((a,b)=>(b.createdAt||0)-(a.createdAt||0)));
-    let ratingsSnap=await window.__getDocs(window.__collection(window.__db,"ratings")); let sums={}, counts={}; ratingsSnap.forEach(d=>{ let v=d.data(); if(!v.songId) return; sums[v.songId]=(sums[v.songId]||0)+Number(v.rating||0); counts[v.songId]=(counts[v.songId]||0)+1; });
-    ratingAvgs={}; Object.keys(sums).forEach(k=>ratingAvgs[k]=sums[k]/counts[k]);
-    if(currentArtist) renderMySongs();
-  }catch(e){ console.log("artist interactions",e.message); }
+  try{ if(!window.__db) return; let ls=await window.__getDocs(window.__collection(window.__db,"likes")); likeCounts={}; ls.forEach(d=>{ let v=d.data(); if(v.songId) likeCounts[v.songId]=(likeCounts[v.songId]||0)+1; }); let cs=await window.__getDocs(window.__collection(window.__db,"comments")); commentCounts={}; songCommentsCache={}; cs.forEach(d=>{ let v=d.data(); if(!v.songId) return; commentCounts[v.songId]=(commentCounts[v.songId]||0)+1; if(!songCommentsCache[v.songId]) songCommentsCache[v.songId]=[]; songCommentsCache[v.songId].push({id:d.id,...v}); }); Object.keys(songCommentsCache).forEach(k=>songCommentsCache[k].sort((a,b)=>(b.createdAt||0)-(a.createdAt||0))); let rs=await window.__getDocs(window.__collection(window.__db,"ratings")); let sums={},counts={}; rs.forEach(d=>{ let v=d.data(); if(!v.songId) return; sums[v.songId]=(sums[v.songId]||0)+Number(v.rating||0); counts[v.songId]=(counts[v.songId]||0)+1; }); ratingAvgs={}; Object.keys(sums).forEach(k=>ratingAvgs[k]=sums[k]/counts[k]); if(currentArtist) renderMySongs(); }catch(e){}
 }
 async function loadData(){
-$("syncStatus").innerText=" Loading...";
-let sData=await fetchGitHub('songs'); let aData=await fetchGitHub('artists'); let rData=await fetchGitHub('referrals'); let adData=await fetchGitHub('ads');
-if(sData&&Array.isArray(sData)) songs=sData; else if(songs.length===0) songs=JSON.parse(localStorage.getItem(KEY_SONGS)||"[]");
-if(aData&&Array.isArray(aData)) artists=aData; else if(artists.length===0) artists=JSON.parse(localStorage.getItem(KEY_ARTISTS)||"[]");
-if(rData&&Array.isArray(rData)) referrals=rData;
-if(adData&&adData.shopAds) shopAds=adData.shopAds; else if(adData&&Array.isArray(adData)) shopAds=adData;
-localStorage.setItem(KEY_SONGS,JSON.stringify(songs)); localStorage.setItem(KEY_ARTISTS,JSON.stringify(artists));
-await loadInteractions();
-$("syncStatus").innerText=` ${songs.length} songs synced • ${artists.length} artists • LIVE`;
-if(currentArtist){ let fresh=artists.find(a=>a.name.toLowerCase()===currentArtist.name.toLowerCase()); if(fresh){currentArtist=fresh; localStorage.setItem("byomusic_current_artist",JSON.stringify(fresh));}}
-if(currentArtist) { renderMySongs(); renderReferralStats(); renderShopAd(); }
-try{ (window.adsbygoogle = window.adsbygoogle || []).push({}); }catch(e){}
+  if($("syncStatus")) $("syncStatus").innerText=" Loading...";
+  try{
+    let [s,a,r,ad,rl,al]=await Promise.all([fetchGitHub('songs'),fetchGitHub('artists'),fetchGitHub('referrals'),fetchGitHub('ads'),fetchGitHub('reels'),fetchGitHub('albums')]);
+    if(Array.isArray(s)) songs=s; else if(!songs.length) { try{songs=JSON.parse(localStorage.getItem(KEY_SONGS)||"[]");}catch(e){} }
+    if(Array.isArray(a)) artists=a; else if(!artists.length) { try{artists=JSON.parse(localStorage.getItem(KEY_ARTISTS)||"[]");}catch(e){} }
+    if(Array.isArray(r)) referrals=r;
+    if(ad&&ad.shopAds) shopAds=ad.shopAds; else if(Array.isArray(ad)) shopAds=ad;
+    if(Array.isArray(rl)) reels=rl; else if(rl&&Array.isArray(rl.reels)) reels=rl.reels;
+    if(Array.isArray(al)) albums=al; else if(al&&Array.isArray(al.albums)) albums=al.albums;
+    try{localStorage.setItem(KEY_SONGS,JSON.stringify(songs)); localStorage.setItem(KEY_ARTISTS,JSON.stringify(artists));}catch(e){}
+    await loadInteractions().catch(()=>{}); await loadMyRequests().catch(()=>{});
+    if($("syncStatus")) $("syncStatus").innerText=` ${songs.length} songs • ${reels.length} reels • ${albums.length} albums • LIVE`;
+    if(currentArtist){ let f=artists.find(x=>(x.name||"").toLowerCase()===currentArtist.name.toLowerCase()); if(f){ currentArtist=f; try{localStorage.setItem("byomusic_current_artist",JSON.stringify(f));}catch(e){} } }
+    if(currentArtist){ renderMySongs(); renderReferralStats(); renderShopAd(); renderMyReels(); renderMyAlbums(); renderAlbumPicker(); }
+    try{ (window.adsbygoogle=window.adsbygoogle||[]).push({}); }catch(e){}
+    if($("savedSpace")) $("savedSpace").textContent=fmtMB(totalSaved);
+  }catch(e){ if($("syncStatus")) $("syncStatus").innerText=" Load error: "+e.message; }
 }
-function renderShopAd(){
-  let box=$("shopAdBox"); if(!box) return; box.style.display="block";
-  let active=shopAds.filter(a=>!a.expires || Date.now()<a.expires)[0]; let link=$("shopAdLink");
-  if(active){ link.textContent="📢 "+active.name+" - Tap to Visit"; link.href=active.link||"https://wa.me/263789706161"; if(active.image) { link.innerHTML=`<img src="${asset(active.image)}" onerror="imgFallback(this)" style="width:100%;max-height:90px;object-fit:cover;border-radius:10px"><br>📢 ${esc(active.name)} - Tap`; } }
-  else { link.textContent="📢 ADVERTISE HERE - $10/week - Tap to Book"; link.href="https://wa.me/263789706161?text=I%20want%20to%20advertise%20on%20BYOMUSIC"; }
-}
-function getMyRefCode(){ if(!currentArtist) return "BYO-XXXX"; if(currentArtist.refCode) return currentArtist.refCode; let base = currentArtist.name.replace(/[^A-Za-z0-9]/g,'').toUpperCase().slice(0,6) || "BYO"; let suffix = (currentArtist.approvalCode||"").replace(/[^A-Za-z0-9]/g,'').slice(-4) || Math.floor(1000+Math.random()*9000); return "BYO-"+base+"-"+suffix; }
-function renderReferralStats(){
-  let code=getMyRefCode(); $("myRefCode").textContent=code;
-  let mine=referrals.filter(r=>r.code===code); if(mine.length===0){ let short = code.split("-").slice(0,2).join("-"); mine=referrals.filter(r=>r.code===code || r.code===short); }
-  $("refCount").textContent=mine.length; let reward = mine.length>=5?"👑 KING - 1 Month FREE Pro":mine.length>=3?"⭐ STAR - TOP 1 Week":mine.length>=1?"🎁 1 FREE Upload":"No reward yet"; $("refReward").textContent=reward; $("refNext").textContent=mine.length===0?"1 to FREE":mine.length<3?(3-mine.length)+" to STAR":mine.length<5?(5-mine.length)+" to KING":"MAX!"; $("refFriendsList").innerHTML=mine.length?("Friends you brought: "+mine.map(m=>esc(m.newUser)).join(" • ")):"No friends yet - share your code!";
-}
-function shareReferral(){ let code=getMyRefCode(); let link=location.origin+"/index.html?ref="+code; let msg=`Sawubona! Faka ingoma yakho ku-BYOMUSIC ngo-$3. Sebenzisa i-code yami ${code} sobabili sizathola i-bonus! Link: ${link} \n\nHello! Upload your song on BYOMUSIC for $3. Use my code ${code} and we both get a bonus!`; window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`,"_blank"); }
-function copyRefCode(){ let code=getMyRefCode(); let link=location.origin+"/index.html?ref="+code; navigator.clipboard.writeText(link).then(()=>toast("Copied link: "+link)); }
+function renderShopAd(){ let box=$("shopAdBox"); if(!box) return; box.style.display="block"; let active=shopAds.filter(a=>!a.expires||Date.now()<a.expires)[0]; let link=$("shopAdLink"); if(active){ link.textContent="📢 "+active.name+" - Tap"; link.href=active.link||"https://wa.me/263789706161"; } }
+function getMyRefCode(){ if(!currentArtist) return "BYO-XXXX"; if(currentArtist.refCode) return currentArtist.refCode; let base=(currentArtist.name||"").replace(/[^A-Za-z0-9]/g,'').toUpperCase().slice(0,6)||"BYO"; let suffix=(currentArtist.approvalCode||"").replace(/[^A-Za-z0-9]/g,'').slice(-4)||"1234"; return "BYO-"+base+"-"+suffix; }
+function renderReferralStats(){ let code=getMyRefCode(); $("myRefCode").textContent=code; $("profileRef").textContent=code; let mine=referrals.filter(r=>r.code===code); $("refCount").textContent=mine.length; $("refReward").textContent=mine.length>=5?"👑 KING":mine.length>=3?"⭐ STAR":mine.length>=1?"🎁 FREE":"-"; $("refNext").textContent=mine.length===0?"1 to FREE":mine.length<3?(3-mine.length)+" to STAR":mine.length<5?(5-mine.length)+" to KING":"MAX"; $("refFriendsList").innerHTML=mine.length?"Friends: "+mine.map(m=>esc(m.newUser)).join(" • "):"No friends yet - share code!"; }
+function shareReferral(){ let code=getMyRefCode(); let link=location.origin+"/index.html?ref="+code; window.open(`https://wa.me/?text=${encodeURIComponent("Join BYOMUSIC! Use my code "+code+" "+link)}`,"_blank"); }
+function copyRefCode(){ let code=getMyRefCode(); navigator.clipboard.writeText(location.origin+"/index.html?ref="+code).then(()=>toast("Copied link")); }
 function login(){
-let name=$("loginName").value.trim(), pass=$("loginPass").value.trim(); if(!name||!pass){ $("loginMsg").innerText="Enter Name + Password"; return; }
-$("loginMsg").innerText="Checking...";
-loadData().then(()=>{ let found=artists.find(a=>a.name.toLowerCase()===name.toLowerCase() && String(a.pass)===String(pass)); if(!found){$("loginMsg").innerText="Wrong name/password. Contact admin 78 970 6161"; $("loginMsg").style.color="#ff5555"; return;} if(found.suspended){$("loginMsg").innerText="Account SUSPENDED by admin"; $("loginMsg").style.color="#ff5555"; return;} currentArtist=found; localStorage.setItem("byomusic_current_artist",JSON.stringify(found)); showDashboard(); toast("Welcome "+found.name); });
+  let name=($("loginName").value||"").trim(),pass=($("loginPass").value||"").trim(); if(!name||!pass){ $("loginMsg").innerText="Enter Name + Password"; return; }
+  $("loginMsg").innerText="Checking..."; $("loginMsg").style.color="#888";
+  loadData().then(()=>{ let found=artists.find(a=>(a.name||"").toLowerCase()===name.toLowerCase()&&String(a.pass).trim()===String(pass)); if(!found){ $("loginMsg").innerText="Wrong name/password. Contact admin 78 970 6161"; $("loginMsg").style.color="#ff5555"; return; } if(found.suspended){ $("loginMsg").innerText="Account SUSPENDED"; return; } currentArtist=found; try{localStorage.setItem("byomusic_current_artist",JSON.stringify(found));}catch(e){} showDashboard(); toast("Welcome "+found.name); });
 }
 function showDashboard(){
-if(!currentArtist){let s=localStorage.getItem("byomusic_current_artist"); if(s) currentArtist=JSON.parse(s); else return;}
-$("loginBox").style.display="none"; $("dashboard").style.display="block";
-$("artistName").innerText=currentArtist.name; $("myCode").innerText=currentArtist.approvalCode||"NO CODE"; $("myBioText").innerText=currentArtist.bio||"No bio yet"; $("myLoc").innerText=currentArtist.loc||""; $("myGenre").innerText=currentArtist.genre||""; $("myYear").innerText=currentArtist.year||"";
-if(currentArtist.photo){$("myPhoto").style.display="block"; $("myPhoto").src=asset(currentArtist.photo); $("myPhoto").onerror=()=>{ $("myPhoto").src=ghAsset(currentArtist.photo); $("myPhoto").onerror=null; };} else { $("myPhoto").style.display="none"; }
-let social=[]; if(currentArtist.fb) social.push(`<a href="${currentArtist.fb}" style="color:#00aaff">FB</a>`); if(currentArtist.ig) social.push(`<a href="${currentArtist.ig}" style="color:#00aaff">IG</a>`); if(currentArtist.yt) social.push(`<a href="${currentArtist.yt}" style="color:#00aaff">YT</a>`); if(currentArtist.tik) social.push(`<a href="${currentArtist.tik}" style="color:#00aaff">TikTok</a>`); $("mySocial").innerHTML=social.join(" • ");
-$("waShareCode").href=`https://wa.me/?text=My%20BYOMUSIC%20Approval%20Code%20is%20${currentArtist.approvalCode}%20for%20artist%20${currentArtist.name}`;
-renderMySongs(); renderReferralStats(); renderShopAd();
+  if(!currentArtist){ let s=localStorage.getItem("byomusic_current_artist"); if(s) currentArtist=JSON.parse(s); else return; }
+  $("loginBox").style.display="none"; $("dashboard").style.display="block";
+  $("artistName").innerText=currentArtist.name; $("myCode").innerText=currentArtist.approvalCode||"NO CODE"; $("myBioText").innerText=currentArtist.bio||"No bio"; $("myLoc").innerText=currentArtist.loc||""; $("myGenre").innerText=currentArtist.genre||"";
+  $("profileName").innerText=currentArtist.name; $("profileCode").innerText=currentArtist.approvalCode||""; $("profileWa").innerText=currentArtist.wa||currentArtist.whatsapp||"";
+  if(currentArtist.photo){ $("myPhoto").style.display="block"; $("myPhoto").src=asset(currentArtist.photo); $("myPhoto").onerror=()=>{ $("myPhoto").src=ghAsset(currentArtist.photo); }; $("myPhoto2").style.display="block"; $("myPhoto2").src=$("myPhoto").src; }
+  $("waShareCode").href=`https://wa.me/?text=${encodeURIComponent("My BYOMUSIC Code is "+currentArtist.approvalCode+" for "+currentArtist.name)}`;
+  renderMySongs(); renderReferralStats(); renderShopAd(); renderMyReels(); renderMyAlbums(); renderAlbumPicker(); loadMyRequests();
 }
-function copyCode(){navigator.clipboard.writeText(currentArtist.approvalCode); toast("Copied: "+currentArtist.approvalCode);}
-function editMyBio(){$("bioEditBox").style.display="block"; $("editBio").value=currentArtist.bio||""; $("editLoc").value=currentArtist.loc||""; $("editGenre").value=currentArtist.genre||"";}
-async function saveMyBio(){
-let code=$("bioApproval").value.trim(); if(code!==currentArtist.approvalCode){alert("Wrong approval code!"); return;}
-$("bioMsg").innerText="Saving..."; let idx=artists.findIndex(a=>a.name.toLowerCase()===currentArtist.name.toLowerCase());
-if(idx>=0){ artists[idx].bio=$("editBio").value; artists[idx].loc=$("editLoc").value; artists[idx].genre=$("editGenre").value; localStorage.setItem(KEY_ARTISTS,JSON.stringify(artists)); currentArtist=artists[idx]; localStorage.setItem("byomusic_current_artist",JSON.stringify(currentArtist)); try{await uploadJSON('data/artists.json',artists); $("bioMsg").innerText="✅ Bio synced to GitHub";}catch(e){$("bioMsg").innerText="Saved locally: "+e.message;} showDashboard(); $("bioEditBox").style.display="none"; }
-}
-function getAvg(s){ let v=ratingAvgs[s.id]; if(v!=null) return v; if(!s.ratings) return 0; let a=Object.values(s.ratings); if(!a.length) return 0; return a.reduce((x,y)=>x+y,0)/a.length; }
-function likeCount(s){ return likeCounts[s.id] ?? (Number(s.likes)||0); }
-function commentCount(s){ return commentCounts[s.id] ?? (s.comments?s.comments.length:0); }
+function copyCode(){ navigator.clipboard.writeText(currentArtist.approvalCode); toast("Copied "+currentArtist.approvalCode); }
+function editMyBio(){ $("bioEditBox").style.display="block"; $("editBio").value=currentArtist.bio||""; $("editLoc").value=currentArtist.loc||""; $("editGenre").value=currentArtist.genre||""; }
+async function saveMyBio(){ let code=($("bioApproval").value||"").trim(); if(code!==String(currentArtist.approvalCode).trim()){ alert("Wrong approval code!"); return; } let idx=artists.findIndex(a=>(a.name||"").toLowerCase()===currentArtist.name.toLowerCase()); if(idx>=0){ artists[idx].bio=$("editBio").value; artists[idx].loc=$("editLoc").value; artists[idx].genre=$("editGenre").value; try{localStorage.setItem(KEY_ARTISTS,JSON.stringify(artists));}catch(e){} currentArtist=artists[idx]; try{localStorage.setItem("byomusic_current_artist",JSON.stringify(currentArtist));}catch(e){} try{ await uploadJSON('data/artists.json',artists); $("bioMsg").innerText="✅ Bio synced"; }catch(e){ $("bioMsg").innerText="Saved locally: "+e.message; } showDashboard(); $("bioEditBox").style.display="none"; } }
+function getAvg(s){ let v=ratingAvgs[s.id]; if(v!=null) return v; if(!s.ratings) return 0; let a=Object.values(s.ratings); return a.length?a.reduce((x,y)=>x+y,0)/a.length:0; }
+function likeCount(s){ return likeCounts[s.id]??Number(s.likes||0); } function commentCount(s){ return commentCounts[s.id]??(s.comments?s.comments.length:0); }
 function renderMySongs(){
-let mine=songs.filter(s=>s.artist.toLowerCase()===currentArtist.name.toLowerCase());
-$("totalSongs").innerText=mine.length; $("totalPlays").innerText=mine.reduce((a,b)=>a+(b.plays||0),0); $("totalLikes").innerText=mine.reduce((a,b)=>a+likeCount(b),0); $("avgRating").innerText=mine.length?(mine.reduce((a,b)=>a+getAvg(b),0)/mine.length).toFixed(1):0;
-$("mySongs").innerHTML=mine.map(s=>{ let eid=encodeURIComponent(s.id); return `<div class="glass" style="display:flex;gap:10px;align-items:center;margin:8px 0"><img src="${asset(s.img||s.cover)}" width="55" height="55" style="border-radius:10px;object-fit:cover" onerror="imgFallback(this)"><div style="flex:1"><b>${esc(s.title)}</b> <span class="badge badge-code">${esc(s.approvalCode||currentArtist.approvalCode)}</span> ${s.suspended?'<span class="badge badge-sus">SUSPENDED</span>':s.sell||s.paid?'<span class="badge badge-paid">$'+esc(s.price)+'</span>':'<span class="badge badge-free">FREE</span>'}<br><span style="font-size:11px;color:var(--muted)">${esc(s.genre)} • ★ ${getAvg(s).toFixed(1)} • ❤ ${likeCount(s)} • 💬 ${commentCount(s)} • Plays: ${s.plays||0}</span><br><span style="font-size:11px;color:#888">${s.lyrics?'🎤 '+esc(s.lyrics.substring(0,50)):''}</span></div><div style="display:flex;flex-direction:column;gap:6px"><button class="btn gold" onclick="playMySong('${eid}')">▶ Play</button><button class="btn" onclick="openSongDetail('${eid}')">Lyrics</button><button class="btn" onclick="editMySong('${eid}')">Edit</button></div></div>`; }).join('')||"<p class='muted'>No songs yet - send MP3 via WhatsApp to admin</p>";
+  if(!currentArtist) return;
+  let mine=songs.filter(s=>(s.artist||"").toLowerCase()===currentArtist.name.toLowerCase());
+  $("totalSongs").innerText=mine.length; $("totalPlays").innerText=mine.reduce((a,b)=>a+(b.plays||0),0); $("totalLikes").innerText=mine.reduce((a,b)=>a+likeCount(b),0); $("avgRating").innerText=mine.length?(mine.reduce((a,b)=>a+getAvg(b),0)/mine.length).toFixed(1):0;
+  $("mySongs").innerHTML=mine.map(s=>{ let eid=encodeURIComponent(s.id); return `<div class="glass" style="display:flex;gap:10px;align-items:center;margin:8px 0"><img src="${asset(s.img||s.cover)}" width="55" height="55" style="border-radius:10px;object-fit:cover" onerror="imgFallback(this)"><div style="flex:1"><b>${esc(s.title)}</b> ${s.suspended?'<span class="badge badge-sus">SUSPENDED</span>':s.sell||s.paid?'<span class="badge badge-paid">$'+esc(s.price)+'</span>':'<span class="badge badge-free">FREE</span>'}<br><span style="font-size:11px;color:var(--muted)">${esc(s.genre)} • ★ ${getAvg(s).toFixed(1)} • ❤ ${likeCount(s)} • 💬 ${commentCount(s)}</span></div><div style="display:flex;flex-direction:column;gap:6px"><button class="btn gold" onclick="playMySong('${eid}')">▶ Play</button><button class="btn" onclick="openSongDetail('${eid}')">Lyrics</button><button class="btn" onclick="editMySong('${eid}')">Edit</button></div></div>`; }).join('')||"<p class='muted'>No songs yet - Request upload below</p>";
 }
-// Resizable player
-function applyPlayerSize(size, customH){ let p=$("player"); if(!p) return; if(size==="custom" && customH){ p.style.setProperty("--ph", customH+"px"); p.dataset.size="custom"; } else { p.dataset.size=size; } let btn=$("sizeBtn"); if(btn) btn.textContent = p.dataset.size==="mini" ? "⛶ Expand" : p.dataset.size==="full" ? "— Mini" : "⛶ Full"; localStorage.setItem("byo_artist_player_size", p.dataset.size); if(customH) localStorage.setItem("byo_artist_player_h", customH); }
+function renderMyReels(){ if(!currentArtist) return; let mine=reels.filter(r=>(r.artist||"").toLowerCase()===currentArtist.name.toLowerCase()); $("myReelsList").innerHTML=mine.map(r=>`<div class="req-card"><video src="${ghAsset(r.video||r.videoUrl)}" poster="${ghAsset(r.cover||r.thumb)}" controls preload="none" style="width:100%;max-height:220px;border-radius:12px;background:#000"></video><b>${esc(r.title)}</b><p class="muted">${esc(r.caption||"")} • ♥ ${r.likes||0} ${r.hidden?"• HIDDEN":"• LIVE"}</p></div>`).join('')||"<p class='muted'>No reels yet - Request one</p>"; }
+function renderMyAlbums(){ if(!currentArtist) return; let mine=albums.filter(a=>(a.artist||"").toLowerCase()===currentArtist.name.toLowerCase()); $("myAlbumsList").innerHTML=mine.map(a=>`<div class="req-card"><div style="display:flex;gap:10px"><img src="${asset(a.cover||a.coverImage)}" style="width:65px;height:65px;border-radius:12px;object-fit:cover" onerror="imgFallback(this)"><div><b>${esc(a.title)}</b><br><small class="muted">${a.year||""} • ${(a.songIds||a.songs||[]).length} songs • ${a.price?"$"+a.price:"Free"}</small></div></div><p class="muted">${esc(a.description||"")}</p></div>`).join('')||"<p class='muted'>No albums yet - Request one</p>"; }
+function renderAlbumPicker(){
+  if(!currentArtist) return;
+  let q=(($("reqAlbumSongSearch")?.value||"")).toLowerCase();
+  let mine=songs.filter(s=>(s.artist||"").toLowerCase()===currentArtist.name.toLowerCase() && `${s.title}`.toLowerCase().includes(q));
+  $("reqAlbumPicker").innerHTML=mine.map(s=>`<label class="song-check"><input type="checkbox" ${reqAlbumSelected.has(s.id)?"checked":""} onchange="toggleReqAlbumSong('${s.id}',this.checked)"><img src="${asset(s.img||s.cover)}" onerror="imgFallback(this)"><span style="flex:1"><b>${esc(s.title)}</b></span></label>`).join('')||"<p class='muted'>No songs yet - request songs first</p>";
+  $("reqAlbumCount").textContent=reqAlbumSelected.size+" songs selected";
+}
+window.toggleReqAlbumSong=(id,checked)=>{ if(checked) reqAlbumSelected.add(id); else reqAlbumSelected.delete(id); renderAlbumPicker(); };
+$("reqAlbumSongSearch").oninput=renderAlbumPicker;
+$("reqSongAudio").onchange=async e=>{ let f=e.target.files[0]; if(!f) return; $("reqSongPreview").src=URL.createObjectURL(f); $("reqSongPreview").style.display="block"; $("reqSongAudioInfo").style.display="block"; $("reqSongAudioInfo").innerHTML=`🎵 Original <b>${fmtMB(f.size)}</b> • If >5MB → ~128kbps • Est. <b>${fmtMB(f.size*0.35)}</b> • Saved ~65%`; };
+$("reqSongCover").onchange=async e=>{ let f=e.target.files[0]; if(!f) return; let comp=await compressImage(f); $("reqSongCoverPreview").src=URL.createObjectURL(comp); $("reqSongCoverPreview").style.display="block"; $("reqSongCoverInfo").style.display="block"; $("reqSongCoverInfo").innerHTML=`🖼️ Cover ${fmtMB(f.size)} → ${fmtMB(comp.size)} • Saved ${Math.round((1-comp.size/f.size)*100)}%`; $("reqSongCover")._comp=comp; };
+$("reqAlbumCover").onchange=async e=>{ let f=e.target.files[0]; if(!f) return; let comp=await compressImage(f); $("reqAlbumCoverPreview").src=URL.createObjectURL(comp); $("reqAlbumCoverPreview").style.display="block"; $("reqAlbumCoverInfo").style.display="block"; $("reqAlbumCoverInfo").innerHTML=`Cover ${fmtMB(f.size)} → ${fmtMB(comp.size)}`; $("reqAlbumCover")._comp=comp; };
+$("reqReelVideo").onchange=async e=>{ let f=e.target.files[0]; if(!f) return; $("reqReelPreview").src=URL.createObjectURL(f); $("reqReelPreview").style.display="block"; $("reqReelVideoInfo").style.display="block"; $("reqReelVideoInfo").innerHTML=`🎬 Original <b>${fmtMB(f.size)}</b> • Will compress to 480p • Est. <b>${fmtMB(f.size*0.22)}</b>`; let thumb=await makeVideoThumb(f); if(thumb){ $("reqReelThumb").src=URL.createObjectURL(thumb); $("reqReelThumb").style.display="block"; $("reqReelVideo")._thumb=thumb; } };
+async function sendRequest(){
+  if(!currentArtist){ toast("Login first"); return; }
+  let code=($("reqApproval").value||"").trim(); if(code!==String(currentArtist.approvalCode).trim()){ $("reqMsg").textContent="Wrong approval code! Enter your code: "+currentArtist.approvalCode; return; }
+  $("sendReqBtn").disabled=true; $("reqProgress").style.width="10%"; $("reqMsg").textContent="🗜️ Compressing…";
+  try{
+    let payload={artist:currentArtist.name,artistId:currentArtist.id||"",approvalCode:code,status:"pending",createdAt:Date.now(),created:new Date().toISOString(),referredBy:"",filePaths:[],fileName:""};
+    if(reqType==="song"){
+      let audio=$("reqSongAudio").files[0]; let cover=$("reqSongCover").files[0]; let title=($("reqSongTitle").value||"").trim(); if(!audio||!title){ throw new Error("Song: need audio + title"); }
+      let finalAudio=await compressAudio(audio); let finalCover=cover?($("reqSongCover")._comp||await compressImage(cover)):null;
+      $("reqProgress").style.width="50%"; $("reqMsg").textContent="Uploading compressed files…";
+      let audioPath=`music/requests/${Date.now()}_${audio.name.replace(/[^a-zA-Z0-9._-]/g,"_")}`;
+      let uploaded=await tryUploadToGitHub(finalAudio,audioPath);
+      let coverPath=""; if(finalCover){ let cp=`music/requests/${Date.now()}_cover_${finalCover.name}`; let up2=await tryUploadToGitHub(finalCover,cp); coverPath=up2||cp; }
+      payload.type="song"; payload.title=title; payload.genre=$("reqSongGenre").value||currentArtist.genre||""; payload.lyrics=$("reqSongLyrics").value; payload.bio=$("reqSongBio").value; payload.price=Number($("reqSongPrice").value)||0; payload.paid=$("reqSongPaid").checked; payload.sell=payload.paid; payload.audio=uploaded||audioPath; payload.audioUrl=payload.audio; payload.cover=coverPath; payload.img=coverPath; payload.origSize=audio.size; payload.finalSize=finalAudio.size; payload.fileName=finalAudio.name;
+      payload.note=uploaded?"File uploaded to GitHub - ready for admin to approve":"File NOT uploaded (no GitHub token) - artist must send file via WhatsApp with this request ID";
+    } else if(reqType==="album"){
+      let title=($("reqAlbumTitle").value||"").trim(); if(!title) throw new Error("Album: need title"); if(!reqAlbumSelected.size) throw new Error("Album: tick at least 1 song");
+      let cover=$("reqAlbumCover").files[0]; let finalCover=cover?($("reqAlbumCover")._comp||await compressImage(cover)):null;
+      let coverPath=""; if(finalCover){ let cp=`music/requests/${Date.now()}_album_${finalCover.name}`; let up=await tryUploadToGitHub(finalCover,cp); coverPath=up||cp; }
+      payload.type="album"; payload.title=title; payload.year=$("reqAlbumYear").value||new Date().getFullYear(); payload.price=Number($("reqAlbumPrice").value)||0; payload.description=$("reqAlbumDesc").value; payload.cover=coverPath; payload.coverImage=coverPath; payload.songIds=[...reqAlbumSelected]; payload.songs=[...reqAlbumSelected];
+    } else if(reqType==="reel"){
+      let video=$("reqReelVideo").files[0]; let title=($("reqReelTitle").value||"").trim(); if(!video||!title) throw new Error("Reel: need video + title");
+      let finalVideo=await compressVideo(video); let thumb=$("reqReelVideo")._thumb||await makeVideoThumb(video);
+      $("reqProgress").style.width="50%";
+      let videoPath=`music/requests/${Date.now()}_${video.name.replace(/[^a-zA-Z0-9._-]/g,"_")}`; let uploaded=await tryUploadToGitHub(finalVideo,videoPath);
+      let thumbPath=""; if(thumb){ let tp=`music/requests/${Date.now()}_thumb.jpg`; let up=await tryUploadToGitHub(thumb,tp); thumbPath=up||tp; }
+      payload.type="reel"; payload.title=title; payload.caption=$("reqReelCaption").value; payload.video=uploaded||videoPath; payload.videoUrl=payload.video; payload.cover=thumbPath; payload.thumb=thumbPath; payload.featured=$("reqReelFeatured").checked; payload.origSize=video.size; payload.finalSize=finalVideo.size; payload.fileName=finalVideo.name;
+    }
+    $("reqProgress").style.width="80%";
+    let ref=await window.__addDoc(window.__collection(window.__db,"artist_requests"),payload);
+    $("reqProgress").style.width="100%"; $("reqMsg").textContent="✅ Request sent! ID: "+ref.id+" • Status: PENDING • Admin will approve soon. Check My Requests.";
+    toast("✅ Request sent - Pending approval");
+    ["reqSongTitle","reqSongLyrics","reqSongBio","reqSongPrice","reqSongReferral","reqAlbumTitle","reqAlbumYear","reqAlbumPrice","reqAlbumDesc","reqReelTitle","reqReelCaption","reqApproval"].forEach(id=>{ let el=$(id); if(el) el.value=""; });
+    ["reqSongAudio","reqSongCover","reqAlbumCover","reqReelVideo"].forEach(id=>{ let el=$(id); if(el) el.value=""; });
+    reqAlbumSelected.clear(); renderAlbumPicker(); await loadMyRequests(); switchPage("myrequests");
+  }catch(e){ $("reqMsg").textContent="Failed: "+e.message; toast(e.message); } finally{ $("sendReqBtn").disabled=false; }
+}
+window.sendRequest=sendRequest;
+function sendRequestViaWhatsApp(){
+  let title = reqType==="song"?$("reqSongTitle").value:reqType==="album"?$("reqAlbumTitle").value:$("reqReelTitle").value;
+  let msg=`Hi Admin! I am ${currentArtist.name} (Code: ${currentArtist.approvalCode}). Please approve my ${reqType.toUpperCase()} request: ${title||"(title)"} . I compressed it to save space. I will send the file here.`;
+  window.open(`https://wa.me/263789706161?text=${encodeURIComponent(msg)}`,"_blank");
+}
+async function loadMyRequests(){
+  if(!currentArtist||!window.__db) return;
+  try{
+    let snap=await window.__getDocs(window.__query(window.__collection(window.__db,"artist_requests"),window.__where("artist","==",currentArtist.name),window.__orderBy("createdAt","desc")));
+    myRequests=[]; snap.forEach(d=>myRequests.push({id:d.id,...d.data()}));
+    myRequests.sort((a,b)=>(b.createdAt||0)-(a.createdAt||0));
+    renderMyRequests();
+  }catch(e){
+    try{ let snap=await window.__getDocs(window.__collection(window.__db,"artist_requests")); myRequests=[]; snap.forEach(d=>{ let v=d.data(); if(v.artist===currentArtist.name) myRequests.push({id:d.id,...v}); }); myRequests.sort((a,b)=>(b.createdAt||0)-(a.createdAt||0)); renderMyRequests(); }catch(e2){ if($("myRequestsList")) $("myRequestsList").innerHTML="<p class='muted'>Requests need Firestore rules: allow read/write on artist_requests</p>"; }
+  }
+}
+function renderMyRequests(){
+  let pend=myRequests.filter(r=>r.status==="pending").length, appr=myRequests.filter(r=>r.status==="approved").length;
+  if($("reqPending")) $("reqPending").textContent=pend; if($("reqApproved")) $("reqApproved").textContent=appr;
+  if(!$("myRequestsList")) return;
+  $("myRequestsList").innerHTML=myRequests.map(r=>{
+    let cls=r.status==="approved"?"approved":r.status==="rejected"?"rejected":"pending";
+    let icon=r.status==="approved"?"🟢 Approved":r.status==="rejected"?"🔴 Rejected":"🟡 Pending";
+    return `<div class="req-card ${cls}"><b>${r.type==="song"?"🎵":r.type==="album"?"💿":"🎬"} ${esc(r.title||"Untitled")}</b> • ${icon}<br><small class="muted">${r.type} • ${r.createdAt?new Date(r.createdAt).toLocaleString():""} • ${r.finalSize?fmtMB(r.finalSize):""} ${r.fileName? "• "+esc(r.fileName):""}</small>${r.adminNote?`<p style="font-size:12px"><b>Admin:</b> ${esc(r.adminNote)}</p>`:""}${r.note?`<p class="muted" style="font-size:11px">${esc(r.note)}</p>`:""}${r.status==="pending"?`<button class="btn green" onclick="sendRequestViaWhatsApp()">Send File via WhatsApp ↗</button>`:""}</div>`;
+  }).join('')||"<p class='muted'>No requests yet - send your first one!</p>";
+}
+function applyPlayerSize(size,customH){ let p=$("player"); if(!p) return; if(size==="custom"&&customH){ p.style.setProperty("--ph",customH+"px"); p.dataset.size="custom"; } else p.dataset.size=size; let btn=$("sizeBtn"); if(btn) btn.textContent=p.dataset.size==="mini"?"⛶ Expand":p.dataset.size==="full"?"— Mini":"⛶ Full"; try{localStorage.setItem("byo_artist_player_size",p.dataset.size);}catch(e){} if(customH) try{localStorage.setItem("byo_artist_player_h",customH);}catch(e){} }
 window.cyclePlayerSize=()=>{ let p=$("player"); let cur=p.dataset.size||"normal"; if(cur==="mini") applyPlayerSize("normal"); else if(cur==="normal") applyPlayerSize("full"); else applyPlayerSize("mini"); };
-(function initResize(){ let drag=$("playerDrag"); if(!drag) return; let dragging=false, startY=0, startH=0; function getY(e){ return e.touches?e.touches[0].clientY:e.clientY; } function onStart(e){ dragging=true; startY=getY(e); startH=$("player").getBoundingClientRect().height; $("player").style.transition="none"; e.preventDefault(); } function onMove(e){ if(!dragging) return; let nh=Math.max(68,Math.min(window.innerHeight*0.8,startH+(startY-getY(e)))); let p=$("player"); p.style.setProperty("--ph",nh+"px"); p.dataset.size="custom"; } function onEnd(e){ if(!dragging) return; dragging=false; let p=$("player"); p.style.transition=""; let h=p.getBoundingClientRect().height; if(h<90) applyPlayerSize("mini"); else if(h>window.innerHeight*0.6) applyPlayerSize("full"); else applyPlayerSize("custom",Math.round(h)); } drag.addEventListener("touchstart",onStart,{passive:false}); drag.addEventListener("touchmove",onMove,{passive:false}); drag.addEventListener("touchend",onEnd); drag.addEventListener("mousedown",onStart); window.addEventListener("mousemove",onMove); window.addEventListener("mouseup",onEnd); })();
-function playMySong(_id){
-let id=decodeURIComponent(_id); let s=songs.find(x=>x.id===id); if(!s) return; if(s.artist.toLowerCase()!==currentArtist.name.toLowerCase()){alert("Not your song!"); return;}
-queue=songs.filter(x=>x.artist.toLowerCase()===currentArtist.name.toLowerCase()); qi=queue.findIndex(x=>x.id===id); currentSongId=id;
-$("player").style.display="block"; let saved=localStorage.getItem("byo_artist_player_size")||"normal"; if(saved==="custom") applyPlayerSize("custom",parseInt(localStorage.getItem("byo_artist_player_h")||"168",10)); else applyPlayerSize(saved);
-$("pImg").src=asset(s.img||s.cover); $("pImg").onerror=()=>{ $("pImg").src=ghAsset(s.img||s.cover); $("pImg").onerror=null; }; $("pTitle").innerText=s.title; $("pArtist").innerText=s.artist;
-const audio=$("audio"); audio.onerror=()=>{ let gh=ghAsset(s.audio||s.audioUrl); if(audio.src!==gh){ audio.src=gh; audio.play().catch(()=>toast("Play error - file not found")); } }; audio.src=asset(s.audio||s.audioUrl); audio.play().then(()=>$("playBtn").innerText="Ⅱ").catch(()=>{ let gh=ghAsset(s.audio||s.audioUrl); if(audio.src!==gh){ audio.src=gh; audio.play().then(()=>$("playBtn").innerText="Ⅱ").catch(()=>toast("Play error - file not found")); } else toast("Play error - file not found"); });
+(function initResize(){ let drag=$("playerDrag"); if(!drag) return; let dragging=false,startY=0,startH=0; function getY(e){ return e.touches?e.touches[0].clientY:e.clientY; } function onStart(e){ dragging=true; startY=getY(e); startH=$("player").getBoundingClientRect().height; $("player").style.transition="none"; e.preventDefault(); } function onMove(e){ if(!dragging) return; let nh=Math.max(68,Math.min(window.innerHeight*0.8,startH+(startY-getY(e)))); let p=$("player"); p.style.setProperty("--ph",nh+"px"); p.dataset.size="custom"; } function onEnd(){ if(!dragging) return; dragging=false; let p=$("player"); p.style.transition=""; let h=p.getBoundingClientRect().height; if(h<90) applyPlayerSize("mini"); else if(h>window.innerHeight*0.6) applyPlayerSize("full"); else applyPlayerSize("custom",Math.round(h)); } drag.addEventListener("touchstart",onStart,{passive:false}); drag.addEventListener("touchmove",onMove,{passive:false}); drag.addEventListener("touchend",onEnd); drag.addEventListener("mousedown",onStart); window.addEventListener("mousemove",onMove); window.addEventListener("mouseup",onEnd); })();
+async function playMySong(_id){
+  let id=decodeURIComponent(_id); let s=songs.find(x=>x.id===id); if(!s) return; queue=songs.filter(x=>(x.artist||"").toLowerCase()===currentArtist.name.toLowerCase()); qi=queue.findIndex(x=>x.id===id); currentSongId=id;
+  initLiquid(); if(audioCtx&&audioCtx.state==="suspended") audioCtx.resume(); if(!$("audio").paused){ await fadeOut(); $("audio").pause(); }
+  $("player").style.display="block"; $("playerExtra").style.display="block"; let saved=localStorage.getItem("byo_artist_player_size")||"normal"; if(saved==="custom") applyPlayerSize("custom",parseInt(localStorage.getItem("byo_artist_player_h")||"178",10)); else applyPlayerSize(saved);
+  $("pImg").src=asset(s.img||s.cover); $("pImg").onerror=()=>{ $("pImg").src=ghAsset(s.img||s.cover); }; $("pTitle").innerText=s.title; $("pArtist").innerText=s.artist;
+  let a=$("audio"); a.src=asset(s.audio||s.audioUrl); try{ await a.play(); fadeIn(); $("playBtn").innerText="Ⅱ"; }catch(e){ let gh=ghAsset(s.audio||s.audioUrl); if(a.src!==gh){ a.src=gh; try{ await a.play(); fadeIn(); $("playBtn").innerText="Ⅱ"; }catch(_){ toast("Play error"); } } }
 }
-function togglePlay(){let a=$("audio"); if(!a.src) return; if(a.paused){a.play(); $("playBtn").innerText="Ⅱ";}else{a.pause(); $("playBtn").innerText="▶";}}
-function nextSong(){if(!queue.length) return; qi=(qi+1)%queue.length; playMySong(encodeURIComponent(queue[qi].id));}
-function prevSong(){if(!queue.length) return; qi=(qi-1+queue.length)%queue.length; playMySong(encodeURIComponent(queue[qi].id));}
-function seekAudio(v){let a=$("audio"); if(a.duration) a.currentTime=a.duration*Number(v)/1000;}
-$("audio").addEventListener("timeupdate",()=>{let a=$("audio"); $("elapsed").textContent=fmt(a.currentTime); $("duration").textContent=fmt(a.duration); $("seek").value=a.duration?Math.round(a.currentTime/a.duration*1000):0;});
+async function togglePlay(){ let a=$("audio"); if(!a.src) return; initLiquid(); if(a.paused){ await a.play(); fadeIn(); $("playBtn").innerText="Ⅱ"; } else { if(liquidGain){ let t=audioCtx.currentTime; liquidGain.gain.cancelScheduledValues(t); liquidGain.gain.setValueAtTime(liquidGain.gain.value,t); liquidGain.gain.exponentialRampToValueAtTime(0.0001,t+0.25); } setTimeout(()=>{ a.pause(); $("playBtn").innerText="▶"; },260); } }
+function nextSong(){ if(!queue.length) return; qi=(qi+1)%queue.length; playMySong(encodeURIComponent(queue[qi].id)); }
+function prevSong(){ if(!queue.length) return; qi=(qi-1+queue.length)%queue.length; playMySong(encodeURIComponent(queue[qi].id)); }
+function seekAudio(v){ let a=$("audio"); if(a.duration){ a.currentTime=a.duration*Number(v)/1000; if(!a.paused) fadeIn(); } }
+$("audio").addEventListener("timeupdate",()=>{ let a=$("audio"); $("elapsed").textContent=fmt(a.currentTime); $("duration").textContent=fmt(a.duration); $("seek").value=a.duration?Math.round(a.currentTime/a.duration*1000):0; });
 $("audio").addEventListener("ended",()=>nextSong());
-function openSongDetail(_id){
-let id=decodeURIComponent(_id); let s=songs.find(x=>x.id===id); if(!s) return; let comments=songCommentsCache[id]||s.comments||[]; let eid=encodeURIComponent(s.id);
-$("songDetail").innerHTML=`<img src="${asset(s.img||s.cover)}" onerror="imgFallback(this)" style="width:100%;height:180px;object-fit:cover;border-radius:14px"><h2>${esc(s.title)}</h2><p style="color:var(--gold)">${esc(s.artist)}</p><p class="muted">★ ${getAvg(s).toFixed(1)} • ❤ ${likeCount(s)} • 💬 ${commentCount(s)} • ▶ ${s.plays||0}</p><h3>Lyrics</h3><div class="lyrics">${esc(s.lyrics||"No lyrics yet")}</div><h3>Comments (Firestore)</h3>${comments.map(c=>`<div class="comment"><b>${esc(c.user||c.userName)}</b><br>${esc(c.text)}</div>`).join('')||"<p class='muted'>No comments</p>"}<button class="btn gold" style="width:100%;margin-top:10px" onclick="playMySong('${eid}');hideModal('songModal')">▶ Play</button>`;
-showModal("songModal");
-}
-async function editMySong(_id){
-let id=decodeURIComponent(_id); let code=prompt(`Enter Approval Code ${currentArtist.approvalCode} to edit:`); if(code!==currentArtist.approvalCode){alert("Wrong code"); return;}
-let s=songs.find(x=>x.id===id); let newTitle=prompt("New Title (leave blank keep):",s.title); let newPrice=prompt("New Price USD:",s.price); let newLyrics=prompt("Edit Lyrics (leave blank keep):",s.lyrics||""); if(newTitle) s.title=newTitle; if(newPrice) s.price=newPrice; if(newLyrics!==null && newLyrics!=="") s.lyrics=newLyrics; localStorage.setItem(KEY_SONGS,JSON.stringify(songs)); try{await uploadJSON('data/songs.json',songs); toast("✅ Updated");}catch(e){toast("Saved locally: "+e.message);} renderMySongs();
-}
-function logout(){localStorage.removeItem("byomusic_current_artist"); currentArtist=null; $("dashboard").style.display="none"; $("loginBox").style.display="block";}
+function openSongDetail(_id){ if(!_id) return; let id=decodeURIComponent(_id); let s=songs.find(x=>x.id===id); if(!s) return; let comments=songCommentsCache[id]||[]; $("songDetail").innerHTML=`<img src="${asset(s.img||s.cover)}" onerror="imgFallback(this)" style="width:100%;height:180px;object-fit:cover;border-radius:14px"><h2>${esc(s.title)}</h2><p style="color:var(--gold)">${esc(s.artist)}</p><p class="muted">★ ${getAvg(s).toFixed(1)} • ❤ ${likeCount(s)} • 💬 ${commentCount(s)}</p><h3>Lyrics</h3><div class="lyrics">${esc(s.lyrics||"No lyrics")}</div><h3>Comments</h3>${comments.map(c=>`<div class="comment"><b>${esc(c.user||"")}</b><br>${esc(c.text)}</div>`).join('')||"No comments"}<button class="btn gold" style="width:100%;margin-top:10px" onclick="playMySong('${encodeURIComponent(s.id)}');hideModal('songModal')">▶ Play</button>`; showModal("songModal"); }
+async function editMySong(_id){ let id=decodeURIComponent(_id); let code=prompt(`Enter Approval Code ${currentArtist.approvalCode} to edit:`); if((code||"").trim()!==String(currentArtist.approvalCode).trim()){ alert("Wrong code"); return; } let s=songs.find(x=>x.id===id); let nt=prompt("New Title:",s.title); let np=prompt("New Price:",s.price); let nl=prompt("Edit Lyrics:",s.lyrics||""); if(nt) s.title=nt; if(np) s.price=np; if(nl!==null&&nl!=="") s.lyrics=nl; try{localStorage.setItem(KEY_SONGS,JSON.stringify(songs));}catch(e){} try{ await uploadJSON('data/songs.json',songs); toast("✅ Updated"); }catch(e){ toast("Saved locally"); } renderMySongs(); }
+function logout(){ if(!confirm("Logout?")) return; try{localStorage.removeItem("byomusic_current_artist");}catch(e){} currentArtist=null; $("dashboard").style.display="none"; $("loginBox").style.display="block"; $("loginMsg").textContent="Logged out - login again"; }
+// PWA - v13
+let deferredPrompt=null;
+window.dismissPWA=()=>{ try{localStorage.setItem("byo_pwa_dismissed",Date.now());}catch(e){} let b=$("pwaBanner"); if(b) b.classList.remove("show"); };
+window.installPWA=async()=>{
+  if(deferredPrompt){ deferredPrompt.prompt(); let choice=await deferredPrompt.userChoice; if(choice.outcome==="accepted") toast("BYOMUSIC installed 🎵"); deferredPrompt=null; ["installBtn","installBtn2"].forEach(id=>{ let el=$(id); if(el) el.style.display="none"; }); let b=$("pwaBanner"); if(b) b.classList.remove("show"); return; }
+  openModalInstall();
+};
+function openModalInstall(){ let m=$("songModal"); $("songDetail").innerHTML=`<h2>⬇ Install BYOMUSIC Artist</h2><p><b>iPhone (Safari):</b><br>1. Tap Share ⬆️ at bottom<br>2. Tap <b>Add to Home Screen</b><br>3. Tap <b>Add</b></p><p><b>Android (Chrome):</b><br>1. Tap ⋮ menu<br>2. Tap <b>Install app / Add to Home screen</b></p><p class="muted">If Chrome says "cannot be installed", check: manifest.webmanifest + sw.js + icons/icon-192.png + icons/icon-512.png all return 200. Icons must be exact 192x192 and 512x512.</p><button class="btn gold" style="width:100%" onclick="hideModal('songModal')">Got it</button>`; showModal("songModal"); }
+window.addEventListener("beforeinstallprompt",e=>{ e.preventDefault(); deferredPrompt=e; ["installBtn","installBtn2"].forEach(id=>{ let el=$(id); if(el) el.style.display="inline-block"; }); let dismissed=parseInt(localStorage.getItem("byo_pwa_dismissed")||"0",10); if(Date.now()-dismissed>24*3600*1000){ setTimeout(()=>{ let b=$("pwaBanner"); if(b) b.classList.add("show"); },3000); } });
+window.addEventListener("appinstalled",()=>{ deferredPrompt=null; ["installBtn","installBtn2"].forEach(id=>{ let el=$(id); if(el) el.style.display="none"; }); let b=$("pwaBanner"); if(b) b.classList.remove("show"); toast("Installed! Open BYOMUSIC from Home Screen 🎵"); });
+if(/iphone|ipad|ipod/i.test(navigator.userAgent) && !window.matchMedia("(display-mode: standalone)").matches){ ["installBtn","installBtn2"].forEach(id=>{ let el=$(id); if(el) el.style.display="inline-block"; }); setTimeout(()=>{ let d=parseInt(localStorage.getItem("byo_pwa_dismissed")||"0",10); if(Date.now()-d>24*3600*1000){ let b=$("pwaBanner"); if(b) b.classList.add("show"); } },4000); }
+if("serviceWorker" in navigator){ window.addEventListener("load",()=>{ navigator.serviceWorker.register("sw.js").catch(()=>{}); }); }
 loadData();
-let saved=localStorage.getItem("byomusic_current_artist"); if(saved){currentArtist=JSON.parse(saved); showDashboard();}
-setInterval(()=>{loadData();},30000);
+let saved=localStorage.getItem("byomusic_current_artist"); if(saved){ try{currentArtist=JSON.parse(saved); showDashboard();}catch(e){} }
+setInterval(()=>{ loadData(); },60000);
+document.querySelectorAll("#liquidBtns button").forEach(b=>b.classList.toggle("active",b.dataset.sound===liquidSound));
+if($("savedSpace")) $("savedSpace").textContent=fmtMB(totalSaved);
 </script>
 </body>
 </html>
