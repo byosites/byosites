@@ -1,0 +1,74 @@
+/* BYOMUSIC PWA - Service Worker v1 */
+const CACHE = "byomusic-v1";
+const CORE = [
+  "/",
+  "/index.html",
+  "/manifest.webmanifest",
+  "/music/profile.png"
+];
+
+// Install - cache app shell
+self.addEventListener("install", (e) => {
+  e.waitUntil(
+    caches.open(CACHE).then((c) => c.addAll(CORE)).then(() => self.skipWaiting())
+  );
+});
+
+// Activate - delete old caches
+self.addEventListener("activate", (e) => {
+  e.waitUntil(
+    caches.keys().then((keys) =>
+      Promise.all(keys.filter((k) => k !== CACHE).map((k) => caches.delete(k)))
+    ).then(() => self.clients.claim())
+  );
+});
+
+// Fetch
+self.addEventListener("fetch", (e) => {
+  const url = new URL(e.request.url);
+
+  // Never cache Firebase / Google / API - always network
+  if (
+    url.hostname.includes("firebase") ||
+    url.hostname.includes("googleapis") ||
+    url.hostname.includes("gstatic") ||
+    url.hostname.includes("api.github.com")
+  ) {
+    return;
+  }
+
+  // data/*.json - NETWORK FIRST, fallback to cache (so new songs/reels always show, but offline still works)
+  if (url.pathname.includes("/data/")) {
+    e.respondWith(
+      fetch(e.request)
+        .then((res) => {
+          if (res.ok) {
+            const clone = res.clone();
+            caches.open(CACHE).then((c) => c.put(e.request, clone));
+          }
+          return res;
+        })
+        .catch(() => caches.match(e.request))
+    );
+    return;
+  }
+
+  // Everything else - CACHE FIRST, fallback network (fast load, offline shell)
+  e.respondWith(
+    caches.match(e.request).then((cached) => {
+      if (cached) return cached;
+      return fetch(e.request)
+        .then((res) => {
+          if (res.ok && e.request.method === "GET") {
+            const clone = res.clone();
+            caches.open(CACHE).then((c) => c.put(e.request, clone));
+          }
+          return res;
+        })
+        .catch(() => {
+          // Offline fallback for navigation
+          if (e.request.mode === "navigate") return caches.match("/index.html");
+        });
+    })
+  );
+});
