@@ -1,12 +1,11 @@
 [
   {
-    "id": "yani-1",
-    "name": "Yani",
+    "id": "yamisto-1",
+    "name": "Yamisto",
     "genre": "Amapiano",
-    "location": "Nkulumane, Bulawayo, Zimbabwe",
-    "photo": "music/yani.jpg",
-    "bio": "Yani is a Bulawayo Amapiano artist from Nkulumane. Known for soulful vocals and street stories. Started music in 2023, now one of the rising voices in Zimbabwean Amapiano.",
-    "whatsapp": "+263789706161",
+    "location": "Bulawayo, Zimbabwe",
+    "photo": "music/yamisto.jpg",
+    "bio": "King",
     "hidden": false
   }
 ]
