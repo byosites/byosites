@@ -1,20 +1,12 @@
-/* BYOMUSIC PWA - Service Worker v1 */
-const CACHE="byomusic-v1";
-const CORE=["/","/index.html","/manifest.webmanifest","/music/profile.png"];
-self.addEventListener("install",e=>{e.waitUntil(caches.open(CACHE).then(c=>c.addAll(CORE)).then(()=>self.skipWaiting()));});
-self.addEventListener("activate",e=>{e.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(k=>k!==CACHE).map(k=>caches.delete(k)))).then(()=>self.clients.claim()));});
-self.addEventListener("fetch",e=>{
-  const url=new URL(e.request.url);
-  if(url.hostname.includes("firebase")||url.hostname.includes("googleapis")||url.hostname.includes("gstatic")||url.hostname.includes("api.github.com")) return;
-  if(url.pathname.includes("/data/")){
-    e.respondWith(fetch(e.request).then(res=>{if(res.ok){const clone=res.clone();caches.open(CACHE).then(c=>c.put(e.request,clone));}return res;}).catch(()=>caches.match(e.request)));
-    return;
-  }
-  e.respondWith(caches.match(e.request).then(cached=>{
-    if(cached) return cached;
-    return fetch(e.request).then(res=>{
-      if(res.ok&&e.request.method==="GET"){const clone=res.clone();caches.open(CACHE).then(c=>c.put(e.request,clone));}
-      return res;
-    }).catch(()=>{if(e.request.mode==="navigate") return caches.match("/index.html");});
-  }));
+const CACHE = "byomusic";
+self.addEventListener("install", e => {
+  self.skipWaiting();
+});
+self.addEventListener("activate", e => {
+  e.waitUntil(clients.claim());
+});
+self.addEventListener("fetch", e => {
+  // Don't cache Firebase / GitHub API - only let browser handle it
+  if (e.request.url.includes("firestore") || e.request.url.includes("firebase") || e.request.url.includes("googleapis")) return;
+  e.respondWith(fetch(e.request).catch(() => caches.match(e.request)));
 });
