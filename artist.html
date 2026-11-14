@@ -162,18 +162,18 @@ input:focus,textarea:focus{border-color:rgba(255,207,51,.7)}textarea{min-height:
 </div>
 <div id="songModal" class="modal" onclick="if(event.target===this)hideModal('songModal')"><div class="modalbox glass"><button class="btn" style="float:right" onclick="hideModal('songModal')">✕</button><div id="songDetail"></div></div></div>
 <div id="toast" class="toast"></div>
-
 <script type="module">
 import {initializeApp} from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
-import {getFirestore,collection,getDocs,addDoc,query,where,orderBy} from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
+import {getFirestore,collection,getDocs,addDoc,query,where,orderBy,onSnapshot} from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
 const firebaseConfig={apiKey:"AIzaSyBeJwgHaGbUJNvki5Uu5iTrHvybwkGeBcw",authDomain:"byomusic-cf50c.firebaseapp.com",projectId:"byomusic-cf50c",storageBucket:"byomusic-cf50c.firebasestorage.app",messagingSenderId:"988323942811",appId:"1:988323942811:web:7315895722f8eea7a8d13e"};
 const fbApp=initializeApp(firebaseConfig); const db=getFirestore(fbApp);
-window.__db=db; window.__getDocs=getDocs; window.__collection=collection; window.__addDoc=addDoc; window.__query=query; window.__where=where; window.__orderBy=orderBy;
+window.__db=db; window.__getDocs=getDocs; window.__collection=collection; window.__addDoc=addDoc; window.__query=query; window.__where=where; window.__orderBy=orderBy; window.__onSnapshot=onSnapshot;
 </script>
 <script>
 const KEY_SONGS="byomusic_songs_v2_final",KEY_ARTISTS="byomusic_artists_secure";
 let currentArtist=null,songs=[],artists=[],reels=[],albums=[],referrals=[],shopAds=[],myRequests=[],queue=[],qi=-1,currentSongId=null,reqType="song",reqAlbumSelected=new Set(),totalSaved=parseInt(localStorage.getItem("byo_artist_saved")||"0",10);
 let likeCounts={},commentCounts={},ratingAvgs={},songCommentsCache={};
+let myRequestsUnsub=null;
 const $=id=>document.getElementById(id);
 const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const asset=p=>{ if(!p) return ""; if(/^https?:\/\//i.test(p)) return p; if(p.startsWith("/")) return p; return p.replace(/^\/+/,""); };
@@ -193,14 +193,12 @@ async function compressImage(file,maxW=720,quality=0.72){
 async function makeVideoThumb(file){
   return new Promise(res=>{ let v=document.createElement("video"); v.muted=true; v.playsInline=true; v.src=URL.createObjectURL(file); v.onloadeddata=()=>{ v.currentTime=Math.min(0.5,v.duration/2||0.5); }; v.onseeked=()=>{ let c=document.createElement("canvas"); c.width=480; c.height=270; c.getContext("2d").drawImage(v,0,0,480,270); c.toBlob(b=>{ res(b?new File([b],"thumb.jpg",{type:"image/jpeg"}):null); URL.revokeObjectURL(v.src); },"image/jpeg",0.72); }; v.onerror=()=>res(null); });
 }
-async function compressVideo(file){
-  if(!file||file.size<8*1024*1024) return file;
-  try{ let v=document.createElement("video"); v.muted=true; v.playsInline=true; v.src=URL.createObjectURL(file); await new Promise((res,rej)=>{ v.onloadedmetadata=res; v.onerror=rej; }); let tw=480,th=Math.round(480*v.videoHeight/v.videoWidth); let c=document.createElement("canvas"); c.width=tw; c.height=th; let ctx=c.getContext("2d"); let stream=c.captureStream(24); let rec=new MediaRecorder(stream,{mimeType:"video/webm;codecs=vp8",videoBitsPerSecond:800000}); let chunks=[]; rec.ondataavailable=e=>{ if(e.data.size) chunks.push(e.data); }; let done=new Promise(r=>rec.onstop=r); v.play(); rec.start(250); function draw(){ if(v.ended) return; ctx.drawImage(v,0,0,tw,th); requestAnimationFrame(draw); } draw(); await new Promise(r=>{ v.onended=r; setTimeout(r,Math.min(v.duration*1000+2000,65000)); }); try{rec.stop();}catch(e){} try{v.pause();}catch(e){} await done; URL.revokeObjectURL(v.src); let blob=new Blob(chunks,{type:"video/webm"}); if(!blob.size||blob.size>=file.size) return file; totalSaved+=file.size-blob.size; localStorage.setItem("byo_artist_saved",totalSaved); return new File([blob],file.name.replace(/\.[^.]+$/,"")+"_480p.webm",{type:"video/webm"}); }catch(e){ return file; }
-}
-async function compressAudio(file){
-  if(!file||file.size<5*1024*1024) return file;
-  try{ let ctx=new (window.AudioContext||window.webkitAudioContext)(); let buf=await file.arrayBuffer(); let ab=await ctx.decodeAudioData(buf); let src=ctx.createBufferSource(); src.buffer=ab; let dest=ctx.createMediaStreamDestination(); let gain=ctx.createGain(); gain.gain.value=0; src.connect(gain); gain.connect(dest); let rec=new MediaRecorder(dest.stream,{mimeType:"audio/webm;codecs=opus",audioBitsPerSecond:128000}); let chunks=[]; rec.ondataavailable=e=>{ if(e.data.size) chunks.push(e.data); }; let done=new Promise(r=>rec.onstop=r); rec.start(250); src.start(); await new Promise(r=>{ src.onended=r; setTimeout(r,ab.duration*1000+1000); }); try{rec.stop();}catch(e){} await done; ctx.close(); let blob=new Blob(chunks,{type:"audio/webm"}); if(!blob.size||blob.size>=file.size) return file; totalSaved+=file.size-blob.size; localStorage.setItem("byo_artist_saved",totalSaved); return new File([blob],file.name.replace(/\.[^.]+$/,"")+"_128k.webm",{type:"audio/webm"}); }catch(e){ return file; }
-}
+// ===== FIXED: DO NOT CONVERT TO .WEBM =====
+// Main site + Admin treat .webm/.mov/.avi/.mkv as BROKEN and auto-hide/delete them.
+// Keep original MP4 / MP3 - only images are compressed. If file >25MB, warn, don't convert.
+async function compressVideo(file){ return file; }
+async function compressAudio(file){ return file; }
+async function testVideoPlays(file){ return new Promise(res=>{ let v=document.createElement("video"); v.muted=true; v.playsInline=true; v.preload="auto"; let url=URL.createObjectURL(file); let done=false; let finish=(ok,msg)=>{ if(done) return; done=true; URL.revokeObjectURL(url); res({ok,msg}); }; v.onloadedmetadata=()=>{ if(!isFinite(v.duration)||v.duration<=0) finish(false,"Duration 0 - file broken"); else if(v.videoWidth===0) finish(false,"No video track"); else finish(true,"OK - "+v.duration.toFixed(1)+"s"); }; v.onerror=()=>finish(false,"Browser cannot decode - must be MP4 H.264"); v.src=url; setTimeout(()=>finish(false,"Timeout"),10000); }); }
 let audioCtx=null,liquidGain=null,liquidFilter=null,liquidComp=null,liquidAnalyser=null,liquidSource=null,liquidSound=localStorage.getItem("byo_artist_liquid")||"fluid",crossfade=0.6;
 function initLiquid(){ if(audioCtx) return; try{ audioCtx=new (window.AudioContext||window.webkitAudioContext)(); liquidGain=audioCtx.createGain(); liquidGain.gain.value=1; liquidFilter=audioCtx.createBiquadFilter(); liquidFilter.type="lowpass"; liquidFilter.frequency.value=18000; liquidComp=audioCtx.createDynamicsCompressor(); liquidComp.threshold.value=-18; liquidComp.ratio.value=4; liquidAnalyser=audioCtx.createAnalyser(); liquidAnalyser.fftSize=64; liquidAnalyser.smoothingTimeConstant=0.8; liquidSource=audioCtx.createMediaElementSource($("audio")); liquidSource.connect(liquidFilter); liquidFilter.connect(liquidGain); liquidGain.connect(liquidComp); liquidComp.connect(liquidAnalyser); liquidAnalyser.connect(audioCtx.destination); applyLiquid(); drawViz(); }catch(e){} }
 function applyLiquid(){ if(!liquidFilter||!liquidGain||!audioCtx) return; let t=audioCtx.currentTime; if(liquidSound==="fluid"){ liquidFilter.frequency.setTargetAtTime(18000,t,0.3); liquidGain.gain.setTargetAtTime(1,t,0.3);} if(liquidSound==="deep"){ liquidFilter.frequency.setTargetAtTime(12000,t,0.3); liquidGain.gain.setTargetAtTime(1.08,t,0.3);} if(liquidSound==="clear"){ liquidFilter.frequency.setTargetAtTime(20000,t,0.3); liquidGain.gain.setTargetAtTime(0.98,t,0.3);} if(liquidSound==="off"){ liquidFilter.frequency.setTargetAtTime(22000,t,0.1);} }
@@ -253,7 +251,7 @@ function copyRefCode(){ let code=getMyRefCode(); navigator.clipboard.writeText(l
 function login(){
   let name=($("loginName").value||"").trim(),pass=($("loginPass").value||"").trim(); if(!name||!pass){ $("loginMsg").innerText="Enter Name + Password"; return; }
   $("loginMsg").innerText="Checking..."; $("loginMsg").style.color="#888";
-  loadData().then(()=>{ let found=artists.find(a=>(a.name||"").toLowerCase()===name.toLowerCase()&&String(a.pass).trim()===String(pass)); if(!found){ $("loginMsg").innerText="Wrong name/password. Contact admin 78 970 6161"; $("loginMsg").style.color="#ff5555"; return; } if(found.suspended){ $("loginMsg").innerText="Account SUSPENDED"; return; } currentArtist=found; try{localStorage.setItem("byomusic_current_artist",JSON.stringify(found));}catch(e){} showDashboard(); toast("Welcome "+found.name); });
+  loadData().then(()=>{ let found=artists.find(a=>(a.name||"").toLowerCase()===name.toLowerCase()&&String(a.pass).trim()===String(pass)); if(!found){ $("loginMsg").innerText="Wrong name/password. Contact admin 78 970 6161"; $("loginMsg").style.color="#ff5555"; return; } if(found.suspended){ $("loginMsg").innerText="Account SUSPENDED"; return; } currentArtist=found; try{localStorage.setItem("byomusic_current_artist",JSON.stringify(found));}catch(e){} showDashboard(); startMyRequestsListener(); toast("Welcome "+found.name); });
 }
 function showDashboard(){
   if(!currentArtist){ let s=localStorage.getItem("byomusic_current_artist"); if(s) currentArtist=JSON.parse(s); else return; }
@@ -262,7 +260,7 @@ function showDashboard(){
   $("profileName").innerText=currentArtist.name; $("profileCode").innerText=currentArtist.approvalCode||""; $("profileWa").innerText=currentArtist.wa||currentArtist.whatsapp||"";
   if(currentArtist.photo){ $("myPhoto").style.display="block"; $("myPhoto").src=asset(currentArtist.photo); $("myPhoto").onerror=()=>{ $("myPhoto").src=ghAsset(currentArtist.photo); }; $("myPhoto2").style.display="block"; $("myPhoto2").src=$("myPhoto").src; }
   $("waShareCode").href=`https://wa.me/?text=${encodeURIComponent("My BYOMUSIC Code is "+currentArtist.approvalCode+" for "+currentArtist.name)}`;
-  renderMySongs(); renderReferralStats(); renderShopAd(); renderMyReels(); renderMyAlbums(); renderAlbumPicker(); loadMyRequests();
+  renderMySongs(); renderReferralStats(); renderShopAd(); renderMyReels(); renderMyAlbums(); renderAlbumPicker(); loadMyRequests(); startMyRequestsListener();
 }
 function copyCode(){ navigator.clipboard.writeText(currentArtist.approvalCode); toast("Copied "+currentArtist.approvalCode); }
 function editMyBio(){ $("bioEditBox").style.display="block"; $("editBio").value=currentArtist.bio||""; $("editLoc").value=currentArtist.loc||""; $("editGenre").value=currentArtist.genre||""; }
@@ -286,20 +284,21 @@ function renderAlbumPicker(){
 }
 window.toggleReqAlbumSong=(id,checked)=>{ if(checked) reqAlbumSelected.add(id); else reqAlbumSelected.delete(id); renderAlbumPicker(); };
 $("reqAlbumSongSearch").oninput=renderAlbumPicker;
-$("reqSongAudio").onchange=async e=>{ let f=e.target.files[0]; if(!f) return; $("reqSongPreview").src=URL.createObjectURL(f); $("reqSongPreview").style.display="block"; $("reqSongAudioInfo").style.display="block"; $("reqSongAudioInfo").innerHTML=`🎵 Original <b>${fmtMB(f.size)}</b> • If >5MB → ~128kbps • Est. <b>${fmtMB(f.size*0.35)}</b> • Saved ~65%`; };
+$("reqSongAudio").onchange=async e=>{ let f=e.target.files[0]; if(!f) return; $("reqSongPreview").src=URL.createObjectURL(f); $("reqSongPreview").style.display="block"; $("reqSongAudioInfo").style.display="block"; $("reqSongAudioInfo").innerHTML=`🎵 Original <b>${fmtMB(f.size)}</b> • Kept as MP3 - NO .webm conversion (Main site rejects .webm)`; if(!f.name.toLowerCase().endsWith(".mp3")&&!f.name.toLowerCase().endsWith(".m4a")&&!f.name.toLowerCase().endsWith(".wav")){ $("reqSongAudioInfo").innerHTML+=`<br><b style="color:#ff9ba5">⚠️ Use MP3 for best compatibility</b>`; } if(f.size>25*1024*1024){ $("reqSongAudioInfo").innerHTML+=`<br><b style="color:#ff9ba5">❌ TOO BIG - GitHub limit 25MB. Compress MP3 to 128kbps before upload.</b>`; } };
 $("reqSongCover").onchange=async e=>{ let f=e.target.files[0]; if(!f) return; let comp=await compressImage(f); $("reqSongCoverPreview").src=URL.createObjectURL(comp); $("reqSongCoverPreview").style.display="block"; $("reqSongCoverInfo").style.display="block"; $("reqSongCoverInfo").innerHTML=`🖼️ Cover ${fmtMB(f.size)} → ${fmtMB(comp.size)} • Saved ${Math.round((1-comp.size/f.size)*100)}%`; $("reqSongCover")._comp=comp; };
 $("reqAlbumCover").onchange=async e=>{ let f=e.target.files[0]; if(!f) return; let comp=await compressImage(f); $("reqAlbumCoverPreview").src=URL.createObjectURL(comp); $("reqAlbumCoverPreview").style.display="block"; $("reqAlbumCoverInfo").style.display="block"; $("reqAlbumCoverInfo").innerHTML=`Cover ${fmtMB(f.size)} → ${fmtMB(comp.size)}`; $("reqAlbumCover")._comp=comp; };
-$("reqReelVideo").onchange=async e=>{ let f=e.target.files[0]; if(!f) return; $("reqReelPreview").src=URL.createObjectURL(f); $("reqReelPreview").style.display="block"; $("reqReelVideoInfo").style.display="block"; $("reqReelVideoInfo").innerHTML=`🎬 Original <b>${fmtMB(f.size)}</b> • Will compress to 480p • Est. <b>${fmtMB(f.size*0.22)}</b>`; let thumb=await makeVideoThumb(f); if(thumb){ $("reqReelThumb").src=URL.createObjectURL(thumb); $("reqReelThumb").style.display="block"; $("reqReelVideo")._thumb=thumb; } };
+$("reqReelVideo").onchange=async e=>{ let f=e.target.files[0]; if(!f) return; let name=f.name.toLowerCase(); if(!name.endsWith(".mp4")){ $("reqReelVideoInfo").style.display="block"; $("reqReelVideoInfo").innerHTML=`❌ <b>${esc(f.name)} is NOT .mp4</b> - Main site will mark it BROKEN. Convert to MP4 H.264 first.`; $("reqReelPreview").style.display="none"; return; } if(f.size>25*1024*1024){ $("reqReelVideoInfo").style.display="block"; $("reqReelVideoInfo").innerHTML=`❌ <b>${fmtMB(f.size)} - TOO BIG</b> (25MB limit). Compress MP4 to 720p before upload.`; return; } $("reqReelPreview").src=URL.createObjectURL(f); $("reqReelPreview").style.display="block"; $("reqReelVideoInfo").style.display="block"; let test=await testVideoPlays(f); if(!test.ok){ $("reqReelVideoInfo").innerHTML=`❌ Play-test FAILED: ${esc(test.msg)}`; return; } $("reqReelVideoInfo").innerHTML=`✅ MP4 Play-test PASSED - ${esc(test.msg)} • Kept as MP4 - NO .webm conversion`; let thumb=await makeVideoThumb(f); if(thumb){ $("reqReelThumb").src=URL.createObjectURL(thumb); $("reqReelThumb").style.display="block"; $("reqReelVideo")._thumb=thumb; } };
 async function sendRequest(){
   if(!currentArtist){ toast("Login first"); return; }
   let code=($("reqApproval").value||"").trim(); if(code!==String(currentArtist.approvalCode).trim()){ $("reqMsg").textContent="Wrong approval code! Enter your code: "+currentArtist.approvalCode; return; }
-  $("sendReqBtn").disabled=true; $("reqProgress").style.width="10%"; $("reqMsg").textContent="🗜️ Compressing…";
+  $("sendReqBtn").disabled=true; $("reqProgress").style.width="10%"; $("reqMsg").textContent="Checking files…";
   try{
     let payload={artist:currentArtist.name,artistId:currentArtist.id||"",approvalCode:code,status:"pending",createdAt:Date.now(),created:new Date().toISOString(),referredBy:"",filePaths:[],fileName:""};
     if(reqType==="song"){
       let audio=$("reqSongAudio").files[0]; let cover=$("reqSongCover").files[0]; let title=($("reqSongTitle").value||"").trim(); if(!audio||!title){ throw new Error("Song: need audio + title"); }
-      let finalAudio=await compressAudio(audio); let finalCover=cover?($("reqSongCover")._comp||await compressImage(cover)):null;
-      $("reqProgress").style.width="50%"; $("reqMsg").textContent="Uploading compressed files…";
+      if(audio.size>25*1024*1024) throw new Error("Audio >25MB - compress MP3 to 128kbps first");
+      let finalAudio=audio; let finalCover=cover?($("reqSongCover")._comp||await compressImage(cover)):null;
+      $("reqProgress").style.width="50%"; $("reqMsg").textContent="Uploading original MP3…";
       let audioPath=`music/requests/${Date.now()}_${audio.name.replace(/[^a-zA-Z0-9._-]/g,"_")}`;
       let uploaded=await tryUploadToGitHub(finalAudio,audioPath);
       let coverPath=""; if(finalCover){ let cp=`music/requests/${Date.now()}_cover_${finalCover.name}`; let up2=await tryUploadToGitHub(finalCover,cp); coverPath=up2||cp; }
@@ -312,7 +311,9 @@ async function sendRequest(){
       payload.type="album"; payload.title=title; payload.year=$("reqAlbumYear").value||new Date().getFullYear(); payload.price=Number($("reqAlbumPrice").value)||0; payload.description=$("reqAlbumDesc").value; payload.cover=coverPath; payload.coverImage=coverPath; payload.songIds=[...reqAlbumSelected]; payload.songs=[...reqAlbumSelected];
     } else if(reqType==="reel"){
       let video=$("reqReelVideo").files[0]; let title=($("reqReelTitle").value||"").trim(); if(!video||!title) throw new Error("Reel: need video + title");
-      let finalVideo=await compressVideo(video); let thumb=$("reqReelVideo")._thumb||await makeVideoThumb(video);
+      if(!video.name.toLowerCase().endsWith(".mp4")) throw new Error("Reel must be .mp4 - .webm/.mov will be marked BROKEN");
+      if(video.size>25*1024*1024) throw new Error("Reel >25MB - compress MP4 to 720p first");
+      let finalVideo=video; let thumb=$("reqReelVideo")._thumb||await makeVideoThumb(video);
       $("reqProgress").style.width="50%";
       let videoPath=`music/requests/${Date.now()}_${video.name.replace(/[^a-zA-Z0-9._-]/g,"_")}`; let uploaded=await tryUploadToGitHub(finalVideo,videoPath);
       let thumbPath=""; if(thumb){ let tp=`music/requests/${Date.now()}_thumb.jpg`; let up=await tryUploadToGitHub(thumb,tp); thumbPath=up||tp; }
@@ -330,8 +331,22 @@ async function sendRequest(){
 window.sendRequest=sendRequest;
 function sendRequestViaWhatsApp(){
   let title = reqType==="song"?$("reqSongTitle").value:reqType==="album"?$("reqAlbumTitle").value:$("reqReelTitle").value;
-  let msg=`Hi Admin! I am ${currentArtist.name} (Code: ${currentArtist.approvalCode}). Please approve my ${reqType.toUpperCase()} request: ${title||"(title)"} . I compressed it to save space. I will send the file here.`;
+  let msg=`Hi Admin! I am ${currentArtist.name} (Code: ${currentArtist.approvalCode}). Please approve my ${reqType.toUpperCase()} request: ${title||"(title)"} . I kept it as MP4/MP3 (no .webm). I will send the file here.`;
   window.open(`https://wa.me/263789706161?text=${encodeURIComponent(msg)}`,"_blank");
+}
+// ===== NEW: LIVE REQUESTS via onSnapshot - same pattern as Main Site instant takeover =====
+function startMyRequestsListener(){
+  if(!currentArtist||!window.__db||!window.__onSnapshot) return;
+  if(myRequestsUnsub) myRequestsUnsub();
+  try{
+    myRequestsUnsub=window.__onSnapshot(window.__query(window.__collection(window.__db,"artist_requests"),window.__where("artist","==",currentArtist.name)),(snap)=>{
+      myRequests=[]; snap.forEach(d=>myRequests.push({id:d.id,...d.data()}));
+      myRequests.sort((a,b)=>(b.createdAt||0)-(a.createdAt||0));
+      renderMyRequests();
+      // If admin just approved/rejected, refresh songs/reels instantly
+      loadData().catch(()=>{});
+    },()=>{});
+  }catch(e){}
 }
 async function loadMyRequests(){
   if(!currentArtist||!window.__db) return;
@@ -372,8 +387,7 @@ $("audio").addEventListener("timeupdate",()=>{ let a=$("audio"); $("elapsed").te
 $("audio").addEventListener("ended",()=>nextSong());
 function openSongDetail(_id){ if(!_id) return; let id=decodeURIComponent(_id); let s=songs.find(x=>x.id===id); if(!s) return; let comments=songCommentsCache[id]||[]; $("songDetail").innerHTML=`<img src="${asset(s.img||s.cover)}" onerror="imgFallback(this)" style="width:100%;height:180px;object-fit:cover;border-radius:14px"><h2>${esc(s.title)}</h2><p style="color:var(--gold)">${esc(s.artist)}</p><p class="muted">★ ${getAvg(s).toFixed(1)} • ❤ ${likeCount(s)} • 💬 ${commentCount(s)}</p><h3>Lyrics</h3><div class="lyrics">${esc(s.lyrics||"No lyrics")}</div><h3>Comments</h3>${comments.map(c=>`<div class="comment"><b>${esc(c.user||"")}</b><br>${esc(c.text)}</div>`).join('')||"No comments"}<button class="btn gold" style="width:100%;margin-top:10px" onclick="playMySong('${encodeURIComponent(s.id)}');hideModal('songModal')">▶ Play</button>`; showModal("songModal"); }
 async function editMySong(_id){ let id=decodeURIComponent(_id); let code=prompt(`Enter Approval Code ${currentArtist.approvalCode} to edit:`); if((code||"").trim()!==String(currentArtist.approvalCode).trim()){ alert("Wrong code"); return; } let s=songs.find(x=>x.id===id); let nt=prompt("New Title:",s.title); let np=prompt("New Price:",s.price); let nl=prompt("Edit Lyrics:",s.lyrics||""); if(nt) s.title=nt; if(np) s.price=np; if(nl!==null&&nl!=="") s.lyrics=nl; try{localStorage.setItem(KEY_SONGS,JSON.stringify(songs));}catch(e){} try{ await uploadJSON('data/songs.json',songs); toast("✅ Updated"); }catch(e){ toast("Saved locally"); } renderMySongs(); }
-function logout(){ if(!confirm("Logout?")) return; try{localStorage.removeItem("byomusic_current_artist");}catch(e){} currentArtist=null; $("dashboard").style.display="none"; $("loginBox").style.display="block"; $("loginMsg").textContent="Logged out - login again"; }
-// PWA - v13
+function logout(){ if(!confirm("Logout?")) return; if(myRequestsUnsub) myRequestsUnsub(); try{localStorage.removeItem("byomusic_current_artist");}catch(e){} currentArtist=null; $("dashboard").style.display="none"; $("loginBox").style.display="block"; $("loginMsg").textContent="Logged out - login again"; }
 let deferredPrompt=null;
 window.dismissPWA=()=>{ try{localStorage.setItem("byo_pwa_dismissed",Date.now());}catch(e){} let b=$("pwaBanner"); if(b) b.classList.remove("show"); };
 window.installPWA=async()=>{
@@ -387,7 +401,7 @@ if(/iphone|ipad|ipod/i.test(navigator.userAgent) && !window.matchMedia("(display
 if("serviceWorker" in navigator){ window.addEventListener("load",()=>{ navigator.serviceWorker.register("sw.js").catch(()=>{}); }); }
 loadData();
 let saved=localStorage.getItem("byomusic_current_artist"); if(saved){ try{currentArtist=JSON.parse(saved); showDashboard();}catch(e){} }
-setInterval(()=>{ loadData(); },60000);
+// FIXED: Removed 60s setInterval(loadData) - it was re-loading + re-rendering every minute and killing playback. Live updates now come from onSnapshot above.
 document.querySelectorAll("#liquidBtns button").forEach(b=>b.classList.toggle("active",b.dataset.sound===liquidSound));
 if($("savedSpace")) $("savedSpace").textContent=fmtMB(totalSaved);
 </script>
