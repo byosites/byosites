@@ -98,11 +98,11 @@ input:focus,textarea:focus{border-color:rgba(255,207,51,.7)}textarea{min-height:
 <section id="page-request" class="page">
 <div class="glass">
 <h3>📤 Request New Upload - Song / Album / Reel</h3>
-<div class="compress-box">🗜️ <b>Auto Compress ON</b> - Song 9MB → 3MB, Reel 30MB → 7MB, Cover 2.5MB → 180KB. Still plays + downloads. Admin approves in ~1 day.</div>
+<div class="compress-box">🗜️ <b>How it works:</b> 1) Fill form → 2) Tap Send → 3) WhatsApp opens with your Request ID → 4) <b>Send your MP3/MP4 file there</b> → 5) Admin approves → LIVE. <b>Do NOT skip step 4 - Admin has no file until you send it.</b></div>
 <label class="label">What are you requesting?</label>
 <div class="row"><button class="btn gold" id="reqTypeSongBtn" onclick="setReqType('song')">🎵 Song</button><button class="btn" id="reqTypeAlbumBtn" onclick="setReqType('album')">💿 Album</button><button class="btn" id="reqTypeReelBtn" onclick="setReqType('reel')">🎬 Reel</button></div>
 <div id="reqSongForm">
-<label class="label">MP3 / Audio</label><input id="reqSongAudio" type="file" accept="audio/*"><div id="reqSongAudioInfo" class="compress-box" style="display:none"></div><audio id="reqSongPreview" controls style="width:100%;display:none"></audio>
+<label class="label">MP3 / Audio - you will send this file via WhatsApp after</label><input id="reqSongAudio" type="file" accept="audio/*"><div id="reqSongAudioInfo" class="compress-box" style="display:none"></div><audio id="reqSongPreview" controls style="width:100%;display:none"></audio>
 <label class="label">Cover Image - compressed</label><input id="reqSongCover" type="file" accept="image/*"><div id="reqSongCoverInfo" class="compress-box" style="display:none"></div><img id="reqSongCoverPreview" style="width:100%;max-height:160px;object-fit:cover;border-radius:14px;display:none">
 <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px"><input id="reqSongTitle" placeholder="Song title *"><input id="reqSongGenre" placeholder="Genre e.g. Amapiano"></div>
 <textarea id="reqSongLyrics" placeholder="Lyrics"></textarea><textarea id="reqSongBio" placeholder="Song description"></textarea>
@@ -117,7 +117,7 @@ input:focus,textarea:focus{border-color:rgba(255,207,51,.7)}textarea{min-height:
 <p class="muted">No song yet? Request songs first, then come back to make album. Or tick songs already live.</p>
 </div>
 <div id="reqReelForm" style="display:none">
-<label class="label">Video File - compressed to 480p</label><input id="reqReelVideo" type="file" accept="video/*"><div id="reqReelVideoInfo" class="compress-box" style="display:none"></div><video id="reqReelPreview" controls style="width:100%;max-height:260px;border-radius:14px;display:none;background:#000"></video><img id="reqReelThumb" style="width:100%;max-height:140px;object-fit:cover;border-radius:14px;display:none;margin-top:6px">
+<label class="label">Video File - MP4 ONLY, you will send via WhatsApp after</label><input id="reqReelVideo" type="file" accept="video/*"><div id="reqReelVideoInfo" class="compress-box" style="display:none"></div><video id="reqReelPreview" controls style="width:100%;max-height:260px;border-radius:14px;display:none;background:#000"></video><img id="reqReelThumb" style="width:100%;max-height:140px;object-fit:cover;border-radius:14px;display:none;margin-top:6px">
 <input id="reqReelTitle" placeholder="Reel title *"><textarea id="reqReelCaption" placeholder="Caption"></textarea>
 <label><input type="checkbox" id="reqReelFeatured" style="width:auto"> Want Featured on Home</label>
 </div>
@@ -193,11 +193,6 @@ async function compressImage(file,maxW=720,quality=0.72){
 async function makeVideoThumb(file){
   return new Promise(res=>{ let v=document.createElement("video"); v.muted=true; v.playsInline=true; v.src=URL.createObjectURL(file); v.onloadeddata=()=>{ v.currentTime=Math.min(0.5,v.duration/2||0.5); }; v.onseeked=()=>{ let c=document.createElement("canvas"); c.width=480; c.height=270; c.getContext("2d").drawImage(v,0,0,480,270); c.toBlob(b=>{ res(b?new File([b],"thumb.jpg",{type:"image/jpeg"}):null); URL.revokeObjectURL(v.src); },"image/jpeg",0.72); }; v.onerror=()=>res(null); });
 }
-// ===== FIXED: DO NOT CONVERT TO .WEBM =====
-// Main site + Admin treat .webm/.mov/.avi/.mkv as BROKEN and auto-hide/delete them.
-// Keep original MP4 / MP3 - only images are compressed. If file >25MB, warn, don't convert.
-async function compressVideo(file){ return file; }
-async function compressAudio(file){ return file; }
 async function testVideoPlays(file){ return new Promise(res=>{ let v=document.createElement("video"); v.muted=true; v.playsInline=true; v.preload="auto"; let url=URL.createObjectURL(file); let done=false; let finish=(ok,msg)=>{ if(done) return; done=true; URL.revokeObjectURL(url); res({ok,msg}); }; v.onloadedmetadata=()=>{ if(!isFinite(v.duration)||v.duration<=0) finish(false,"Duration 0 - file broken"); else if(v.videoWidth===0) finish(false,"No video track"); else finish(true,"OK - "+v.duration.toFixed(1)+"s"); }; v.onerror=()=>finish(false,"Browser cannot decode - must be MP4 H.264"); v.src=url; setTimeout(()=>finish(false,"Timeout"),10000); }); }
 let audioCtx=null,liquidGain=null,liquidFilter=null,liquidComp=null,liquidAnalyser=null,liquidSource=null,liquidSound=localStorage.getItem("byo_artist_liquid")||"fluid",crossfade=0.6;
 function initLiquid(){ if(audioCtx) return; try{ audioCtx=new (window.AudioContext||window.webkitAudioContext)(); liquidGain=audioCtx.createGain(); liquidGain.gain.value=1; liquidFilter=audioCtx.createBiquadFilter(); liquidFilter.type="lowpass"; liquidFilter.frequency.value=18000; liquidComp=audioCtx.createDynamicsCompressor(); liquidComp.threshold.value=-18; liquidComp.ratio.value=4; liquidAnalyser=audioCtx.createAnalyser(); liquidAnalyser.fftSize=64; liquidAnalyser.smoothingTimeConstant=0.8; liquidSource=audioCtx.createMediaElementSource($("audio")); liquidSource.connect(liquidFilter); liquidFilter.connect(liquidGain); liquidGain.connect(liquidComp); liquidComp.connect(liquidAnalyser); liquidAnalyser.connect(audioCtx.destination); applyLiquid(); drawViz(); }catch(e){} }
@@ -216,11 +211,6 @@ async function fetchGitHub(type){
 }
 async function saveToGitHub(type,data){ try{ let token=localStorage.getItem("byo_token"); if(!token) return false; let file=TYPE_TO_FILE[type]||type+".json"; let path=`data/${file}`; let get=await fetch(`${GH_API}/${path}`,{headers:{Authorization:`Bearer ${token}`}}); let sha=null; if(get.ok){ let j=await get.json(); sha=j.sha; } let content=btoa(unescape(encodeURIComponent(JSON.stringify(data,null,2)))); let body={message:`Update ${file} via Artist v13`,content,branch:GH_BRANCH}; if(sha) body.sha=sha; let put=await fetch(`${GH_API}/${path}`,{method:"PUT",headers:{Authorization:`Bearer ${token}`,"Content-Type":"application/json"},body:JSON.stringify(body)}); return put.ok; }catch(e){ return false; } }
 async function uploadJSON(path,obj){ let type=path.replace("data/","").replace(".json",""); const ok=await saveToGitHub(type,obj); if(!ok) throw new Error("Not pushed - saved locally. Send bio to Admin on WhatsApp."); }
-async function fileToBase64(file){ return new Promise((res,rej)=>{ let fr=new FileReader(); fr.onload=()=>res(fr.result); fr.onerror=rej; fr.readAsDataURL(file); }); }
-async function tryUploadToGitHub(file,path){
-  let token=localStorage.getItem("byo_token"); if(!token) return null;
-  try{ if(file.size>25*1024*1024) return null; let b64=await new Promise((res,rej)=>{ let fr=new FileReader(); fr.onload=()=>res(fr.result.split(",")[1]); fr.onerror=rej; fr.readAsDataURL(file); }); let get=await fetch(`${GH_API}/${path}`,{headers:{Authorization:`Bearer ${token}`}}); let sha=null; if(get.ok){ let j=await get.json(); sha=j.sha; } let body={message:`Artist request ${path}`,content:b64,branch:GH_BRANCH}; if(sha) body.sha=sha; let put=await fetch(`${GH_API}/${path}`,{method:"PUT",headers:{Authorization:`Bearer ${token}`,"Content-Type":"application/json"},body:JSON.stringify(body)}); if(!put.ok) return null; return path; }catch(e){ return null; }
-}
 async function loadInteractions(){
   try{ if(!window.__db) return; let ls=await window.__getDocs(window.__collection(window.__db,"likes")); likeCounts={}; ls.forEach(d=>{ let v=d.data(); if(v.songId) likeCounts[v.songId]=(likeCounts[v.songId]||0)+1; }); let cs=await window.__getDocs(window.__collection(window.__db,"comments")); commentCounts={}; songCommentsCache={}; cs.forEach(d=>{ let v=d.data(); if(!v.songId) return; commentCounts[v.songId]=(commentCounts[v.songId]||0)+1; if(!songCommentsCache[v.songId]) songCommentsCache[v.songId]=[]; songCommentsCache[v.songId].push({id:d.id,...v}); }); Object.keys(songCommentsCache).forEach(k=>songCommentsCache[k].sort((a,b)=>(b.createdAt||0)-(a.createdAt||0))); let rs=await window.__getDocs(window.__collection(window.__db,"ratings")); let sums={},counts={}; rs.forEach(d=>{ let v=d.data(); if(!v.songId) return; sums[v.songId]=(sums[v.songId]||0)+Number(v.rating||0); counts[v.songId]=(counts[v.songId]||0)+1; }); ratingAvgs={}; Object.keys(sums).forEach(k=>ratingAvgs[k]=sums[k]/counts[k]); if(currentArtist) renderMySongs(); }catch(e){}
 }
@@ -284,57 +274,53 @@ function renderAlbumPicker(){
 }
 window.toggleReqAlbumSong=(id,checked)=>{ if(checked) reqAlbumSelected.add(id); else reqAlbumSelected.delete(id); renderAlbumPicker(); };
 $("reqAlbumSongSearch").oninput=renderAlbumPicker;
-$("reqSongAudio").onchange=async e=>{ let f=e.target.files[0]; if(!f) return; $("reqSongPreview").src=URL.createObjectURL(f); $("reqSongPreview").style.display="block"; $("reqSongAudioInfo").style.display="block"; $("reqSongAudioInfo").innerHTML=`🎵 Original <b>${fmtMB(f.size)}</b> • Kept as MP3 - NO .webm conversion (Main site rejects .webm)`; if(!f.name.toLowerCase().endsWith(".mp3")&&!f.name.toLowerCase().endsWith(".m4a")&&!f.name.toLowerCase().endsWith(".wav")){ $("reqSongAudioInfo").innerHTML+=`<br><b style="color:#ff9ba5">⚠️ Use MP3 for best compatibility</b>`; } if(f.size>25*1024*1024){ $("reqSongAudioInfo").innerHTML+=`<br><b style="color:#ff9ba5">❌ TOO BIG - GitHub limit 25MB. Compress MP3 to 128kbps before upload.</b>`; } };
+$("reqSongAudio").onchange=async e=>{ let f=e.target.files[0]; if(!f) return; $("reqSongPreview").src=URL.createObjectURL(f); $("reqSongPreview").style.display="block"; $("reqSongAudioInfo").style.display="block"; $("reqSongAudioInfo").innerHTML=`🎵 Original <b>${fmtMB(f.size)}</b> • You will send this file via WhatsApp after tapping Send`; if(!f.name.toLowerCase().endsWith(".mp3")&&!f.name.toLowerCase().endsWith(".m4a")&&!f.name.toLowerCase().endsWith(".wav")){ $("reqSongAudioInfo").innerHTML+=`<br><b style="color:#ff9ba5">⚠️ Use MP3 for best compatibility</b>`; } if(f.size>25*1024*1024){ $("reqSongAudioInfo").innerHTML+=`<br><b style="color:#ff9ba5">❌ TOO BIG - GitHub limit 25MB. Compress MP3 to 128kbps before upload.</b>`; } };
 $("reqSongCover").onchange=async e=>{ let f=e.target.files[0]; if(!f) return; let comp=await compressImage(f); $("reqSongCoverPreview").src=URL.createObjectURL(comp); $("reqSongCoverPreview").style.display="block"; $("reqSongCoverInfo").style.display="block"; $("reqSongCoverInfo").innerHTML=`🖼️ Cover ${fmtMB(f.size)} → ${fmtMB(comp.size)} • Saved ${Math.round((1-comp.size/f.size)*100)}%`; $("reqSongCover")._comp=comp; };
 $("reqAlbumCover").onchange=async e=>{ let f=e.target.files[0]; if(!f) return; let comp=await compressImage(f); $("reqAlbumCoverPreview").src=URL.createObjectURL(comp); $("reqAlbumCoverPreview").style.display="block"; $("reqAlbumCoverInfo").style.display="block"; $("reqAlbumCoverInfo").innerHTML=`Cover ${fmtMB(f.size)} → ${fmtMB(comp.size)}`; $("reqAlbumCover")._comp=comp; };
-$("reqReelVideo").onchange=async e=>{ let f=e.target.files[0]; if(!f) return; let name=f.name.toLowerCase(); if(!name.endsWith(".mp4")){ $("reqReelVideoInfo").style.display="block"; $("reqReelVideoInfo").innerHTML=`❌ <b>${esc(f.name)} is NOT .mp4</b> - Main site will mark it BROKEN. Convert to MP4 H.264 first.`; $("reqReelPreview").style.display="none"; return; } if(f.size>25*1024*1024){ $("reqReelVideoInfo").style.display="block"; $("reqReelVideoInfo").innerHTML=`❌ <b>${fmtMB(f.size)} - TOO BIG</b> (25MB limit). Compress MP4 to 720p before upload.`; return; } $("reqReelPreview").src=URL.createObjectURL(f); $("reqReelPreview").style.display="block"; $("reqReelVideoInfo").style.display="block"; let test=await testVideoPlays(f); if(!test.ok){ $("reqReelVideoInfo").innerHTML=`❌ Play-test FAILED: ${esc(test.msg)}`; return; } $("reqReelVideoInfo").innerHTML=`✅ MP4 Play-test PASSED - ${esc(test.msg)} • Kept as MP4 - NO .webm conversion`; let thumb=await makeVideoThumb(f); if(thumb){ $("reqReelThumb").src=URL.createObjectURL(thumb); $("reqReelThumb").style.display="block"; $("reqReelVideo")._thumb=thumb; } };
+$("reqReelVideo").onchange=async e=>{ let f=e.target.files[0]; if(!f) return; let name=f.name.toLowerCase(); if(!name.endsWith(".mp4")){ $("reqReelVideoInfo").style.display="block"; $("reqReelVideoInfo").innerHTML=`❌ <b>${esc(f.name)} is NOT .mp4</b> - Main site will mark it BROKEN. Convert to MP4 H.264 first.`; $("reqReelPreview").style.display="none"; return; } if(f.size>25*1024*1024){ $("reqReelVideoInfo").style.display="block"; $("reqReelVideoInfo").innerHTML=`❌ <b>${fmtMB(f.size)} - TOO BIG</b> (25MB limit). Compress MP4 to 720p before upload.`; return; } $("reqReelPreview").src=URL.createObjectURL(f); $("reqReelPreview").style.display="block"; $("reqReelVideoInfo").style.display="block"; let test=await testVideoPlays(f); if(!test.ok){ $("reqReelVideoInfo").innerHTML=`❌ Play-test FAILED: ${esc(test.msg)}`; return; } $("reqReelVideoInfo").innerHTML=`✅ MP4 Play-test PASSED - ${esc(test.msg)} • You will send this file via WhatsApp after`; let thumb=await makeVideoThumb(f); if(thumb){ $("reqReelThumb").src=URL.createObjectURL(thumb); $("reqReelThumb").style.display="block"; $("reqReelVideo")._thumb=thumb; } };
+// ===== FIXED sendRequest - NO GitHub upload from artist, Firestore first, WhatsApp file second =====
 async function sendRequest(){
   if(!currentArtist){ toast("Login first"); return; }
   let code=($("reqApproval").value||"").trim(); if(code!==String(currentArtist.approvalCode).trim()){ $("reqMsg").textContent="Wrong approval code! Enter your code: "+currentArtist.approvalCode; return; }
-  $("sendReqBtn").disabled=true; $("reqProgress").style.width="10%"; $("reqMsg").textContent="Checking files…";
+  $("sendReqBtn").disabled=true; $("reqProgress").style.width="10%"; $("reqMsg").textContent="Sending request…";
   try{
-    let payload={artist:currentArtist.name,artistId:currentArtist.id||"",approvalCode:code,status:"pending",createdAt:Date.now(),created:new Date().toISOString(),referredBy:"",filePaths:[],fileName:""};
+    let payload={artist:currentArtist.name,artistId:currentArtist.id||"",approvalCode:code,status:"pending",createdAt:Date.now(),created:new Date().toISOString(),referredBy:"",fileName:"",needsFileViaWhatsApp:true};
     if(reqType==="song"){
       let audio=$("reqSongAudio").files[0]; let cover=$("reqSongCover").files[0]; let title=($("reqSongTitle").value||"").trim(); if(!audio||!title){ throw new Error("Song: need audio + title"); }
       if(audio.size>25*1024*1024) throw new Error("Audio >25MB - compress MP3 to 128kbps first");
-      let finalAudio=audio; let finalCover=cover?($("reqSongCover")._comp||await compressImage(cover)):null;
-      $("reqProgress").style.width="50%"; $("reqMsg").textContent="Uploading original MP3…";
-      let audioPath=`music/requests/${Date.now()}_${audio.name.replace(/[^a-zA-Z0-9._-]/g,"_")}`;
-      let uploaded=await tryUploadToGitHub(finalAudio,audioPath);
-      let coverPath=""; if(finalCover){ let cp=`music/requests/${Date.now()}_cover_${finalCover.name}`; let up2=await tryUploadToGitHub(finalCover,cp); coverPath=up2||cp; }
-      payload.type="song"; payload.title=title; payload.genre=$("reqSongGenre").value||currentArtist.genre||""; payload.lyrics=$("reqSongLyrics").value; payload.bio=$("reqSongBio").value; payload.price=Number($("reqSongPrice").value)||0; payload.paid=$("reqSongPaid").checked; payload.sell=payload.paid; payload.audio=uploaded||audioPath; payload.audioUrl=payload.audio; payload.cover=coverPath; payload.img=coverPath; payload.origSize=audio.size; payload.finalSize=finalAudio.size; payload.fileName=finalAudio.name;
-      payload.note=uploaded?"File uploaded to GitHub - ready for admin to approve":"File NOT uploaded (no GitHub token) - artist must send file via WhatsApp with this request ID";
+      let coverName=""; if(cover){ let comp=$("reqSongCover")._comp||await compressImage(cover); coverName=comp.name; }
+      $("reqProgress").style.width="50%"; $("reqMsg").textContent="Saving request…";
+      payload.type="song"; payload.title=title; payload.genre=$("reqSongGenre").value||currentArtist.genre||""; payload.lyrics=$("reqSongLyrics").value; payload.bio=$("reqSongBio").value; payload.price=Number($("reqSongPrice").value)||0; payload.paid=$("reqSongPaid").checked; payload.sell=payload.paid; payload.audio=""; payload.audioUrl=""; payload.cover=""; payload.img=""; payload.origSize=audio.size; payload.finalSize=audio.size; payload.fileName=audio.name; payload.coverFileName=coverName;
+      payload.note="⚠️ FILE NOT UPLOADED YET - Artist must send MP3 + Cover via WhatsApp with this Request ID. Admin: ask for file, upload it, then Approve.";
     } else if(reqType==="album"){
       let title=($("reqAlbumTitle").value||"").trim(); if(!title) throw new Error("Album: need title"); if(!reqAlbumSelected.size) throw new Error("Album: tick at least 1 song");
-      let cover=$("reqAlbumCover").files[0]; let finalCover=cover?($("reqAlbumCover")._comp||await compressImage(cover)):null;
-      let coverPath=""; if(finalCover){ let cp=`music/requests/${Date.now()}_album_${finalCover.name}`; let up=await tryUploadToGitHub(finalCover,cp); coverPath=up||cp; }
-      payload.type="album"; payload.title=title; payload.year=$("reqAlbumYear").value||new Date().getFullYear(); payload.price=Number($("reqAlbumPrice").value)||0; payload.description=$("reqAlbumDesc").value; payload.cover=coverPath; payload.coverImage=coverPath; payload.songIds=[...reqAlbumSelected]; payload.songs=[...reqAlbumSelected];
+      payload.type="album"; payload.title=title; payload.year=$("reqAlbumYear").value||new Date().getFullYear(); payload.price=Number($("reqAlbumPrice").value)||0; payload.description=$("reqAlbumDesc").value; payload.cover=""; payload.coverImage=""; payload.songIds=[...reqAlbumSelected]; payload.songs=[...reqAlbumSelected];
     } else if(reqType==="reel"){
       let video=$("reqReelVideo").files[0]; let title=($("reqReelTitle").value||"").trim(); if(!video||!title) throw new Error("Reel: need video + title");
       if(!video.name.toLowerCase().endsWith(".mp4")) throw new Error("Reel must be .mp4 - .webm/.mov will be marked BROKEN");
       if(video.size>25*1024*1024) throw new Error("Reel >25MB - compress MP4 to 720p first");
-      let finalVideo=video; let thumb=$("reqReelVideo")._thumb||await makeVideoThumb(video);
       $("reqProgress").style.width="50%";
-      let videoPath=`music/requests/${Date.now()}_${video.name.replace(/[^a-zA-Z0-9._-]/g,"_")}`; let uploaded=await tryUploadToGitHub(finalVideo,videoPath);
-      let thumbPath=""; if(thumb){ let tp=`music/requests/${Date.now()}_thumb.jpg`; let up=await tryUploadToGitHub(thumb,tp); thumbPath=up||tp; }
-      payload.type="reel"; payload.title=title; payload.caption=$("reqReelCaption").value; payload.video=uploaded||videoPath; payload.videoUrl=payload.video; payload.cover=thumbPath; payload.thumb=thumbPath; payload.featured=$("reqReelFeatured").checked; payload.origSize=video.size; payload.finalSize=finalVideo.size; payload.fileName=finalVideo.name;
+      payload.type="reel"; payload.title=title; payload.caption=$("reqReelCaption").value; payload.video=""; payload.videoUrl=""; payload.cover=""; payload.thumb=""; payload.featured=$("reqReelFeatured").checked; payload.origSize=video.size; payload.finalSize=video.size; payload.fileName=video.name;
+      payload.note="⚠️ VIDEO NOT UPLOADED - Artist must send MP4 via WhatsApp with Request ID.";
     }
     $("reqProgress").style.width="80%";
     let ref=await window.__addDoc(window.__collection(window.__db,"artist_requests"),payload);
-    $("reqProgress").style.width="100%"; $("reqMsg").textContent="✅ Request sent! ID: "+ref.id+" • Status: PENDING • Admin will approve soon. Check My Requests.";
-    toast("✅ Request sent - Pending approval");
+    $("reqProgress").style.width="100%"; $("reqMsg").innerHTML=`✅ <b>Request SENT!</b> ID: ${ref.id}<br>Now tap WhatsApp below and SEND YOUR FILE with this ID. Admin cannot approve until he gets the file.`;
+    toast("✅ Request sent - Now send file via WhatsApp");
+    let msg=`Hi Admin! I am ${currentArtist.name} (Code: ${currentArtist.approvalCode}). My ${reqType.toUpperCase()} request ID is: ${ref.id}\nTitle: ${payload.title}\nFile: ${payload.fileName||""}\nI am sending the file now. Please approve.`;
+    setTimeout(()=>{ if(confirm("Request SENT ✅\n\nNow SEND YOUR FILE via WhatsApp with ID "+ref.id+"?\n\nTap OK to open WhatsApp.")){ window.open(`https://wa.me/263789706161?text=${encodeURIComponent(msg)}`,"_blank"); } },500);
     ["reqSongTitle","reqSongLyrics","reqSongBio","reqSongPrice","reqSongReferral","reqAlbumTitle","reqAlbumYear","reqAlbumPrice","reqAlbumDesc","reqReelTitle","reqReelCaption","reqApproval"].forEach(id=>{ let el=$(id); if(el) el.value=""; });
     ["reqSongAudio","reqSongCover","reqAlbumCover","reqReelVideo"].forEach(id=>{ let el=$(id); if(el) el.value=""; });
     reqAlbumSelected.clear(); renderAlbumPicker(); await loadMyRequests(); switchPage("myrequests");
-  }catch(e){ $("reqMsg").textContent="Failed: "+e.message; toast(e.message); } finally{ $("sendReqBtn").disabled=false; }
+  }catch(e){ $("reqMsg").textContent="❌ Failed: "+e.message+" - Check Firestore Rules for artist_requests"; toast(e.message); console.log("SEND REQUEST ERROR:",e); } finally{ $("sendReqBtn").disabled=false; }
 }
 window.sendRequest=sendRequest;
 function sendRequestViaWhatsApp(){
   let title = reqType==="song"?$("reqSongTitle").value:reqType==="album"?$("reqAlbumTitle").value:$("reqReelTitle").value;
-  let msg=`Hi Admin! I am ${currentArtist.name} (Code: ${currentArtist.approvalCode}). Please approve my ${reqType.toUpperCase()} request: ${title||"(title)"} . I kept it as MP4/MP3 (no .webm). I will send the file here.`;
+  let msg=`Hi Admin! I am ${currentArtist.name} (Code: ${currentArtist.approvalCode}). Please approve my ${reqType.toUpperCase()} request: ${title||"(title)"} . I will send the file here.`;
   window.open(`https://wa.me/263789706161?text=${encodeURIComponent(msg)}`,"_blank");
 }
-// ===== NEW: LIVE REQUESTS via onSnapshot - same pattern as Main Site instant takeover =====
+// ===== FIXED: LIVE REQUESTS - NO orderBy (no index needed) =====
 function startMyRequestsListener(){
   if(!currentArtist||!window.__db||!window.__onSnapshot) return;
   if(myRequestsUnsub) myRequestsUnsub();
@@ -343,20 +329,20 @@ function startMyRequestsListener(){
       myRequests=[]; snap.forEach(d=>myRequests.push({id:d.id,...d.data()}));
       myRequests.sort((a,b)=>(b.createdAt||0)-(a.createdAt||0));
       renderMyRequests();
-      // If admin just approved/rejected, refresh songs/reels instantly
       loadData().catch(()=>{});
-    },()=>{});
+    },(err)=>{ console.log("Listener failed, using manual load",err); loadMyRequests(); });
   }catch(e){}
 }
 async function loadMyRequests(){
   if(!currentArtist||!window.__db) return;
   try{
-    let snap=await window.__getDocs(window.__query(window.__collection(window.__db,"artist_requests"),window.__where("artist","==",currentArtist.name),window.__orderBy("createdAt","desc")));
+    let snap=await window.__getDocs(window.__query(window.__collection(window.__db,"artist_requests"),window.__where("artist","==",currentArtist.name)));
     myRequests=[]; snap.forEach(d=>myRequests.push({id:d.id,...d.data()}));
     myRequests.sort((a,b)=>(b.createdAt||0)-(a.createdAt||0));
     renderMyRequests();
   }catch(e){
-    try{ let snap=await window.__getDocs(window.__collection(window.__db,"artist_requests")); myRequests=[]; snap.forEach(d=>{ let v=d.data(); if(v.artist===currentArtist.name) myRequests.push({id:d.id,...v}); }); myRequests.sort((a,b)=>(b.createdAt||0)-(a.createdAt||0)); renderMyRequests(); }catch(e2){ if($("myRequestsList")) $("myRequestsList").innerHTML="<p class='muted'>Requests need Firestore rules: allow read/write on artist_requests</p>"; }
+    console.log("loadMyRequests failed:",e);
+    if($("myRequestsList")) $("myRequestsList").innerHTML="<p class='muted'>Failed: "+esc(e.message)+"<br>Fix Firestore Rules: match /artist_requests/{id} { allow read, write: if true; }</p>";
   }
 }
 function renderMyRequests(){
@@ -366,7 +352,7 @@ function renderMyRequests(){
   $("myRequestsList").innerHTML=myRequests.map(r=>{
     let cls=r.status==="approved"?"approved":r.status==="rejected"?"rejected":"pending";
     let icon=r.status==="approved"?"🟢 Approved":r.status==="rejected"?"🔴 Rejected":"🟡 Pending";
-    return `<div class="req-card ${cls}"><b>${r.type==="song"?"🎵":r.type==="album"?"💿":"🎬"} ${esc(r.title||"Untitled")}</b> • ${icon}<br><small class="muted">${r.type} • ${r.createdAt?new Date(r.createdAt).toLocaleString():""} • ${r.finalSize?fmtMB(r.finalSize):""} ${r.fileName? "• "+esc(r.fileName):""}</small>${r.adminNote?`<p style="font-size:12px"><b>Admin:</b> ${esc(r.adminNote)}</p>`:""}${r.note?`<p class="muted" style="font-size:11px">${esc(r.note)}</p>`:""}${r.status==="pending"?`<button class="btn green" onclick="sendRequestViaWhatsApp()">Send File via WhatsApp ↗</button>`:""}</div>`;
+    return `<div class="req-card ${cls}"><b>${r.type==="song"?"🎵":r.type==="album"?"💿":"🎬"} ${esc(r.title||"Untitled")}</b> • ${icon}<br><small class="muted">${r.type} • ${r.createdAt?new Date(r.createdAt).toLocaleString():""} • ${r.finalSize?fmtMB(r.finalSize):""} ${r.fileName? "• "+esc(r.fileName):""}</small><br><small class="muted">ID: ${r.id}</small>${r.adminNote?`<p style="font-size:12px"><b>Admin:</b> ${esc(r.adminNote)}</p>`:""}${r.note?`<p class="muted" style="font-size:11px">${esc(r.note)}</p>`:""}${r.status==="pending"?`<button class="btn green" onclick="sendRequestViaWhatsApp()">Send File via WhatsApp ↗</button>`:""}</div>`;
   }).join('')||"<p class='muted'>No requests yet - send your first one!</p>";
 }
 function applyPlayerSize(size,customH){ let p=$("player"); if(!p) return; if(size==="custom"&&customH){ p.style.setProperty("--ph",customH+"px"); p.dataset.size="custom"; } else p.dataset.size=size; let btn=$("sizeBtn"); if(btn) btn.textContent=p.dataset.size==="mini"?"⛶ Expand":p.dataset.size==="full"?"— Mini":"⛶ Full"; try{localStorage.setItem("byo_artist_player_size",p.dataset.size);}catch(e){} if(customH) try{localStorage.setItem("byo_artist_player_h",customH);}catch(e){} }
@@ -400,10 +386,8 @@ window.addEventListener("appinstalled",()=>{ deferredPrompt=null; ["installBtn",
 if(/iphone|ipad|ipod/i.test(navigator.userAgent) && !window.matchMedia("(display-mode: standalone)").matches){ ["installBtn","installBtn2"].forEach(id=>{ let el=$(id); if(el) el.style.display="inline-block"; }); setTimeout(()=>{ let d=parseInt(localStorage.getItem("byo_pwa_dismissed")||"0",10); if(Date.now()-d>24*3600*1000){ let b=$("pwaBanner"); if(b) b.classList.add("show"); } },4000); }
 if("serviceWorker" in navigator){ window.addEventListener("load",()=>{ navigator.serviceWorker.register("sw.js").catch(()=>{}); }); }
 loadData();
-let saved=localStorage.getItem("byomusic_current_artist"); if(saved){ try{currentArtist=JSON.parse(saved); showDashboard();}catch(e){} }
-// FIXED: Removed 60s setInterval(loadData) - it was re-loading + re-rendering every minute and killing playback. Live updates now come from onSnapshot above.
-document.querySelectorAll("#liquidBtns button").forEach(b=>b.classList.toggle("active",b.dataset.sound===liquidSound));
-if($("savedSpace")) $("savedSpace").textContent=fmtMB(totalSaved);
+let saved=localStorage.getItem("byomusic_current_artist");
+try{ if(saved){ currentArtist=JSON.parse(saved); showDashboard(); } }catch(e){}
 </script>
 </body>
 </html>
